@@ -8,6 +8,16 @@
     "require-dev": {
         "phpunit/phpunit": "^9.5"
     },
+    "autoload": {
+        "psr-4": {
+            "ClosePartnerSdk\\": "src/ClosePartnerSdk"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ClosePartnerSdk\\Tests\\": "tests/ClosePartnerSdk"
+        }
+    },
     "license": "Apache License",
     "authors": [
         {
