@@ -1,2 +1,2 @@
-# sdk
-The offical repository of the Close SDK for PHP Developers.
+# Close Partner SDK
+The official repository written in PHP for the partners from Close.
