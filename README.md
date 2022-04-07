@@ -18,9 +18,11 @@ Jump To:
 1. **Get your credentials** – Before you begin, you need to already have an account with Close. If that is not the case, feel free to [contact us][contact-us].
 2. **Minimum requirements** – In order to use the Close SDK, your system will need to meet the [minimum requirements][docs-requirements], which includes having **PHP >= 7.4**.
 3. **Install the SDK** – The recommended way to use the Close SDK is by installing it with [Composer][composer]:
+
    ```
    composer require close-dev-team/partner-sdk-php
    ```
+
 4. **Using the SDK** – In this page you will learn how to use the SDK, but if you want to get more information about the calls, you can always see our [Close Partner API Documentation][partner-api-doc], which this SDK is a wrapper of.
 
 ## Quick Examples
