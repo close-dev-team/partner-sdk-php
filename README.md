@@ -66,14 +66,16 @@ Feel free to let us know if you have encountered any questions or problems using
 
 ## Features
 
-* Provides a very easy way to communicate with our [partner API][partner-api-doc] for all of the supported endpoints.
+* Provides a very easy way to communicate with our [partner API][partner-api-doc] for all of the supported endpoints. This means that we always fetch the correct data based on your API credentials.
 * It is built on the latest software, with the highest security standards and following the [PSR conventions][PSR].
 * We use [Guzzle][guzzle] to generate these requests and we make use of its technology (async requests, middlewares, etc.).
+* We provide a data structure of our domain that can be easily used by external PHP applications.
 * We give back clear responses and exceptions in case something doesn't go as expected.
 
 ## Contributing
 
-We work hard to provide a high-quality and useful SDK for our AWS services, and we greatly value feedback and contributions from our community. 
+If you have ideas on how to improve our SDK, don't hesitate to [open an issue][open-issue] and let us know! 
+If you already have code ready that would help us improve our system, you are free to [open a PR][open-pr]. All the extra help is highly appreciated!
 
 ## Resources
 
@@ -88,7 +90,9 @@ We work hard to provide a high-quality and useful SDK for our AWS services, and 
 [PSR]: https://www.php-fig.org/psr/
 
 [open-issue]: https://github.com/close-dev-team/partner-sdk-php/issues/new/choose
+[open-pr]: https://github.com/close-dev-team/partner-sdk-php/compare
 
 [the-close-app]: http://thecloseapp.com
 [guzzle]: http://guzzlephp.org
 [composer]: http://getcomposer.org
+
