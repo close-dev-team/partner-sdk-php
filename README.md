@@ -3,6 +3,7 @@
 [![Lastest Version](https://img.shields.io/github/v/tag/close-dev-team/partner-sdk-php)](https://github.com/close-dev-team/partner-sdk-php/releases)
 [![Build Status](https://img.shields.io/github/workflow/status/close-dev-team/partner-sdk-php/run-automated-tests?style=flat)](https://github.com/close-dev-team/partner-sdk-php)
 [![Apache 2 License](https://img.shields.io/github/license/close-dev-team/partner-sdk-php)][apache-license]
+
 The **Close SDK for PHP** makes it easy for developers to communicate with [The Close App][the-close-app] in their PHP code. Get started really fast by [installing the SDK through Composer](#Getting-Started).
 
 Jump To:
