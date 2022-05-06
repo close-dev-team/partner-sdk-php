@@ -7,11 +7,20 @@ namespace ClosePartnerSdk\Endpoint;
 use ClosePartnerSdk\Auth\AuthCredentials;
 use ClosePartnerSdk\Auth\Token;
 use ClosePartnerSdk\CloseSdk;
+use ClosePartnerSdk\Exception\InvalidRequestJsonFormat;
+use ClosePartnerSdk\Exception\InvalidResponseJsonFormat;
 use ClosePartnerSdk\HttpClient\Message\RequestBodyMediator;
 use ClosePartnerSdk\HttpClient\Message\ResponseMediator;
 
 final class Authorise extends CloseEndpoint
 {
+    /**
+     * @param AuthCredentials $authCredentials
+     * @return Token
+     * @throws \Http\Client\Exception
+     * @throws InvalidResponseJsonFormat
+     * @throws InvalidRequestJsonFormat
+     */
     public function withCredentials(AuthCredentials $authCredentials): Token
     {
         $httpMethodsClient = $this->sdk->getHttpClient();
@@ -23,7 +32,7 @@ final class Authorise extends CloseEndpoint
         ]);
         $rawResponse = $httpMethodsClient
             ->post(
-                CloseSdk::BASE_URI . '/oauth/token',
+                '/oauth/token',
                 [
                     'Content-Type' => 'application/json'
                 ],

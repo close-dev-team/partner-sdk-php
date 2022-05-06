@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace ClosePartnerSdk\Tests\Endpoint;
 
 use ClosePartnerSdk\Auth\AuthCredentials;
+use ClosePartnerSdk\Exception\InvalidResponseJsonFormat;
+
 class AuthoriseEndpointTest extends EndpointTestCase
 {
     /** @test **/
@@ -34,12 +36,22 @@ class AuthoriseEndpointTest extends EndpointTestCase
     }
 
     /** @test **/
-    public function inform_when_the_credentials_are_invalid()
+    public function inform_when_api_provides_a_wrong_json()
     {
-    }
+        $clientId = '923e4785-077e-4523-9466-f2f298a398d4';
+        $clientSecret = '4WNDmGIi8foQezA5y830oKeGaHY9DnooItUa555z';
 
-    /** @test **/
-    public function inform_when_the_request_is_wrong()
-    {
+        $this->mockResponseForClient('I am a teapot');
+
+        $this->expectException(InvalidResponseJsonFormat::class);
+
+        $this->givenSdk()
+            ->authorise()
+            ->withCredentials(
+                new AuthCredentials(
+                    $clientId,
+                    $clientSecret
+                )
+            );
     }
 }

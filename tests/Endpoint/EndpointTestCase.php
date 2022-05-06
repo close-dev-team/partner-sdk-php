@@ -26,7 +26,7 @@ abstract class EndpointTestCase extends TestCase
     /**
      * @throws JsonException
      */
-    protected function mockResponseForClient(array $response): void
+    protected function mockResponseForClient($response): void
     {
         $responseObject = $this->createMock(ResponseInterface::class);
         $stream = $this->createMock(StreamInterface::class);
