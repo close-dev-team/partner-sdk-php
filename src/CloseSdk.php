@@ -6,6 +6,7 @@ namespace ClosePartnerSdk;
 use ClosePartnerSdk\Endpoint\Authorise;
 use Http\Client\Common\HttpMethodsClientInterface;
 use Http\Client\Common\Plugin\BaseUriPlugin;
+use Http\Client\Common\Plugin\ErrorPlugin;
 use Http\Client\Common\Plugin\HeaderDefaultsPlugin;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
@@ -37,6 +38,7 @@ class CloseSdk
                 'Accept' => 'application/json',
             ])
         );
+        $this->clientBuilder->addPlugin(new ErrorPlugin());
     }
 
     private function buildUri(Options $options): BaseUriPlugin

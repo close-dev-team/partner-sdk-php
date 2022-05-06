@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace ClosePartnerSdk\Auth;
+namespace ClosePartnerSdk\Dto;
 
 class AuthCredentials
 {

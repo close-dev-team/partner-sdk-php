@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace ClosePartnerSdk;
 
-use ClosePartnerSdk\Auth\AuthCredentials;
+use ClosePartnerSdk\Dto\AuthCredentials;
 use Http\Discovery\Psr17FactoryDiscovery;
 use Psr\Http\Message\UriFactoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

@@ -4,22 +4,28 @@ declare(strict_types=1);
 
 namespace ClosePartnerSdk\Endpoint;
 
-use ClosePartnerSdk\Auth\AuthCredentials;
-use ClosePartnerSdk\Auth\Token;
+use ClosePartnerSdk\Dto\AuthCredentials;
+use ClosePartnerSdk\Dto\Token;
 use ClosePartnerSdk\CloseSdk;
+use ClosePartnerSdk\Exception\Auth\InvalidCredentialsException;
+use ClosePartnerSdk\Exception\ApiErrorException;
+use ClosePartnerSdk\Exception\ConnectionException;
 use ClosePartnerSdk\Exception\InvalidRequestJsonFormat;
 use ClosePartnerSdk\Exception\InvalidResponseJsonFormat;
 use ClosePartnerSdk\HttpClient\Message\RequestBodyMediator;
 use ClosePartnerSdk\HttpClient\Message\ResponseMediator;
+use Http\Client\Common\Exception\ClientErrorException;
 
 final class Authorise extends CloseEndpoint
 {
     /**
      * @param AuthCredentials $authCredentials
      * @return Token
-     * @throws \Http\Client\Exception
      * @throws InvalidResponseJsonFormat
      * @throws InvalidRequestJsonFormat
+     * @throws ApiErrorException
+     * @throws InvalidCredentialsException
+     * @throws ConnectionException
      */
     public function withCredentials(AuthCredentials $authCredentials): Token
     {
@@ -30,14 +36,26 @@ final class Authorise extends CloseEndpoint
             'client_secret' => $authCredentials->getClientSecret(),
             'scope' => '*'
         ]);
-        $rawResponse = $httpMethodsClient
-            ->post(
-                '/oauth/token',
-                [
-                    'Content-Type' => 'application/json'
-                ],
-                $body
-            );
+        try {
+            $rawResponse = $httpMethodsClient
+                ->post(
+                    '/oauth/token',
+                    [
+                        'Content-Type' => 'application/json'
+                    ],
+                    $body
+                );
+        } catch (ClientErrorException $exception) {
+            if ($exception->getCode() === 401) {
+                throw new InvalidCredentialsException(
+                    'The credentials provided are not valid to connect to the Close SDK.'
+                );
+            }
+            throw new ApiErrorException($exception->getMessage(), $exception->getCode(), $exception);
+        } catch (\Exception $exception) {
+            throw new ConnectionException($exception->getMessage(), $exception->getCode(), $exception);
+        }
+
         $response = ResponseMediator::getContent($rawResponse);
 
         return new Token(

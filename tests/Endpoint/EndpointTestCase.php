@@ -8,6 +8,7 @@ use ClosePartnerSdk\CloseSdk;
 use ClosePartnerSdk\Options;
 use Http\Mock\Client;
 use JsonException;
+use Laminas\Diactoros\Response\JsonResponse;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
@@ -26,7 +27,7 @@ abstract class EndpointTestCase extends TestCase
     /**
      * @throws JsonException
      */
-    protected function mockResponseForClient($response): void
+    protected function mockResponse($response): ResponseInterface
     {
         $responseObject = $this->createMock(ResponseInterface::class);
         $stream = $this->createMock(StreamInterface::class);
@@ -36,7 +37,8 @@ abstract class EndpointTestCase extends TestCase
         $responseObject
             ->method('getBody')
             ->willReturn($stream);
-        $this->mockClient->addResponse($responseObject);
+
+        return $responseObject;
     }
 
     protected function givenSdk(): CloseSdk
