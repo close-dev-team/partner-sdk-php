@@ -44,4 +44,9 @@ final class ClientBuilder
             $this->streamFactoryInterface
         );
     }
+
+    public function getStreamFactory(): StreamFactoryInterface
+    {
+        return $this->streamFactoryInterface;
+    }
 }

@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace ClosePartnerSdk;
 
+use ClosePartnerSdk\Auth\AuthCredentials;
 use Http\Discovery\Psr17FactoryDiscovery;
 use Psr\Http\Message\UriFactoryInterface;
-use Psr\Http\Message\UriInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class Options
@@ -22,6 +22,7 @@ final class Options
 
     private function configureOptions(OptionsResolver $resolver): void
     {
+        $resolver->setRequired(['client_id', 'client_secret']);
         $resolver->setDefaults(
             [
                 'client_builder' => new ClientBuilder,
@@ -48,5 +49,10 @@ final class Options
     public function getVersion(): string
     {
         return $this->options['version'];
+    }
+
+    public function getAuthCredentials(): AuthCredentials
+    {
+        return new AuthCredentials($this->options['client_id'], $this->options['client_secret']);
     }
 }
