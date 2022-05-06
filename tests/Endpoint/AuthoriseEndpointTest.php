@@ -7,6 +7,7 @@ use ClosePartnerSdk\Dto\AuthCredentials;
 use ClosePartnerSdk\Exception\Auth\InvalidCredentialsException;
 use ClosePartnerSdk\Exception\ConnectionException;
 use ClosePartnerSdk\Exception\InvalidResponseJsonFormat;
+use ClosePartnerSdk\Exception\MissingResponsePropertiesException;
 use Http\Client\Common\Exception\ClientErrorException;
 use Laminas\Diactoros\Request;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -106,6 +107,59 @@ class AuthoriseEndpointTest extends EndpointTestCase
         );
 
         $this->expectException(ConnectionException::class);
+
+        $this->givenSdk()
+            ->authorise()
+            ->withCredentials(
+                new AuthCredentials(
+                    $clientId,
+                    $clientSecret
+                )
+            );
+    }
+
+    /** @test **/
+    public function inform_when_the_response_is_missing_the_access_token()
+    {
+        $clientId = '923e4785-077e-4523-9466-f2f298a398d4';
+        $clientSecret = '4WNDmGIi8foQezA5y830oKeGaHY9DnooItUa555z';
+        $expiresIn = 86400;
+
+        $this->mockClient->addResponse(
+            $this->mockResponse([
+                "token_type" => "Bearer",
+                "expires_in" => $expiresIn,
+            ])
+        );
+
+        $this->expectException(MissingResponsePropertiesException::class);
+        $this->expectExceptionMessageMatches('/access_token/');
+
+        $this->givenSdk()
+            ->authorise()
+            ->withCredentials(
+                new AuthCredentials(
+                    $clientId,
+                    $clientSecret
+                )
+            );
+    }
+
+    /** @test **/
+    public function inform_when_the_response_is_missing_the_expiration_time()
+    {
+        $clientId = '923e4785-077e-4523-9466-f2f298a398d4';
+        $clientSecret = '4WNDmGIi8foQezA5y830oKeGaHY9DnooItUa555z';
+
+        $this->mockClient->addResponse(
+            $this->mockResponse([
+                "token_type" => "Bearer",
+                "access_token" => '122344',
+            ])
+        );
+
+        $this->expectException(MissingResponsePropertiesException::class);
+        $this->expectExceptionMessageMatches('/expires_in/');
 
         $this->givenSdk()
             ->authorise()

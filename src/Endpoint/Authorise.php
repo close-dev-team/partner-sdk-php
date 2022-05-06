@@ -14,7 +14,9 @@ use ClosePartnerSdk\Exception\InvalidRequestJsonFormat;
 use ClosePartnerSdk\Exception\InvalidResponseJsonFormat;
 use ClosePartnerSdk\HttpClient\Message\RequestBodyMediator;
 use ClosePartnerSdk\HttpClient\Message\ResponseMediator;
+use ClosePartnerSdk\Validator\AuthoriseValidator;
 use Http\Client\Common\Exception\ClientErrorException;
+use PHPUnit\Util\Xml\Validator;
 
 final class Authorise extends CloseEndpoint
 {
@@ -57,6 +59,7 @@ final class Authorise extends CloseEndpoint
         }
 
         $response = ResponseMediator::getContent($rawResponse);
+        (new AuthoriseValidator('/oauth/token', $response))->validate();
 
         return new Token(
             $response['access_token'],
