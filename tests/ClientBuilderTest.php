@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace ClosePartnerSdk\Tests;
 
 use ClosePartnerSdk\ClientBuilder;
+use Http\Client\Common\HttpMethodsClientInterface;
 use Http\Client\Common\Plugin\HeaderDefaultsPlugin;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Client\ClientInterface;
 
 class ClientBuilderTest extends TestCase
 {
@@ -14,7 +14,7 @@ class ClientBuilderTest extends TestCase
     public function resolve_http_client_that_implements_psr()
     {
         $client = (new ClientBuilder)->getHttpClient();
-        self::assertInstanceOf(ClientInterface::class, $client);
+        self::assertInstanceOf(HttpMethodsClientInterface::class, $client);
     }
 
     /** @test **/
@@ -26,6 +26,6 @@ class ClientBuilderTest extends TestCase
         ]));
 
         $client = (new ClientBuilder)->getHttpClient();
-        self::assertInstanceOf(ClientInterface::class, $client);
+        self::assertInstanceOf(HttpMethodsClientInterface::class, $client);
     }
 }
