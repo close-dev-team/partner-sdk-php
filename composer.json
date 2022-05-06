@@ -15,12 +15,12 @@
     },
     "autoload": {
         "psr-4": {
-            "ClosePartnerSdk\\": "src/ClosePartnerSdk"
+            "ClosePartnerSdk\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "ClosePartnerSdk\\Tests\\": "tests/ClosePartnerSdk"
+            "ClosePartnerSdk\\Tests\\": "tests"
         }
     },
     "license": "Apache License",
