@@ -77,7 +77,7 @@ Feel free to let us know if you have encountered any questions or problems using
 * We give back clear responses and exceptions in case something doesn't go as expected.
 
 ## Advanced features
-* In case you want to make usage of your own HttpClient, you can provide the implementation to the client builder when instantiating our SDK:
+1. In case you want to make usage of your own HttpClient, you can provide the implementation to the client builder when instantiating our SDK:
 
 ```php
 <?php
@@ -96,7 +96,9 @@ use ClosePartnerSdk\HttpClient\HttpClientBuilder;
        ])
   );
 ```
-The client needs to implement the [PSR-7](https://www.php-fig.org/psr/psr-7/) conventions to be accepted by our SDK.
+*Important: The client needs to implement the [PSR-7](https://www.php-fig.org/psr/psr-7/) conventions to be accepted by our SDK.*
+2. In case you don't provide any instance, we use the discovery functionality from [HttpPlug](http://httplug.io/), which look up for an available implementation of `\Http\Client\HttpClient`.
+
 ## Contributing
 
 If you have ideas on how to improve our SDK, don't hesitate to [open an issue][open-issue] and let us know! 
