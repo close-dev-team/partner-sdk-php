@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace ClosePartnerSdk;
 
 use ClosePartnerSdk\Endpoint\Authorise;
-use ClosePartnerSdk\HttpClient\HttpClientFactory;
+use ClosePartnerSdk\HttpClient\HttpClientBuilder;
 use Http\Client\Common\HttpMethodsClientInterface;
 use Http\Client\Common\Plugin\BaseUriPlugin;
 use Http\Client\Common\Plugin\ErrorPlugin;
@@ -14,7 +14,7 @@ use Psr\Http\Message\StreamFactoryInterface;
 
 class CloseSdk
 {
-    private HttpClientFactory $clientBuilder;
+    private HttpClientBuilder $clientBuilder;
 
     public function __construct(Options $options = null) {
         $options = $options ?? new Options;

@@ -45,16 +45,6 @@ use ClosePartnerSdk\CloseSdk;
        ])
   );
 ```
-In case that you want to make usage of a different Http Client, you can provide your own client builder in the options object.
-```php
-  return new CloseSdk(
-       new Options([
-            'client_builder' => new ClientBuilder($myOwnHttpClient),
-            'client_id' => 'client_test',
-            'client_secret' => 'client_test_secret',
-       ])
-  );
-```
 
 ### Import tickets using the Close App
 
@@ -82,10 +72,31 @@ Feel free to let us know if you have encountered any questions or problems using
 * Provides a very easy way to communicate with our [Partner API](https://partner.closeapi.nl/api/documentation) for all of the supported endpoints. This means that we always fetch the correct data based on your API credentials.
 * It is built on the latest software, with the highest security standards and following the [PSR conventions](https://www.php-fig.org/psr/).
 * You can provide your own Http client as a dependency of the client builder and providing the instance in the options object. You have an example above.
-* We use [Curl Client](https://github.com/php-http/curl-client) to generate these requests, and we make use of its technology (async requests, middlewares, etc.).
+* We use [Guzzle](https://docs.guzzlephp.org/en/7.0/) to generate these requests, and we make use of its technology (async requests, middlewares, etc.).
 * We provide a data structure f our domain that can be easily used by external PHP applications.
 * We give back clear responses and exceptions in case something doesn't go as expected.
 
+## Advanced features
+* In case you want to make usage of your own HttpClient, you can provide the implementation to the client builder when instantiating our SDK:
+
+```php
+<?php
+// Require the Composer autoloader.
+require 'vendor/autoload.php';
+
+use ClosePartnerSdk\CloseSdk;
+use ClosePartnerSdk\HttpClient\HttpClientBuilder;
+
+// Instantiate the Close client using the client credentials given by Close
+  return new CloseSdk(
+       new Options([
+            'client_builder' => new HttpClientBuilder($myownHttpClient),
+            'client_id' => 'client_test',
+            'client_secret' => 'client_test_secret',
+       ])
+  );
+```
+The client needs to implement the [PSR-7](https://www.php-fig.org/psr/psr-7/) conventions to be accepted by our SDK.
 ## Contributing
 
 If you have ideas on how to improve our SDK, don't hesitate to [open an issue][open-issue] and let us know! 
