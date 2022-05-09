@@ -70,4 +70,35 @@ class ImportTicketGroupForEventTest extends EndpointTestCase
             new TicketGroup
         );
     }
+
+    /** @test **/
+    public function prevent_calling_authorization_endpoint_for_each_request()
+    {
+        $token = 'ey8393930dkdkdk';
+        $this->mockClient
+            ->on(
+                new RequestMatcher('oauth/token'),
+                fn() => $this->mockResponse([
+                    "token_type" => "Bearer",
+                    "expires_in" => 1113,
+                    "access_token" => $token,
+                ])
+            );
+        $this->mockClient->addResponse($this->mockResponse([]));
+        $this->mockClient->addResponse($this->mockResponse([]));
+
+
+        $endpoint = $this->givenSdk()->importTickets();
+        $endpoint->withTicketGroupAndEventId(
+            new EventId('1234'),
+            new TicketGroup
+        );
+        $endpoint->withTicketGroupAndEventId(
+            new EventId('1234'),
+            new TicketGroup
+        );
+
+        $requests = $this->mockClient->getRequests();
+        self::assertCount(3, $requests);
+    }
 }
