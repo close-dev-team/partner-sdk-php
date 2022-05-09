@@ -13,4 +13,9 @@ abstract class CloseEndpoint
     {
         $this->sdk = $sdk;
     }
+
+    protected function buildUriWithLatestVersion(string $endpoint): string
+    {
+        return sprintf('/api/%s/%s',CloseSdk::LATEST_VERSION, $endpoint);
+    }
 }
