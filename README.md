@@ -2,7 +2,7 @@
 
 [![Lastest Version](https://img.shields.io/github/v/tag/close-dev-team/partner-sdk-php)](https://github.com/close-dev-team/partner-sdk-php/releases)
 [![Build Status](https://img.shields.io/github/workflow/status/close-dev-team/partner-sdk-php/run-automated-tests?style=flat)](https://github.com/close-dev-team/partner-sdk-php)
-[![Apache 2 License](https://img.shields.io/github/license/close-dev-team/partner-sdk-php)][apache-license]
+[![Apache 2 License](https://img.shields.io/github/license/close-dev-team/partner-sdk-php)](https://www.apache.org/licenses/LICENSE-2.0)
 
 The **Close SDK for PHP** makes it easy for developers to communicate with [The Close App][the-close-app] in their PHP code. Get started really fast by [installing the SDK through Composer](#Getting-Started).
 
@@ -35,13 +35,25 @@ Jump To:
 // Require the Composer autoloader.
 require 'vendor/autoload.php';
 
-use Close\CloseClient;
+use ClosePartnerSdk\CloseSdk;
 
-// Instantiate the Close client.
-$closeClient = new CloseClient([
-    'username' => 'your-username',
-    'password'  => 'your-password' // We recommend getting the password from an environment file or secret.
-]);
+// Instantiate the Close client using the client credentials given by Close
+  return new CloseSdk(
+       new Options([
+            'client_id' => 'client_test',
+            'client_secret' => 'client_test_secret',
+       ])
+  );
+```
+In case that you want to make usage of a different Http Client, you can provide your own client builder in the options object.
+```php
+  return new CloseSdk(
+       new Options([
+            'client_builder' => new ClientBuilder($myOwnHttpClient),
+            'client_id' => 'client_test',
+            'client_secret' => 'client_test_secret',
+       ])
+  );
 ```
 
 ### Import tickets using the Close App
@@ -67,10 +79,11 @@ Feel free to let us know if you have encountered any questions or problems using
 
 ## Features
 
-* Provides a very easy way to communicate with our [partner API][partner-api-doc] for all of the supported endpoints. This means that we always fetch the correct data based on your API credentials.
-* It is built on the latest software, with the highest security standards and following the [PSR conventions][PSR].
-* We use [Guzzle][guzzle] to generate these requests and we make use of its technology (async requests, middlewares, etc.).
-* We provide a data structure of our domain that can be easily used by external PHP applications.
+* Provides a very easy way to communicate with our [Partner API](https://partner.closeapi.nl/api/documentation) for all of the supported endpoints. This means that we always fetch the correct data based on your API credentials.
+* It is built on the latest software, with the highest security standards and following the [PSR conventions](https://www.php-fig.org/psr/).
+* You can provide your own Http client as a dependency of the client builder and providing the instance in the options object. You have an example above.
+* We use [Curl Client](https://github.com/php-http/curl-client) to generate these requests, and we make use of its technology (async requests, middlewares, etc.).
+* We provide a data structure f our domain that can be easily used by external PHP applications.
 * We give back clear responses and exceptions in case something doesn't go as expected.
 
 ## Contributing

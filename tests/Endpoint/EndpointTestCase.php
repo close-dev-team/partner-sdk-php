@@ -8,7 +8,6 @@ use ClosePartnerSdk\CloseSdk;
 use ClosePartnerSdk\Options;
 use Http\Mock\Client;
 use JsonException;
-use Laminas\Diactoros\Response\JsonResponse;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;

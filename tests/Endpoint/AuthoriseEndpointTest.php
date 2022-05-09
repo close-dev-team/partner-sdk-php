@@ -11,6 +11,7 @@ use ClosePartnerSdk\Exception\MissingResponsePropertiesException;
 use Http\Client\Common\Exception\ClientErrorException;
 use Laminas\Diactoros\Request;
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Http\Message\ResponseInterface;
 
 class AuthoriseEndpointTest extends EndpointTestCase
 {
@@ -70,7 +71,7 @@ class AuthoriseEndpointTest extends EndpointTestCase
     {
         $clientId = '923e4785-077e-4523-9466-f2f298a398d4';
         $clientSecret = '4WNDmGIi8foQezA5y830oKeGaHY9DnooItUa555z';
-        /** @var MockObject $response */
+        /** @var MockObject|ResponseInterface $response */
         $response = $this->mockResponse([]);
         $response
             ->method('getStatusCode')
