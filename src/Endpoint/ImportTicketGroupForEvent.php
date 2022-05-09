@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace ClosePartnerSdk\Endpoint;
 
-use ClosePartnerSdk\CloseSdk;
 use ClosePartnerSdk\Dto\EventId;
+use ClosePartnerSdk\Dto\Mapper\ImportTicketsMapper;
 use ClosePartnerSdk\Dto\TicketGroup;
 
 class ImportTicketGroupForEvent extends CloseEndpoint
@@ -13,6 +13,10 @@ class ImportTicketGroupForEvent extends CloseEndpoint
     {
         $this->sdk
             ->getHttpClient()
-            ->post( $this->buildUriWithLatestVersion('/tickets/import'));
+            ->post(
+                $this->buildUriWithLatestVersion('/tickets/import'),
+                [],
+                ImportTicketsMapper::forTicketGroupAndEvent($ticketGroup, $eventId),
+            );
     }
 }
