@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace ClosePartnerSdk\Tests;
 
-use ClosePartnerSdk\CloseSdk;
 use ClosePartnerSdk\Options;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
@@ -31,7 +30,7 @@ class OptionsTest extends TestCase
     }
 
     /** @test **/
-    public function provide_default_values_for_cient_builder_and_uri_and_version()
+    public function provide_default_values_for_cient_builder_and_uri()
     {
         $options = new Options([
             'client_id' => '1234',
@@ -40,7 +39,6 @@ class OptionsTest extends TestCase
 
         self::assertNotEmpty($options->getClientBuilder());
         self::assertNotEmpty($options->getUriFactory());
-        self::assertEquals(CloseSdk::VERSION, $options->getVersion());
     }
 
     public function return_credentials_provided_by_the_constructor()

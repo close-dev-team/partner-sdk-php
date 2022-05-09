@@ -45,11 +45,6 @@ final class Options
         return $this->options['uri_factory'];
     }
 
-    public function getVersion(): string
-    {
-        return $this->options['version'];
-    }
-
     public function getAuthCredentials(): AuthCredentials
     {
         return new AuthCredentials($this->options['client_id'], $this->options['client_secret']);

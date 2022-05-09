@@ -16,9 +16,6 @@ class CloseSdk
 {
     private HttpClientFactory $clientBuilder;
 
-    public const VERSION = 'v1';
-    public const BASE_URI = 'https://partner.closeapi.nl';
-
     public function __construct(Options $options = null) {
         $options = $options ?? new Options;
         $this->buildClientBuilder($options);
@@ -45,7 +42,7 @@ class CloseSdk
     private function buildUri(Options $options): BaseUriPlugin
     {
         return new BaseUriPlugin(
-            $options->getUriFactory()->createUri(self::BASE_URI)
+            $options->getUriFactory()->createUri(Config::BASE_URI)
         );
     }
 
