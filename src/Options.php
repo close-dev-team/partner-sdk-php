@@ -27,11 +27,9 @@ final class Options
             [
                 'client_builder' => new ClientBuilder,
                 'uri_factory' => Psr17FactoryDiscovery::findUriFactory(),
-                'version' => CloseSdk::LATEST_VERSION,
             ]
         );
 
-        $resolver->setAllowedTypes('version', 'string');
         $resolver->setAllowedTypes('client_builder', ClientBuilder::class);
         $resolver->setAllowedTypes('uri_factory', UriFactoryInterface::class);
     }

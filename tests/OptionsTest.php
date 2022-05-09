@@ -40,7 +40,7 @@ class OptionsTest extends TestCase
 
         self::assertNotEmpty($options->getClientBuilder());
         self::assertNotEmpty($options->getUriFactory());
-        self::assertEquals(CloseSdk::LATEST_VERSION, $options->getVersion());
+        self::assertEquals(CloseSdk::VERSION, $options->getVersion());
     }
 
     public function return_credentials_provided_by_the_constructor()

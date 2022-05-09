@@ -15,7 +15,7 @@ class CloseSdk
 {
     private ClientBuilder $clientBuilder;
 
-    public const LATEST_VERSION = 'v1';
+    public const VERSION = 'v1';
     public const BASE_URI = 'https://partner.closeapi.nl';
 
     public function __construct(Options $options = null) {
