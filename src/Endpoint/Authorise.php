@@ -6,7 +6,6 @@ namespace ClosePartnerSdk\Endpoint;
 
 use ClosePartnerSdk\Dto\AuthCredentials;
 use ClosePartnerSdk\Dto\Token;
-use ClosePartnerSdk\CloseSdk;
 use ClosePartnerSdk\Exception\Auth\InvalidCredentialsException;
 use ClosePartnerSdk\Exception\ApiErrorException;
 use ClosePartnerSdk\Exception\ConnectionException;
@@ -16,7 +15,6 @@ use ClosePartnerSdk\HttpClient\Message\RequestBodyMediator;
 use ClosePartnerSdk\HttpClient\Message\ResponseMediator;
 use ClosePartnerSdk\Validator\AuthoriseValidator;
 use Http\Client\Common\Exception\ClientErrorException;
-use PHPUnit\Util\Xml\Validator;
 
 final class Authorise extends CloseEndpoint
 {
