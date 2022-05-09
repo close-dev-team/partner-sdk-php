@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace ClosePartnerSdk;
 
 use ClosePartnerSdk\Endpoint\Authorise;
+use ClosePartnerSdk\HttpClient\HttpClientFactory;
 use Http\Client\Common\HttpMethodsClientInterface;
 use Http\Client\Common\Plugin\BaseUriPlugin;
 use Http\Client\Common\Plugin\ErrorPlugin;
@@ -13,7 +14,7 @@ use Psr\Http\Message\StreamFactoryInterface;
 
 class CloseSdk
 {
-    private ClientBuilder $clientBuilder;
+    private HttpClientFactory $clientBuilder;
 
     public const VERSION = 'v1';
     public const BASE_URI = 'https://partner.closeapi.nl';
