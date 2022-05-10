@@ -9,18 +9,24 @@ class Product
     private string $description;
     private string $id;
 
-    public function __construct(
-        string $title,
-        string $description = null,
-        string $id = null
-    ) {
+    public function __construct(string $title) {
         $this->title = $title;
-        if ($description !== null) {
-            $this->description = $description;
-        }
-        if ($id !== null) {
-            $this->id = $id;
-        }
+    }
+
+    public function withId(string $productId): self
+    {
+        $self = clone $this;
+        $self->id = $productId;
+
+        return $self;
+    }
+
+    public function withDescription(string $description): self
+    {
+        $self = clone $this;
+        $self->description = $description;
+
+        return $self;
     }
 
     public function getTitle(): string
@@ -30,11 +36,11 @@ class Product
 
     public function getDescription(): ?string
     {
-        return $this->description;
+        return $this->description ?? null;
     }
 
     public function getId(): ?string
     {
-        return $this->id;
+        return $this->id ?? null;
     }
 }
