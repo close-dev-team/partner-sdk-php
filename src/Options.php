@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace ClosePartnerSdk;
 
 use ClosePartnerSdk\Dto\AuthCredentials;
+use ClosePartnerSdk\HttpClient\HttpClientBuilder;
 use Http\Discovery\Psr17FactoryDiscovery;
 use Psr\Http\Message\UriFactoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -25,18 +26,16 @@ final class Options
         $resolver->setRequired(['client_id', 'client_secret']);
         $resolver->setDefaults(
             [
-                'client_builder' => new ClientBuilder,
+                'client_builder' => new HttpClientBuilder,
                 'uri_factory' => Psr17FactoryDiscovery::findUriFactory(),
-                'version' => CloseSdk::LATEST_VERSION,
             ]
         );
 
-        $resolver->setAllowedTypes('version', 'string');
-        $resolver->setAllowedTypes('client_builder', ClientBuilder::class);
+        $resolver->setAllowedTypes('client_builder', HttpClientBuilder::class);
         $resolver->setAllowedTypes('uri_factory', UriFactoryInterface::class);
     }
 
-    public function getClientBuilder(): ClientBuilder
+    public function getClientBuilder(): HttpClientBuilder
     {
         return $this->options['client_builder'];
     }
@@ -44,11 +43,6 @@ final class Options
     public function getUriFactory(): UriFactoryInterface
     {
         return $this->options['uri_factory'];
-    }
-
-    public function getVersion(): string
-    {
-        return $this->options['version'];
     }
 
     public function getAuthCredentials(): AuthCredentials

@@ -6,6 +6,7 @@ namespace ClosePartnerSdk\Endpoint;
 use ClosePartnerSdk\Dto\EventId;
 use ClosePartnerSdk\Dto\Mapper\ImportTicketsMapper;
 use ClosePartnerSdk\Dto\TicketGroup;
+use ClosePartnerSdk\HttpClient\Message\RequestBodyMediator;
 
 class ImportTicketGroupForEvent extends CloseEndpoint
 {
@@ -16,7 +17,10 @@ class ImportTicketGroupForEvent extends CloseEndpoint
             ->post(
                 $this->buildUriWithLatestVersion('/tickets/import'),
                 [],
-                ImportTicketsMapper::forTicketGroupAndEvent($ticketGroup, $eventId),
+                RequestBodyMediator::convertStreamFromArray(
+                    $this->sdk,
+                    ImportTicketsMapper::forTicketGroupAndEvent($ticketGroup, $eventId)
+                )
             );
     }
 }

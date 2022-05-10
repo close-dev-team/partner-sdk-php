@@ -8,7 +8,6 @@ use ClosePartnerSdk\Dto\TicketGroup;
 use ClosePartnerSdk\Exception\Auth\InvalidCredentialsException;
 use Http\Client\Common\Exception\ClientErrorException;
 use Http\Message\RequestMatcher\RequestMatcher;
-use Laminas\Diactoros\Request;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -39,7 +38,7 @@ class ImportTicketGroupForEventTest extends EndpointTestCase
 
         $this->givenSdk()->importTickets()->withTicketGroupAndEventId(
             new EventId('1234'),
-            new TicketGroup
+            new TicketGroup('+31666111000')
         );
     }
 
@@ -57,7 +56,7 @@ class ImportTicketGroupForEventTest extends EndpointTestCase
                         ->willReturn(401);
                     throw new ClientErrorException(
                         "The credentials are wrong.",
-                        new Request(),
+                        $this->createMock(RequestInterface::class),
                         $response
                     );
                 }
@@ -67,7 +66,7 @@ class ImportTicketGroupForEventTest extends EndpointTestCase
 
         $this->givenSdk()->importTickets()->withTicketGroupAndEventId(
             new EventId('1234'),
-            new TicketGroup
+            new TicketGroup('+31666111000')
         );
     }
 
@@ -91,11 +90,11 @@ class ImportTicketGroupForEventTest extends EndpointTestCase
         $endpoint = $this->givenSdk()->importTickets();
         $endpoint->withTicketGroupAndEventId(
             new EventId('1234'),
-            new TicketGroup
+            new TicketGroup('+31666111000')
         );
         $endpoint->withTicketGroupAndEventId(
             new EventId('1234'),
-            new TicketGroup
+            new TicketGroup('+31666111000')
         );
 
         $requests = $this->mockClient->getRequests();

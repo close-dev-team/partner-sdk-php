@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace ClosePartnerSdk\Tests\Endpoint;
 
-use ClosePartnerSdk\ClientBuilder;
+use ClosePartnerSdk\HttpClient\HttpClientBuilder;
 use ClosePartnerSdk\CloseSdk;
 use ClosePartnerSdk\Options;
 use Http\Mock\Client;
@@ -43,7 +43,7 @@ abstract class EndpointTestCase extends TestCase
     protected function givenSdk(): CloseSdk
     {
         return new CloseSdk(new Options([
-            'client_builder' => new ClientBuilder($this->mockClient),
+            'client_builder' => new HttpClientBuilder($this->mockClient),
             'client_id' => 'client_test',
             'client_secret' => 'client_test_secret',
         ]));

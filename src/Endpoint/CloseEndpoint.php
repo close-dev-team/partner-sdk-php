@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace ClosePartnerSdk\Endpoint;
 
 use ClosePartnerSdk\CloseSdk;
+use ClosePartnerSdk\Config;
 
 abstract class CloseEndpoint
 {
@@ -16,6 +17,6 @@ abstract class CloseEndpoint
 
     protected function buildUriWithLatestVersion(string $endpoint): string
     {
-        return sprintf('/api/%s/%s',CloseSdk::LATEST_VERSION, $endpoint);
+        return sprintf('/api/%s/%s',Config::VERSION, $endpoint);
     }
 }

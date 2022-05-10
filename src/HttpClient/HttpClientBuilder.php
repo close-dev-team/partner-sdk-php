@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace ClosePartnerSdk;
+namespace ClosePartnerSdk\HttpClient;
 
 use Http\Client\Common\HttpMethodsClient;
 use Http\Client\Common\Plugin;
@@ -12,7 +12,7 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 
-final class ClientBuilder
+final class HttpClientBuilder
 {
     private ClientInterface $httpClient;
     private RequestFactoryInterface $requestFactoryInterface;

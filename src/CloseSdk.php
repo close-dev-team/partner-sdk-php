@@ -8,6 +8,7 @@ use ClosePartnerSdk\Dto\Token;
 use ClosePartnerSdk\Endpoint\Authorise;
 use ClosePartnerSdk\Endpoint\ImportTicketGroupForEvent;
 use ClosePartnerSdk\Exception\Auth\InvalidCredentialsException;
+use ClosePartnerSdk\HttpClient\HttpClientBuilder;
 use Http\Client\Common\HttpMethodsClientInterface;
 use Http\Client\Common\Plugin\BaseUriPlugin;
 use Http\Client\Common\Plugin\ErrorPlugin;
@@ -17,12 +18,9 @@ use Psr\Http\Message\StreamFactoryInterface;
 
 class CloseSdk
 {
-    private ClientBuilder $clientBuilder;
+    private HttpClientBuilder $clientBuilder;
     private AuthCredentials $authCredentials;
     private ?Token $token = null;
-
-    public const LATEST_VERSION = 'v1';
-    public const BASE_URI = 'https://partner.closeapi.nl';
 
     /**
      * @throws Exception\ApiErrorException
@@ -55,7 +53,7 @@ class CloseSdk
     private function buildUri(Options $options): BaseUriPlugin
     {
         return new BaseUriPlugin(
-            $options->getUriFactory()->createUri(self::BASE_URI)
+            $options->getUriFactory()->createUri(Config::BASE_URI)
         );
     }
 

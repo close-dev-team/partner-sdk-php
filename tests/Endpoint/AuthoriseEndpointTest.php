@@ -9,8 +9,8 @@ use ClosePartnerSdk\Exception\ConnectionException;
 use ClosePartnerSdk\Exception\InvalidResponseJsonFormat;
 use ClosePartnerSdk\Exception\MissingResponsePropertiesException;
 use Http\Client\Common\Exception\ClientErrorException;
-use Laminas\Diactoros\Request;
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class AuthoriseEndpointTest extends EndpointTestCase
@@ -80,7 +80,7 @@ class AuthoriseEndpointTest extends EndpointTestCase
         $this->mockClient->addException(
             new ClientErrorException(
                 'Forbidden',
-                new Request(),
+                $this->createMock(RequestInterface::class),
                 $response
             )
         );
