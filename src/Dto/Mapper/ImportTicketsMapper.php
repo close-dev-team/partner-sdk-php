@@ -12,12 +12,12 @@ use ClosePartnerSdk\Dto\Ticket;
 use ClosePartnerSdk\Dto\TicketGroup;
 use DateTimeInterface;
 
-class ImportTicketsMapper
+final class ImportTicketsMapper
 {
     public static function forTicketGroupAndEvent(TicketGroup $ticketGroup, EventId $eventId): array
     {
         return [
-            'clev' => $eventId,
+            'clev' => (string)$eventId,
             'ticket_group' => self::forTicketGroup($ticketGroup),
         ];
     }

@@ -8,7 +8,7 @@ use ClosePartnerSdk\Dto\Mapper\ImportTicketsMapper;
 use ClosePartnerSdk\Dto\TicketGroup;
 use ClosePartnerSdk\HttpClient\Message\RequestBodyMediator;
 
-class ImportTicketGroupForEvent extends CloseEndpoint
+final class ImportTicketGroupForEvent extends CloseEndpoint
 {
     public function withTicketGroupAndEventId(EventId $eventId, TicketGroup $ticketGroup): void
     {
