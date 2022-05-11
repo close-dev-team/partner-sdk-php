@@ -10,6 +10,7 @@ use ClosePartnerSdk\Dto\Product;
 use ClosePartnerSdk\Dto\Ticket;
 use ClosePartnerSdk\Dto\TicketGroup;
 use ClosePartnerSdk\Exception\Auth\InvalidCredentialsException;
+use ClosePartnerSdk\Tests\Factory\Dto\TicketGroupFactory;
 use DateTime;
 use Http\Client\Common\Exception\ClientErrorException;
 use Http\Message\RequestMatcher\RequestMatcher;
@@ -119,19 +120,7 @@ class ImportTicketGroupForEventTest extends EndpointTestCase
                     "access_token" => $token,
                 ])
             );
-        $phoneNumber = '+31666111333';
-        $scanCode = '1234';
-        $productTitle = 'Simple product';
-        $startDateTime = '2022-01-03T10:00:00+01:00';
-        $ticket = new Ticket(
-            $scanCode,
-            new Product($productTitle),
-            new EventTime(new DateTime($startDateTime))
-        );
-        $ticketGroup = new TicketGroup(
-            $phoneNumber,
-            $ticket,
-        );
+        $ticketGroup = TicketGroupFactory::createWithOneTicket();
         $eventId = new EventId('1234');
 
         $this->mockClient

@@ -5,10 +5,10 @@ namespace ClosePartnerSdk\Dto;
 
 class SeatInfo
 {
-    public string $row;
-    public string $chair;
-    public string $section;
-    public string $entrance;
+    private string $row;
+    private string $chair;
+    private string $section;
+    private string $entrance;
 
     public function withRow(string $row): self
     {
