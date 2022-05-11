@@ -25,4 +25,9 @@ class TicketGroup
     {
         return $this->tickets;
     }
+
+    public function addTicket(Ticket $ticket): void
+    {
+        $this->tickets[] = $ticket;
+    }
 }

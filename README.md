@@ -36,25 +36,89 @@ Jump To:
 require 'vendor/autoload.php';
 
 use ClosePartnerSdk\CloseSdk;
+use ClosePartnerSdk\Options;
+use ClosePartnerSdk\Exception\CloseSdkException;
 
-// Instantiate the Close client using the client credentials given by Close
-  return new CloseSdk(
+try {
+  // Instantiate the Close client using the client credentials given by Close
+  $sdk = new CloseSdk(
        new Options([
             'client_id' => 'client_test',
             'client_secret' => 'client_test_secret',
        ])
   );
+} catch (CloseSdkException $closeSdkException) {
+    // You can receive an error if the token was not generated because of invalid credentials
+}
+
 ```
 
 ### Import tickets using the Close App
-
+#### Import ticket with required information
 ```php
 <?php
+use ClosePartnerSdk\CloseSdk;
+use ClosePartnerSdk\Dto\Ticket;
+use ClosePartnerSdk\Dto\EventId;
+use ClosePartnerSdk\Dto\TicketGroup;
+use ClosePartnerSdk\Dto\Product;
+use ClosePartnerSdk\Dto\EventTime;
+use ClosePartnerSdk\Exception\CloseSdkException;
+
 try {
-    $closeClient->importTickets([
-        'info' => 'info',
-    ]);
-} catch (CloseClient\Exception\CloseException $e) {
+  // Define DTO structure
+  $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
+  $ticketGroup = new TicketGroup('+31666111000');
+  $ticket = new Ticket(
+      $scanCode,
+      new Product('Standard ticket'),
+      new EventTime(new DateTime('2022-10-10 20:00:00'))
+  );
+  $ticketGroup->addTicket($ticket);
+  // Call endpoint
+  $sdk
+    ->importTickets()
+    ->withTicketGroupAndEventId($eventId, $ticketGroup);
+} catch (CloseSdkException $e) {
+    echo "The ticket has not been imported.\n";
+    // We recommend to retry after a couple of seconds.
+}
+```
+#### Import ticket with seat information
+```php
+<?php
+use ClosePartnerSdk\CloseSdk;
+use ClosePartnerSdk\Dto\EventId;
+use ClosePartnerSdk\Dto\TicketGroup;
+use ClosePartnerSdk\Dto\Product;
+use ClosePartnerSdk\Dto\EventTime;
+use ClosePartnerSdk\Exception\CloseSdkException;
+use ClosePartnerSdk\Dto\Ticket;
+use ClosePartnerSdk\Dto\SeatInfo;
+
+try {
+  // Define DTO structure
+  $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
+  $ticketGroup = new TicketGroup('+31666111000');
+  $ticket = new Ticket(
+      $scanCode,
+      new Product('Standard ticket'),
+      new EventTime(new DateTime('2022-10-10 20:00:00'))
+  );
+  $seatInfo = new SeatInfo;
+  $ticket->withSeatInfo(
+     $seatInfo
+       ->withChair('12')
+       ->withEntrance('E')
+       ->withRow('3')
+       ->withSection('A')
+  )
+  $ticketGroup->addTicket($ticket);
+  // Call endpoint
+  $sdk
+    ->importTickets()
+    ->withTicketGroupAndEventId($eventId, $ticketGroup);
+} catch (CloseSdkException $e) {
     echo "The ticket has not been imported.\n";
     // We recommend to retry after a couple of seconds.
 }

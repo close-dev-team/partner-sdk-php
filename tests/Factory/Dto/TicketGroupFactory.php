@@ -14,52 +14,52 @@ final class TicketGroupFactory
 
     public static function createWithOneTicket(): TicketGroup
     {
-        return new TicketGroup(
-            '+31666111333',
-            TicketFactory::withMinimalInfo()
-        );
+        $ticketGroup = self::createWithoutTickets();
+        $ticketGroup->addTicket(TicketFactory::withMinimalInfo());
+
+        return $ticketGroup;
     }
 
     public static function createWithTimeSlot(): TicketGroup
     {
-        return new TicketGroup(
-            '+31666111333',
-            TicketFactory::withTimeSlot()
-        );
+        $ticketGroup = self::createWithoutTickets();
+        $ticketGroup->addTicket(TicketFactory::withTimeSlot());
+
+        return $ticketGroup;
     }
 
     public static function createWithProductDetails(): TicketGroup
     {
-        return new TicketGroup(
-            '+31666111333',
-            TicketFactory::withProductDetails()
-        );
+        $ticketGroup = self::createWithoutTickets();
+        $ticketGroup->addTicket(TicketFactory::withProductDetails());
+
+        return $ticketGroup;
     }
 
     public static function createWithSeatInfo(): TicketGroup
     {
-        return new TicketGroup(
-            '+31666111333',
-            TicketFactory::withSeatInfo()
-        );
+        $ticketGroup = self::createWithoutTickets();
+        $ticketGroup->addTicket(TicketFactory::withSeatInfo());
+
+        return $ticketGroup;
     }
 
     public static function createWithBubbleInfo(): TicketGroup
     {
-        return new TicketGroup(
-            '+31666111333',
-            TicketFactory::withBubbleInfo()
-        );
+        $ticketGroup = self::createWithoutTickets();
+        $ticketGroup->addTicket(TicketFactory::withBubbleInfo());
+
+        return $ticketGroup;
     }
 
     public static function createWithMultipleTickets(): TicketGroup
     {
-        return new TicketGroup(
-            '+31666111333',
-            TicketFactory::withMinimalInfo(),
-            TicketFactory::withMinimalInfo(),
-            TicketFactory::withMinimalInfo(),
-            TicketFactory::withMinimalInfo()
-        );
+        $ticketGroup = self::createWithoutTickets();
+        $ticketGroup->addTicket(TicketFactory::withMinimalInfo());
+        $ticketGroup->addTicket(TicketFactory::withMinimalInfo());
+        $ticketGroup->addTicket(TicketFactory::withMinimalInfo());
+        $ticketGroup->addTicket(TicketFactory::withMinimalInfo());
+
+        return $ticketGroup;
     }
 }
