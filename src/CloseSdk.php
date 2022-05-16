@@ -6,6 +6,7 @@ namespace ClosePartnerSdk;
 use ClosePartnerSdk\Dto\AuthCredentials;
 use ClosePartnerSdk\Dto\Token;
 use ClosePartnerSdk\Endpoint\Authorise;
+use ClosePartnerSdk\Endpoint\CancelTicketForEvent;
 use ClosePartnerSdk\Endpoint\ImportTicketGroupForEvent;
 use ClosePartnerSdk\Exception\Auth\InvalidCredentialsException;
 use ClosePartnerSdk\HttpClient\HttpClientBuilder;
@@ -72,6 +73,18 @@ class CloseSdk
             $this->authoriseRequest();
         }
         return new ImportTicketGroupForEvent($this);
+    }
+
+    /**
+     * @throws InvalidCredentialsException
+     * @throws Exception\ApiErrorException
+     */
+    public function cancelTicket(): CancelTicketForEvent
+    {
+        if ($this->token === null) {
+            $this->authoriseRequest();
+        }
+        return new CancelTicketForEvent($this);
     }
 
     public function getHttpClient(): HttpMethodsClientInterface
