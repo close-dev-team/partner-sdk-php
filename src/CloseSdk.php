@@ -7,6 +7,7 @@ use ClosePartnerSdk\Dto\AuthCredentials;
 use ClosePartnerSdk\Dto\Token;
 use ClosePartnerSdk\Endpoint\Authorise;
 use ClosePartnerSdk\Endpoint\CancelTicketForEvent;
+use ClosePartnerSdk\Endpoint\FlowPropertiesForEvent;
 use ClosePartnerSdk\Endpoint\ImportTicketGroupForEvent;
 use ClosePartnerSdk\Endpoint\SendMessage;
 use ClosePartnerSdk\Exception\Auth\InvalidCredentialsException;
@@ -98,6 +99,18 @@ class CloseSdk
             $this->authoriseRequest();
         }
         return new SendMessage($this);
+    }
+
+    /**
+     * @throws InvalidCredentialsException
+     * @throws Exception\ApiErrorException
+     */
+    public function flowProperties(): FlowPropertiesForEvent
+    {
+        if ($this->token === null) {
+            $this->authoriseRequest();
+        }
+        return new FlowPropertiesForEvent($this);
     }
 
     public function getHttpClient(): HttpMethodsClientInterface
