@@ -57,7 +57,6 @@ try {
 #### Import ticket with required information
 ```php
 <?php
-use ClosePartnerSdk\CloseSdk;
 use ClosePartnerSdk\Dto\Ticket;
 use ClosePartnerSdk\Dto\EventId;
 use ClosePartnerSdk\Dto\TicketGroup;
@@ -87,7 +86,6 @@ try {
 #### Import ticket with seat information
 ```php
 <?php
-use ClosePartnerSdk\CloseSdk;
 use ClosePartnerSdk\Dto\EventId;
 use ClosePartnerSdk\Dto\TicketGroup;
 use ClosePartnerSdk\Dto\Product;
@@ -120,6 +118,65 @@ try {
     ->withTicketGroupAndEventId($eventId, $ticketGroup);
 } catch (CloseSdkException $e) {
     echo "The ticket has not been imported.\n";
+    // We recommend to retry after a couple of seconds.
+}
+```
+### Cancelling tickets
+
+#### Cancel a ticket in the Close App
+
+```php
+<?php
+use ClosePartnerSdk\Dto\EventId;
+use ClosePartnerSdk\Dto\TicketGroup;
+use ClosePartnerSdk\Dto\Product;
+use ClosePartnerSdk\Dto\EventTime;
+use ClosePartnerSdk\Exception\CloseSdkException;
+use ClosePartnerSdk\Dto\Ticket;
+
+try {
+  // Define DTO structure
+  $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
+  $ticketGroup = new TicketGroup('+31666111000');
+  $ticket = new Ticket(
+      $scanCode,
+      new Product('Standard ticket'),
+      new EventTime(new DateTime('2022-10-10 20:00:00'))
+  );
+ 
+  $ticketGroup->addTicket($ticket);
+  // Call cancel endpoint
+  $sdk
+    ->cancelTicket()
+    ->withTicketAndEventId($eventId, $ticketGroup, $ticket);
+} catch (CloseSdkException $e) {
+    echo "The ticket has not been cancelled.\n";
+    // We recommend to retry after a couple of seconds.
+}
+```
+
+### Sending messages
+
+#### Send a message to all users in a chat
+
+```php
+<?php
+use ClosePartnerSdk\CloseSdk;
+use ClosePartnerSdk\Dto\EventId;
+use ClosePartnerSdk\Dto\ChatId;
+use ClosePartnerSdk\Exception\CloseSdkException;
+
+try {
+  // Define DTO structure
+  $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
+  $chatId = new ChatId('CLECxxxxx');
+  $message = 'This is the message to send';
+  
+  $sdk
+    ->sendMessage()
+    ->toAllUsersForChat($eventId, $chatId, $message);
+} catch (CloseSdkException $e) {
+    echo "The ticket has not been cancelled.\n";
     // We recommend to retry after a couple of seconds.
 }
 ```
