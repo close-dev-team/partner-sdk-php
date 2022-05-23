@@ -37,16 +37,34 @@ For now it is only possible to start using the Close PHP SDK by getting in touch
 ## *Examples*
 
 
-### Authorise
-To be able to use the Close PHP SDK you will need to authorise with your credentials first. 
+### Setting up the Close PHP SDK client.
+Let's start with instantiating the Close client using the client credentials given to you by Close. 
 
 ```php
-use Authorise
-use Authorise.withCredentials
+<?php
+// Require the Composer autoloader.
+require 'vendor/autoload.php';
+
+use ClosePartnerSdk\CloseSdk;
+use ClosePartnerSdk\Options;
+use ClosePartnerSdk\Exception\CloseSdkException;
+
+try {
+  // Instantiate the Close client using the client credentials given by Close
+  $sdk = new CloseSdk(
+       new Options([
+            'client_id' => 'client_test',
+            'client_secret' => 'client_test_secret',
+       ])
+  );
+} catch (CloseSdkException $closeSdkException) {
+    // You can receive an error if the token was not generated because of invalid credentials
+}
+
 ```
 
 ### Send text Message
-One of the core features of the Close PHP SDK is sending ultra personalised text messages to Close users. There are 4 endpoints available for 4 different use-cases. 
+One of the core features of the Close PHP SDK is sending ultra personalised text messages to Close users. There are 4 endpoints available in the SendMessage class, with each a different use-case. 
 
 | Endpoint | Use-case |
 | -------- | ----------- |
@@ -55,10 +73,98 @@ One of the core features of the Close PHP SDK is sending ultra personalised text
 |**toUserInChat(eventId, chatId, userId, text)**|Use when you need to reach one specific user, in a specific chat for an event|
 |**toUserInAllChats(eventId, userId)**|Use when you need to reach one specific user in all chats for one event|
 
-#### To all users in all chats for an event
+*examples:*
+#### toAllChatsForShow(eventId,text)
 ```php
-Put the code in here
+<?php
+use ClosePartnerSdk\CloseSdk;
+use ClosePartnerSdk\Dto\EventId;
+use ClosePartnerSdk\Exception\CloseSdkException;
+
+try {
+  // Define DTO structure
+  $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
+  $message = 'This is the message to send';
+  
+  $sdk
+    ->sendMessage()
+    ->toAllChatsForShow($eventId, $message);
+} catch (CloseSdkException $e) {
+    echo "The message has not been send.";
+    // We recommend to retry after a couple of seconds.
+}
 ```
+#### toAllUsersForChat(eventId,chatId,text)
+```php
+<?php
+use ClosePartnerSdk\CloseSdk;
+use ClosePartnerSdk\Dto\EventId;
+use ClosePartnerSdk\Dto\ChatId;
+use ClosePartnerSdk\Exception\CloseSdkException;
+
+try {
+  // Define DTO structure
+  $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
+  $chatId = new ChatId('CLECxxxxx');
+  $message = 'This is the message to send';
+  
+  $sdk
+    ->sendMessage()
+    ->toAllUsersForChat($eventId, $chatId, $message);
+} catch (CloseSdkException $e) {
+    echo "The message has not been send.";
+    // We recommend to retry after a couple of seconds.
+}
+```
+#### toUserInChat(eventId, chatId, userId, text)
+```php
+<?php
+use ClosePartnerSdk\CloseSdk;
+use ClosePartnerSdk\Dto\EventId;
+use ClosePartnerSdk\Dto\ChatId;
+use ClosePartnerSdk\Dto\UserId;
+use ClosePartnerSdk\Exception\CloseSdkException;
+
+try {
+  // Define DTO structure
+  $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
+  $chatId = new ChatId('CLECxxxxx');
+  $userId = new UserId('abcxxx');
+  $message = 'This is the message to send';
+  
+  $sdk
+    ->sendMessage()
+    ->toUserInChat($eventId, $chatId,$userId, $message);
+} catch (CloseSdkException $e) {
+    echo "The message has not been send.";
+    // We recommend to retry after a couple of seconds.
+}
+```
+#### toUserInAllChats(eventId, userId)
+```php
+<?php
+use ClosePartnerSdk\CloseSdk;
+use ClosePartnerSdk\Dto\EventId;
+use ClosePartnerSdk\Dto\UserId;
+use ClosePartnerSdk\Exception\CloseSdkException;
+
+try {
+  // Define DTO structure
+  $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
+  $userId = new UserId('abcxxx');
+  $message = 'This is the message to send';
+  
+  $sdk
+    ->sendMessage()
+    ->toUserInAllChats($eventId, $userId, $message);
+} catch (CloseSdkException $e) {
+    echo "The message has not been send.";
+    // We recommend to retry after a couple of seconds.
+}
+```
+
+
+
 
 
 
