@@ -3,12 +3,9 @@
 
 In this Close PHP SDK user guide we will explain and demonstrate the use-cases you will encounter when partnering with the Close app. 
 
----
 
-Table of Contents:  
-
-- [Close PHP SDK user guide](#close-php-sdk-user-guide)
-    - [Getting Started](#getting-started)
+**Table of Contents:**    
+  - [Getting Started](#getting-started)
   - [*Examples*](#examples)
     - [Authorise](#authorise)
     - [Send text Message](#send-text-message)
@@ -22,6 +19,8 @@ Table of Contents:
 ---
 
 ### Getting Started
+
+For now it is only possible to start using the Close PHP SDK by getting in touch with us first. Get in touch with your contact person at Close or [contact us][contact-us] directly. 
 
 1. **Get your credentials** – Before you begin, you need to already have an account with Close. If that is not the case, feel free to [contact us][contact-us].
 2. **Minimum requirements** – In order to use the Close SDK, your system will need to meet the [minimum requirements][docs-requirements], which includes having **PHP >= 7.4**.
@@ -42,7 +41,8 @@ Table of Contents:
 To be able to use the Close PHP SDK you will need to authorise with your credentials first. 
 
 ```php
-Put the code in here
+use Authorise
+use Authorise.withCredentials
 ```
 
 ### Send text Message
