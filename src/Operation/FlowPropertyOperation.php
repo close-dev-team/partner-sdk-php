@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace ClosePartnerSdk\Endpoint;
+namespace ClosePartnerSdk\Operation;
 
 use ClosePartnerSdk\Dto\ChatId;
 use ClosePartnerSdk\Dto\EventId;
@@ -10,7 +10,7 @@ use ClosePartnerSdk\Dto\Mapper\FlowPropertiesMapper;
 use ClosePartnerSdk\Dto\UserId;
 use ClosePartnerSdk\HttpClient\Message\RequestBodyMediator;
 
-final class FlowPropertiesForEvent extends CloseEndpoint
+final class FlowPropertyOperation extends CloseEndpoint
 {
     /**
      * @param EventId $eventId
@@ -20,7 +20,7 @@ final class FlowPropertiesForEvent extends CloseEndpoint
      * @return void
      * @throws \Http\Client\Exception
      */
-    public function forEventChatAndUser(EventId $eventId, ChatId $chatId, UserId $userId, array $itemFlowProperties): void
+    public function setForOneUserInOneChat(EventId $eventId, ChatId $chatId, UserId $userId, array $itemFlowProperties): void
     {
         $this->sdk
             ->getHttpClient()
@@ -40,7 +40,7 @@ final class FlowPropertiesForEvent extends CloseEndpoint
      * @return void
      * @throws \Http\Client\Exception
      */
-    public function forEvent(EventId $eventId, array $itemFlowProperties): void
+    public function setForAllUsersInAllChats(EventId $eventId, array $itemFlowProperties): void
     {
         $this->sdk
             ->getHttpClient()
@@ -61,7 +61,7 @@ final class FlowPropertiesForEvent extends CloseEndpoint
      * @return void
      * @throws \Http\Client\Exception
      */
-    public function forEventAndUser(EventId $eventId, UserId $userId, array $itemFlowProperties): void
+    public function setForUserInAllChats(EventId $eventId, UserId $userId, array $itemFlowProperties): void
     {
         $this->sdk
             ->getHttpClient()

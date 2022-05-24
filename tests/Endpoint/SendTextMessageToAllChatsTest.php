@@ -37,7 +37,7 @@ class SendTextMessageToAllChatsTest extends EndpointTestCase
             });
 
 
-        $this->givenSdk()->sendMessage()->toAllChatsForShow(
+        $this->givenSdk()->textMessages()->sendToAllChatsForEvent(
             $eventId,
             'text',
         );
@@ -65,7 +65,7 @@ class SendTextMessageToAllChatsTest extends EndpointTestCase
 
         $this->expectException(InvalidCredentialsException::class);
 
-        $this->givenSdk()->sendMessage()->toAllChatsForShow(
+        $this->givenSdk()->textMessages()->sendToAllChatsForEvent(
             new EventId('1234'),
             'text'
         );
@@ -98,7 +98,7 @@ class SendTextMessageToAllChatsTest extends EndpointTestCase
                 return $this->mockResponse([]);
             });
 
-        $this->givenSdk()->sendMessage()->toAllChatsForShow(
+        $this->givenSdk()->textMessages()->sendToAllChatsForEvent(
             $eventId,
             'text'
         );

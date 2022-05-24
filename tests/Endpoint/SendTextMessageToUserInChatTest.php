@@ -41,7 +41,7 @@ class SendTextMessageToUserInChatTest extends EndpointTestCase
                 return $this->mockResponse([]);
             });
 
-        $this->givenSdk()->sendMessage()->toUserInChat(
+        $this->givenSdk()->textMessages()->sendToUserInChat(
             $eventId,
             $chatId,
             $userId,

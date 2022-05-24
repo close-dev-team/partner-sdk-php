@@ -66,6 +66,9 @@ use ClosePartnerSdk\Exception\CloseSdkException;
 
 try {
   // Define DTO structure
+  $importTicketDto = new TicketDto('');
+  $sdk->tickets->import($eventId, $importTicketGroupDto);
+  
   $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
   $ticketGroup = new TicketGroup('+31666111000');
   $ticket = new Ticket(
@@ -76,8 +79,8 @@ try {
   $ticketGroup->addTicket($ticket);
   // Call endpoint
   $sdk
-    ->importTickets()
-    ->withTicketGroupAndEventId($eventId, $ticketGroup);
+    ->tickets()
+    ->importTicket($eventId, $ticketGroup);
 } catch (CloseSdkException $e) {
     echo "The ticket has not been imported.\n";
     // We recommend to retry after a couple of seconds.
@@ -114,8 +117,8 @@ try {
   $ticketGroup->addTicket($ticket);
   // Call endpoint
   $sdk
-    ->importTickets()
-    ->withTicketGroupAndEventId($eventId, $ticketGroup);
+    ->tickets()
+    ->importTicket($eventId, $ticketGroup);
 } catch (CloseSdkException $e) {
     echo "The ticket has not been imported.\n";
     // We recommend to retry after a couple of seconds.
@@ -147,8 +150,8 @@ try {
   $ticketGroup->addTicket($ticket);
   // Call cancel endpoint
   $sdk
-    ->cancelTicket()
-    ->withTicketAndEventId($eventId, $ticketGroup, $ticket);
+    ->tickets()
+    ->cancelTicket($eventId, $ticketGroup, $ticket);
 } catch (CloseSdkException $e) {
     echo "The ticket has not been cancelled.\n";
     // We recommend to retry after a couple of seconds.
@@ -173,8 +176,8 @@ try {
   $message = 'This is the message to send';
   
   $sdk
-    ->sendMessage()
-    ->toAllUsersForChat($eventId, $chatId, $message);
+    ->textMessages()
+    ->sendToAllUsersForChat($eventId, $chatId, $message);
 } catch (CloseSdkException $e) {
     echo "The ticket has not been cancelled.\n";
     // We recommend to retry after a couple of seconds.

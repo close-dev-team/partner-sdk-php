@@ -4,14 +4,9 @@ declare(strict_types=1);
 namespace ClosePartnerSdk\Tests\Endpoint;
 
 use ClosePartnerSdk\Dto\EventId;
-use ClosePartnerSdk\Dto\EventTime;
 use ClosePartnerSdk\Dto\Mapper\CancelTicketMapper;
-use ClosePartnerSdk\Dto\Product;
-use ClosePartnerSdk\Dto\Ticket;
-use ClosePartnerSdk\Dto\TicketGroup;
 use ClosePartnerSdk\Exception\Auth\InvalidCredentialsException;
-use ClosePartnerSdk\Tests\Factory\Dto\TicketGroupFactory;
-use DateTime;
+use ClosePartnerSdk\Tests\Factory\Dto\TicketCancelFactory;
 use Http\Client\Common\Exception\ClientErrorException;
 use Http\Message\RequestMatcher\RequestMatcher;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -41,11 +36,11 @@ class CancelTicketForEventTest extends EndpointTestCase
                 return $this->mockResponse([]);
             });
 
+        $ticketCancelFactory = TicketCancelFactory::create();
 
-        $this->givenSdk()->cancelTicket()->withTicketAndEventId(
+        $this->givenSdk()->tickets()->cancelTicket(
             new EventId('1234'),
-            new TicketGroup('+31666111000'),
-            new Ticket('scan_code', new Product('ticket'), new EventTime(new DateTime()), 1),
+            $ticketCancelFactory
         );
     }
 
@@ -71,10 +66,11 @@ class CancelTicketForEventTest extends EndpointTestCase
 
         $this->expectException(InvalidCredentialsException::class);
 
-        $this->givenSdk()->cancelTicket()->withTicketAndEventId(
+        $ticketCancelFactory = TicketCancelFactory::create();
+
+        $this->givenSdk()->tickets()->cancelTicket(
             new EventId('1234'),
-            new TicketGroup('+31666111000'),
-            new Ticket('scan_code', new Product('ticket'), new EventTime(new DateTime()), 1),
+            $ticketCancelFactory
         );
     }
 
@@ -91,24 +87,23 @@ class CancelTicketForEventTest extends EndpointTestCase
                     "access_token" => $token,
                 ])
             );
-        $ticketGroup = TicketGroupFactory::createWithOneTicket();
+        $ticketCancelFactory = TicketCancelFactory::create();
         $eventId = new EventId('1234');
 
         $this->mockClient
             ->on(
                 new RequestMatcher('tickets/cancel'),
-                function (RequestInterface $request) use($ticketGroup, $eventId) {
+                function (RequestInterface $request) use($ticketCancelFactory, $eventId) {
                 self::assertEquals(
-                    CancelTicketMapper::forTicketAndEvent($ticketGroup, $ticketGroup->getTickets()[0], $eventId),
+                    CancelTicketMapper::forTicketAndEvent($ticketCancelFactory, $eventId),
                     json_decode($request->getBody()->getContents(), true)
                 );
                 return $this->mockResponse([]);
             });
 
-        $this->givenSdk()->cancelTicket()->withTicketAndEventId(
+        $this->givenSdk()->tickets()->cancelTicket(
             $eventId,
-            $ticketGroup,
-            $ticketGroup->getTickets()[0]
+            $ticketCancelFactory
         );
     }
 }

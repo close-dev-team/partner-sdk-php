@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace ClosePartnerSdk\Endpoint;
+namespace ClosePartnerSdk\Operation;
 
 use ClosePartnerSdk\CloseSdk;
 use ClosePartnerSdk\Config;

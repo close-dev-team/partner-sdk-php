@@ -42,7 +42,7 @@ class ImportTicketGroupForEventTest extends EndpointTestCase
             });
 
 
-        $this->givenSdk()->importTickets()->withTicketGroupAndEventId(
+        $this->givenSdk()->tickets()->importTicket(
             new EventId('1234'),
             new TicketGroup('+31666111000')
         );
@@ -70,7 +70,7 @@ class ImportTicketGroupForEventTest extends EndpointTestCase
 
         $this->expectException(InvalidCredentialsException::class);
 
-        $this->givenSdk()->importTickets()->withTicketGroupAndEventId(
+        $this->givenSdk()->tickets()->importTicket(
             new EventId('1234'),
             new TicketGroup('+31666111000')
         );
@@ -93,12 +93,12 @@ class ImportTicketGroupForEventTest extends EndpointTestCase
         $this->mockClient->addResponse($this->mockResponse([]));
 
 
-        $endpoint = $this->givenSdk()->importTickets();
-        $endpoint->withTicketGroupAndEventId(
+        $endpoint = $this->givenSdk()->tickets();
+        $endpoint->importTicket(
             new EventId('1234'),
             new TicketGroup('+31666111000')
         );
-        $endpoint->withTicketGroupAndEventId(
+        $endpoint->importTicket(
             new EventId('1234'),
             new TicketGroup('+31666111000')
         );
@@ -134,7 +134,7 @@ class ImportTicketGroupForEventTest extends EndpointTestCase
                 return $this->mockResponse([]);
             });
 
-        $this->givenSdk()->importTickets()->withTicketGroupAndEventId(
+        $this->givenSdk()->tickets()->importTicket(
             $eventId,
             $ticketGroup
         );
