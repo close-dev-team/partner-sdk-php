@@ -64,11 +64,7 @@ use ClosePartnerSdk\Dto\Product;
 use ClosePartnerSdk\Dto\EventTime;
 use ClosePartnerSdk\Exception\CloseSdkException;
 
-try {
-  // Define DTO structure
-  $importTicketDto = new TicketDto('');
-  $sdk->tickets->import($eventId, $importTicketGroupDto);
-  
+try {  
   $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
   $ticketGroup = new TicketGroup('+31666111000');
   $ticket = new Ticket(
@@ -79,7 +75,7 @@ try {
   $ticketGroup->addTicket($ticket);
   // Call endpoint
   $sdk
-    ->tickets()
+    ->ticket()
     ->importTicket($eventId, $ticketGroup);
 } catch (CloseSdkException $e) {
     echo "The ticket has not been imported.\n";
@@ -117,7 +113,7 @@ try {
   $ticketGroup->addTicket($ticket);
   // Call endpoint
   $sdk
-    ->tickets()
+    ->ticket()
     ->importTicket($eventId, $ticketGroup);
 } catch (CloseSdkException $e) {
     echo "The ticket has not been imported.\n";
@@ -131,27 +127,22 @@ try {
 ```php
 <?php
 use ClosePartnerSdk\Dto\EventId;
-use ClosePartnerSdk\Dto\TicketGroup;
 use ClosePartnerSdk\Dto\Product;
 use ClosePartnerSdk\Dto\EventTime;
 use ClosePartnerSdk\Exception\CloseSdkException;
-use ClosePartnerSdk\Dto\Ticket;
+use ClosePartnerSdk\Dto\TicketCancelDto;
 
 try {
   // Define DTO structure
   $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
-  $ticketGroup = new TicketGroup('+31666111000');
-  $ticket = new Ticket(
-      $scanCode,
-      new Product('Standard ticket'),
-      new EventTime(new DateTime('2022-10-10 20:00:00'))
-  );
- 
-  $ticketGroup->addTicket($ticket);
+  $scanCode = 'ABCD';
+  $phoneNumber = '+31631111111';
+  $eventTime = new EventTime(new DateTime('2022-10-10 20:00:00'))
+  $ticketCancelDto = new TicketCancelDto($scanCode, $phoneNumber, $eventTime);
   // Call cancel endpoint
   $sdk
-    ->tickets()
-    ->cancelTicket($eventId, $ticketGroup, $ticket);
+    ->ticket()
+    ->cancelTicket($eventId, $ticketCancelDto);
 } catch (CloseSdkException $e) {
     echo "The ticket has not been cancelled.\n";
     // We recommend to retry after a couple of seconds.
@@ -176,10 +167,10 @@ try {
   $message = 'This is the message to send';
   
   $sdk
-    ->textMessages()
+    ->textMessage()
     ->sendToAllUsersForChat($eventId, $chatId, $message);
 } catch (CloseSdkException $e) {
-    echo "The ticket has not been cancelled.\n";
+    echo "The text has not been sent.\n";
     // We recommend to retry after a couple of seconds.
 }
 ```

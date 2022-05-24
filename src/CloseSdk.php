@@ -68,7 +68,7 @@ class CloseSdk
      * @throws InvalidCredentialsException
      * @throws Exception\ApiErrorException
      */
-    public function tickets(): TicketOperation
+    public function ticket(): TicketOperation
     {
         if ($this->token === null) {
             $this->authoriseRequest();
@@ -80,7 +80,7 @@ class CloseSdk
      * @throws InvalidCredentialsException
      * @throws Exception\ApiErrorException
      */
-    public function textMessages(): TextMessageOperation
+    public function textMessage(): TextMessageOperation
     {
         if ($this->token === null) {
             $this->authoriseRequest();
@@ -92,7 +92,7 @@ class CloseSdk
      * @throws InvalidCredentialsException
      * @throws Exception\ApiErrorException
      */
-    public function flowProperties(): FlowPropertyOperation
+    public function flowProperty(): FlowPropertyOperation
     {
         if ($this->token === null) {
             $this->authoriseRequest();

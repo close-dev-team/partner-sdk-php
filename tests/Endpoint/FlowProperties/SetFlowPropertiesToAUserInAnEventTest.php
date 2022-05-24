@@ -46,7 +46,7 @@ class SetFlowPropertiesToAUserInAnEventTest extends EndpointTestCase
                 return $this->mockResponse([]);
             });
 
-        $this->givenSdk()->flowProperties()->setForUserInAllChats(
+        $this->givenSdk()->flowProperty()->setForUserInAllChats(
             $eventId,
             $userId,
             $properties,

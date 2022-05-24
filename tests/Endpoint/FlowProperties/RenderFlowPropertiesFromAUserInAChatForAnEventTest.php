@@ -45,7 +45,7 @@ class RenderFlowPropertiesFromAUserInAChatForAnEventTest extends EndpointTestCas
                     return $this->mockResponse([]);
                 });
 
-        $this->givenSdk()->flowProperties()->render(
+        $this->givenSdk()->flowProperty()->render(
             $eventId,
             $chatId,
             $userId,

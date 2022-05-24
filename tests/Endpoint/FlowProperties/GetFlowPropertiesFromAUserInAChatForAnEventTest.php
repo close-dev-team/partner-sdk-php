@@ -38,7 +38,7 @@ class GetFlowPropertiesFromAUserInAChatForAnEventTest extends EndpointTestCase
                 return $this->mockResponse([]);
             });
 
-        $this->givenSdk()->flowProperties()->getProperties(
+        $this->givenSdk()->flowProperty()->getProperties(
             $eventId,
             $chatId,
             $userId
