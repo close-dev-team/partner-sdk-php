@@ -1,11 +1,10 @@
 # Close PHP SDK user guide
-In this Close PHP SDK user guide we will explain and demonstrate the use-cases you will encounter when partnering with the Close app. 
+In this Close PHP SDK user guide we will explain and demonstrate the use-cases you will encounter when partnering with the Close app and their according SDK elements.
 
 **Table of Contents:**    
   - [About the close app:](#about-the-close-app)
     - [What is the Close app?](#what-is-the-close-app)
     - [Close system overview](#close-system-overview)
-    - [Useful terms](#useful-terms)
   - [Getting started](#getting-started)
   - [Examples:](#examples)
     - [Setting up the Close Client](#setting-up-the-close-php-sdk-client)
@@ -13,17 +12,15 @@ In this Close PHP SDK user guide we will explain and demonstrate the use-cases y
     - [Importing and canceling tickets](#import-tickets-using-the-close-app)
     - [Setting or getting properties for users or events](#flowproperty)
   - [Getting Help](#getting-help)
-  - [Features](#features)
-  - [Contributing](#contributing)
-  - [Resources](#resources)
+  - [Useful terms (DTOs)](#useful-terms)
   
-###About the Close app
-####What is the Close app?
+####About the Close app
+#####What is the Close app?
 The Close app enables businesses to connect to their visitors/clients in a hyper-personalised way. Close started out in the event industry where we allow visitors to receive their tickets, practical information and live-updates all in one spot: The Close app. 
 
 Using the Close PHP SDK you can easily integrate your APIs and systems with our messaging technology. 
 
-####Close system overview
+#####Close system overview
 ```mermaid
 graph TD;
 Close-App-->Event;
@@ -32,15 +29,6 @@ Chat-->User;
 Chat-->Flow-properties-Y;
 User-->Flow-properties-X;
 ```
-#### Useful Terms
-
-| Term | Definition |
-| -------- | ----------- |
-|**EventID**| An ID to identify one specific event (show). Always starts with "CLEV".|
-|**Ticketgroup**||
-|**ChatID**|An ID to identify one specific chat for one specific event. Always starts with "CLEC".|
-|**UserID**|An ID to identify one specific Close App user.|
-
 #### Getting Started
 
 For now it is only possible to start using the Close PHP SDK by getting in touch with us first. Get in touch with your contact person at Close or [contact us][contact-us] directly. 
@@ -87,8 +75,10 @@ try {
 ```
 Now that you have the Close Client setup you're ready to continue.
 
+### Available classes:
+
 #### TextMessage()
-One of the core features of the Close PHP SDK is sending ultra personalised text messages to Close users. There are 4 operations available in the TextMessageOperation class, with each a different use-case. 
+One of the core features of the Close PHP SDK is sending ultra personalised text messages to Close users. There are 4 operations available in the TextMessage class, with each a different use-case. 
 
 | Operations | Use-case |
 | -------- | ----------- |
@@ -96,10 +86,6 @@ One of the core features of the Close PHP SDK is sending ultra personalised text
 |**sendToAllUsersForChat(eventId, chatId, text)**|Use when you need to reach all users in one specific chat for an event |
 |**sendToUserInChat(eventId, chatId, userId, text)**|Use when you need to reach one specific user, in a specific chat for an event|
 |**toUserInAllChats(eventId, userId)**|Use when you need to reach one specific user in all chats for one event|
-
-##### sendToAllChatsForEvent(eventId,text)
-
-
 
 #### ticket()
 The Close app can be used to provide digital tickets to event-visitors. Using the Close PHP SDK you can both import and cancel tickets. 
@@ -110,10 +96,6 @@ The Close app can be used to provide digital tickets to event-visitors. Using th
 |**import(eventId,ticketgroup)**| Use when you want to import a ticket.|
 |**cancel(eventId, ticketCancelDto)**|Use when you want to cancel a ticket.|
 
-*Code examples:*
-##### import(eventId,ticketgroup)
-
-##### cancel()
 
 #### flowproperty()
 In order to create a personalised messaging experience it can be needed to set or get a custom property for a user or event. You can do this using the flowproperty operations.
@@ -127,12 +109,15 @@ In order to create a personalised messaging experience it can be needed to set o
 |**getProperties(eventId, chatId, userId)**|Get an overview of all flowproperties of a specific user, in a specific chat for an event.|
 |**render(eventId, chatId, userId, text)**|-|
 
+---
 #### Getting Help
 
 Feel free to let us know if you have encountered any questions or problems using our SDK. We will try to make sure that we will get back to you as soon as possible.
 
 * If you have questions that have not been answered in this documentation, please [contact us][contact-us].
 * If you think that you may have found a bug, feel free to [open an issue][open-issue].
+
+
 
 [contact-us]: devteam@thecloseapp.com
 [partner-api-doc]: https://partner.closeapi.nl/api/documentation
