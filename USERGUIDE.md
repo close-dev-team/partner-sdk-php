@@ -30,9 +30,9 @@ Useful terms:
 
 | Term | Definition |
 | -------- | ----------- |
-|**EventID**| An ID to identify one specific event (show).|
+|**EventID**| An ID to identify one specific event (show). Always starts with "CLEV".|
 |**Ticketgroup**||
-|**ChatID**|An ID to identify one specific chat for one specific event.|
+|**ChatID**|An ID to identify one specific chat for one specific event. Always starts with "CLEC".|
 |**UserID**|An ID to identify one specific Close App user.|
 
 
@@ -83,17 +83,20 @@ try {
 ```
 
 ### Send text Message
-One of the core features of the Close PHP SDK is sending ultra personalised text messages to Close users. There are 4 endpoints available in the SendMessage class, with each a different use-case. 
+One of the core features of the Close PHP SDK is sending ultra personalised text messages to Close users. There are 4 operations available in the SendMessage class, with each a different use-case. 
 
-| Endpoint | Use-case |
+| Operations | Use-case |
 | -------- | ----------- |
 |**toAllChatsForShow(eventId, text)**| Use when you need to reach all users for an event|
 |**toAllUsersForChat(eventId, chatId, text)**|Use when you need to reach all users in one specific chat for an event |
 |**toUserInChat(eventId, chatId, userId, text)**|Use when you need to reach one specific user, in a specific chat for an event|
 |**toUserInAllChats(eventId, userId)**|Use when you need to reach one specific user in all chats for one event|
 
-*examples:*
 #### toAllChatsForShow(eventId,text)
+| DTOs | Info |
+| -------- | ----------- |
+|**eventId**| Use when you need to reach all users for an event|
+
 ```php
 <?php
 use ClosePartnerSdk\CloseSdk;
@@ -113,74 +116,10 @@ try {
     // We recommend to retry after a couple of seconds.
 }
 ```
-#### toAllUsersForChat(eventId,chatId,text)
-```php
-<?php
-use ClosePartnerSdk\CloseSdk;
-use ClosePartnerSdk\Dto\EventId;
-use ClosePartnerSdk\Dto\ChatId;
-use ClosePartnerSdk\Exception\CloseSdkException;
 
-try {
-  // Define DTO structure
-  $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
-  $chatId = new ChatId('CLECxxxxx');
-  $message = 'This is the message to send';
-  
-  $sdk
-    ->sendMessage()
-    ->toAllUsersForChat($eventId, $chatId, $message);
-} catch (CloseSdkException $e) {
-    echo "The message has not been send.";
-    // We recommend to retry after a couple of seconds.
-}
-```
-#### toUserInChat(eventId, chatId, userId, text)
-```php
-<?php
-use ClosePartnerSdk\CloseSdk;
-use ClosePartnerSdk\Dto\EventId;
-use ClosePartnerSdk\Dto\ChatId;
-use ClosePartnerSdk\Dto\UserId;
-use ClosePartnerSdk\Exception\CloseSdkException;
 
-try {
-  // Define DTO structure
-  $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
-  $chatId = new ChatId('CLECxxxxx');
-  $userId = new UserId('abcxxx');
-  $message = 'This is the message to send';
-  
-  $sdk
-    ->sendMessage()
-    ->toUserInChat($eventId, $chatId,$userId, $message);
-} catch (CloseSdkException $e) {
-    echo "The message has not been send.";
-    // We recommend to retry after a couple of seconds.
-}
-```
-#### toUserInAllChats(eventId, userId)
-```php
-<?php
-use ClosePartnerSdk\CloseSdk;
-use ClosePartnerSdk\Dto\EventId;
-use ClosePartnerSdk\Dto\UserId;
-use ClosePartnerSdk\Exception\CloseSdkException;
 
-try {
-  // Define DTO structure
-  $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
-  $userId = new UserId('abcxxx');
-  $message = 'This is the message to send';
-  
-  $sdk
-    ->sendMessage()
-    ->toUserInAllChats($eventId, $userId, $message);
-} catch (CloseSdkException $e) {
-    echo "The message has not been send.";
-    // We recommend to retry after a couple of seconds.
-}
-```
+
 ### Import tickets using the Close App
 The Close app can be used to provide digital tickets to event-visitors. To do this you will need to import your ticket-data using our SDK.
 
