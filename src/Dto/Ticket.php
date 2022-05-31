@@ -8,9 +8,9 @@ class Ticket
     private string $scanCode;
     private string $productTitle;
     private EventTime $eventTime;
+    private int $numberOfItems;
     private ?SeatInfo $seatInfo;
     private ?BubbleInfo $bubbleInfo;
-    private int $numberOfItems;
     private ?string $timeslot;
     private ?string $productDescription;
     private ?string $productId;
