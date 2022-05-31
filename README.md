@@ -36,26 +36,142 @@ Jump To:
 require 'vendor/autoload.php';
 
 use ClosePartnerSdk\CloseSdk;
+use ClosePartnerSdk\Options;
+use ClosePartnerSdk\Exception\CloseSdkException;
 
-// Instantiate the Close client using the client credentials given by Close
-  return new CloseSdk(
+try {
+  // Instantiate the Close client using the client credentials given by Close
+  $sdk = new CloseSdk(
        new Options([
             'client_id' => 'client_test',
             'client_secret' => 'client_test_secret',
        ])
   );
+} catch (CloseSdkException $closeSdkException) {
+    // You can receive an error if the token was not generated because of invalid credentials
+}
+
 ```
 
 ### Import tickets using the Close App
+#### Import ticket with required information
+```php
+<?php
+use ClosePartnerSdk\Dto\Ticket;
+use ClosePartnerSdk\Dto\EventId;
+use ClosePartnerSdk\Dto\TicketGroup;
+use ClosePartnerSdk\Dto\EventTime;
+use ClosePartnerSdk\Exception\CloseSdkException;
+
+try {  
+  $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
+  $ticketGroup = new TicketGroup('+31666111000');
+  $productTitle = 'Singular entrance ticket';
+  $ticket = new Ticket(
+      $scanCode,
+      new EventTime(new DateTime('2022-10-10 20:00:00')),
+      $productTitle
+  );
+  $ticketGroup->addTicket($ticket);
+  // Call endpoint
+  $sdk
+    ->ticket()
+    ->importTicket($eventId, $ticketGroup);
+} catch (CloseSdkException $e) {
+    echo "The ticket has not been imported.\n";
+    // We recommend to retry after a couple of seconds.
+}
+```
+#### Import ticket with seat information
+```php
+<?php
+use ClosePartnerSdk\Dto\EventId;
+use ClosePartnerSdk\Dto\TicketGroup;
+use ClosePartnerSdk\Dto\EventTime;
+use ClosePartnerSdk\Exception\CloseSdkException;
+use ClosePartnerSdk\Dto\Ticket;
+use ClosePartnerSdk\Dto\SeatInfo;
+
+try {
+  // Define DTO structure
+  $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
+  $ticketGroup = new TicketGroup('+31666111000');
+  $productTitle = 'Singular entrance ticket';
+  
+  $ticket = new Ticket(
+      $scanCode,
+      new EventTime(new DateTime('2022-10-10 20:00:00')),
+      $productTitle
+  );
+  $seatInfo = new SeatInfo;
+  $ticket->withSeatInfo(
+     $seatInfo
+       ->withChair('12')
+       ->withEntrance('E')
+       ->withRow('3')
+       ->withSection('A')
+  )
+  $ticketGroup->addTicket($ticket);
+  // Call endpoint
+  $sdk
+    ->ticket()
+    ->importTicket($eventId, $ticketGroup);
+} catch (CloseSdkException $e) {
+    echo "The ticket has not been imported.\n";
+    // We recommend to retry after a couple of seconds.
+}
+```
+### Cancelling tickets
+
+#### Cancel a ticket in the Close App
 
 ```php
 <?php
+use ClosePartnerSdk\Dto\EventId;
+use ClosePartnerSdk\Dto\Product;
+use ClosePartnerSdk\Dto\EventTime;
+use ClosePartnerSdk\Exception\CloseSdkException;
+use ClosePartnerSdk\Dto\TicketCancelDto;
+
 try {
-    $closeClient->importTickets([
-        'info' => 'info',
-    ]);
-} catch (CloseClient\Exception\CloseException $e) {
-    echo "The ticket has not been imported.\n";
+  // Define DTO structure
+  $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
+  $scanCode = 'ABCD';
+  $phoneNumber = '+31631111111';
+  $eventTime = new EventTime(new DateTime('2022-10-10 20:00:00'))
+  $ticketCancelDto = new TicketCancelDto($scanCode, $phoneNumber, $eventTime);
+  // Call cancel endpoint
+  $sdk
+    ->ticket()
+    ->cancelTicket($eventId, $ticketCancelDto);
+} catch (CloseSdkException $e) {
+    echo "The ticket has not been cancelled.\n";
+    // We recommend to retry after a couple of seconds.
+}
+```
+
+### Sending messages
+
+#### Send a message to all users in a chat
+
+```php
+<?php
+use ClosePartnerSdk\CloseSdk;
+use ClosePartnerSdk\Dto\EventId;
+use ClosePartnerSdk\Dto\ChatId;
+use ClosePartnerSdk\Exception\CloseSdkException;
+
+try {
+  // Define DTO structure
+  $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
+  $chatId = new ChatId('CLECxxxxx');
+  $message = 'This is the message to send';
+  
+  $sdk
+    ->textMessage()
+    ->sendToAllUsersForChat($eventId, $chatId, $message);
+} catch (CloseSdkException $e) {
+    echo "The text has not been sent.\n";
     // We recommend to retry after a couple of seconds.
 }
 ```

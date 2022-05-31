@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ClosePartnerSdk\Endpoint;
+namespace ClosePartnerSdk\Operation;
 
 use ClosePartnerSdk\Dto\AuthCredentials;
 use ClosePartnerSdk\Dto\Token;
@@ -16,7 +16,7 @@ use ClosePartnerSdk\HttpClient\Message\ResponseMediator;
 use ClosePartnerSdk\Validator\AuthoriseValidator;
 use Http\Client\Common\Exception\ClientErrorException;
 
-final class Authorise extends CloseEndpoint
+final class Authorise extends CloseOperation
 {
     /**
      * @param AuthCredentials $authCredentials
