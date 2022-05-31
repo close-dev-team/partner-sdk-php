@@ -17,6 +17,11 @@ In this Close PHP SDK user guide we will explain and demonstrate the use-cases y
   - [Resources](#resources)
   
 ---
+###What is the Close app?
+The Close app enables businesses to connect to their visitors/clients in a hyper-personalised way. Close started out in the event industry where we allow visitors to receive their tickets, practical information and live-updates all in one spot: The Close app. 
+
+Using the Close PHP SDK you can easily integrate your APIs and systems with our messaging technology. 
+
 ###Close system overview
 ```mermaid
 graph TD;
@@ -81,122 +86,48 @@ try {
 }
 
 ```
+Now that you have the Close Client setup you're ready to continue.
 
-### Send text Message
-One of the core features of the Close PHP SDK is sending ultra personalised text messages to Close users. There are 4 operations available in the SendMessage class, with each a different use-case. 
+### TextMessage()
+One of the core features of the Close PHP SDK is sending ultra personalised text messages to Close users. There are 4 operations available in the TextMessageOperation class, with each a different use-case. 
 
 | Operations | Use-case |
 | -------- | ----------- |
-|**toAllChatsForShow(eventId, text)**| Use when you need to reach all users for an event|
-|**toAllUsersForChat(eventId, chatId, text)**|Use when you need to reach all users in one specific chat for an event |
-|**toUserInChat(eventId, chatId, userId, text)**|Use when you need to reach one specific user, in a specific chat for an event|
+|**sendToAllChatsForEvent(eventId, text)**| Use when you need to reach all users for an event|
+|**sendToAllUsersForChat(eventId, chatId, text)**|Use when you need to reach all users in one specific chat for an event |
+|**sendToUserInChat(eventId, chatId, userId, text)**|Use when you need to reach one specific user, in a specific chat for an event|
 |**toUserInAllChats(eventId, userId)**|Use when you need to reach one specific user in all chats for one event|
 
-#### toAllChatsForShow(eventId,text)
-| DTOs | Info |
+#### sendToAllChatsForEvent(eventId,text)
+
+
+
+### ticket()
+The Close app can be used to provide digital tickets to event-visitors. Using the Close PHP SDK you can both import and cancel tickets. 
+
+
+| Operation | Use-case |
 | -------- | ----------- |
-|**eventId**| Use when you need to reach all users for an event|
-
-```php
-<?php
-use ClosePartnerSdk\CloseSdk;
-use ClosePartnerSdk\Dto\EventId;
-use ClosePartnerSdk\Exception\CloseSdkException;
-
-try {
-  // Define DTO structure
-  $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
-  $message = 'This is the message to send';
-  
-  $sdk
-    ->sendMessage()
-    ->toAllChatsForShow($eventId, $message);
-} catch (CloseSdkException $e) {
-    echo "The message has not been send.";
-    // We recommend to retry after a couple of seconds.
-}
-```
-
-
-
-
-### Import tickets using the Close App
-The Close app can be used to provide digital tickets to event-visitors. To do this you will need to import your ticket-data using our SDK.
-
-| Endpoint | Use-case |
-| -------- | ----------- |
-|**withTicketGroupAndEventId(eventId,ticketgroup)**| Use when you want to import a ticket|
-|**withSeatInfo()**|Use when you want to add seat information to a ticket|
+|**import(eventId,ticketgroup)**| Use when you want to import a ticket.|
+|**cancel(eventId, ticketCancelDto)**|Use when you want to cancel a ticket.|
 
 *Code examples:*
-#### withTicketGroupAndEventId(eventId,ticketgroup)
-```php
-<?php
-use ClosePartnerSdk\Dto\Ticket;
-use ClosePartnerSdk\Dto\EventId;
-use ClosePartnerSdk\Dto\TicketGroup;
-use ClosePartnerSdk\Dto\Product;
-use ClosePartnerSdk\Dto\EventTime;
-use ClosePartnerSdk\Exception\CloseSdkException;
+#### import(eventId,ticketgroup)
 
-try {
-  // Define DTO structure
-  $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
-  $ticketGroup = new TicketGroup('+31666111000');
-  $ticket = new Ticket(
-      $scanCode,
-      new Product('Standard ticket'),
-      new EventTime(new DateTime('2022-10-10 20:00:00'))
-  );
-  $ticketGroup->addTicket($ticket);
-  // Call endpoint
-  $sdk
-    ->importTickets()
-    ->withTicketGroupAndEventId($eventId, $ticketGroup);
-} catch (CloseSdkException $e) {
-    echo "The ticket has not been imported.\n";
-    // We recommend to retry after a couple of seconds.
-}
-```
+#### cancel()
 
-#### withSeatInfo()
-```php
-<?php
-use ClosePartnerSdk\Dto\EventId;
-use ClosePartnerSdk\Dto\TicketGroup;
-use ClosePartnerSdk\Dto\Product;
-use ClosePartnerSdk\Dto\EventTime;
-use ClosePartnerSdk\Exception\CloseSdkException;
-use ClosePartnerSdk\Dto\Ticket;
-use ClosePartnerSdk\Dto\SeatInfo;
+### flowproperty()
+In order to create a personalised messaging experience it can be needed to set or get a custom property for a user or event. You can do this using the flowproperty operations.
 
-try {
-  // Define DTO structure
-  $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
-  $ticketGroup = new TicketGroup('+31666111000');
-  $ticket = new Ticket(
-      $scanCode,
-      new Product('Standard ticket'),
-      new EventTime(new DateTime('2022-10-10 20:00:00'))
-  );
-  $seatInfo = new SeatInfo;
-  $ticket->withSeatInfo(
-     $seatInfo
-       ->withChair('12')
-       ->withEntrance('E')
-       ->withRow('3')
-       ->withSection('A')
-  )
-  $ticketGroup->addTicket($ticket);
-  // Call endpoint
-  $sdk
-    ->importTickets()
-    ->withTicketGroupAndEventId($eventId, $ticketGroup);
-} catch (CloseSdkException $e) {
-    echo "The ticket has not been imported.\n";
-    // We recommend to retry after a couple of seconds.
-}
-```
+
+| Operation | Use-case |
+| -------- | ----------- |
+|**setForOneUserInOneChat(eventId,chatId, userId, itemFlowProperties)**| Set a property for one specific user in one specific chat for an event.|
+|**setForAllUsersInAllChats($eventId, $itemFlowProperties)**|Set a property for all users in all chats for an event.|
+|**setForUserInAllChats(eventId, userId, itemFlowProperties)**|Set a property for one specific user in all chats for one specific event.|
+|**getProperties(eventId, chatId, userId)**|Get an overview of all flowproperties of a specific user, in a specific chat for an event.|
+|**render(eventId, chatId, userId, text)**|-|
+
 ## Getting Help
 
 Feel free to let us know if you have encountered any questions or problems using our SDK. We will try to make sure that we will get back to you as soon as possible.
