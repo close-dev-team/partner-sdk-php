@@ -52,7 +52,7 @@ class ImportTicketsMapperTest extends TestCase
         $ticketFromRequest = $request['ticket_group']['tickets'][0];
         self::assertEquals($ticket->getScanCode(), $ticketFromRequest['scan_code']);
         self::assertEquals(
-            $ticket->getProduct()->getTitle(),
+            $ticket->getProductTitle(),
             $ticketFromRequest['product_title']
         );
         self::assertEquals(
@@ -78,7 +78,7 @@ class ImportTicketsMapperTest extends TestCase
 
         $ticketFromRequest = $request['ticket_group']['tickets'][0];
         self::assertEquals(
-            $ticket->getEventTime()->getTimeSlot(),
+            $ticket->getTimeslot(),
             $ticketFromRequest['time_slot']
         );
     }
@@ -95,8 +95,8 @@ class ImportTicketsMapperTest extends TestCase
         );
 
         $ticketFromRequest = $request['ticket_group']['tickets'][0];
-        self::assertEquals($ticket->getProduct()->getId(), $ticketFromRequest['product_id']);
-        self::assertEquals($ticket->getProduct()->getDescription(), $ticketFromRequest['product_description']);
+        self::assertEquals($ticket->getProductId(), $ticketFromRequest['product_id']);
+        self::assertEquals($ticket->getProductDescription(), $ticketFromRequest['product_description']);
     }
 
     /** @test * */

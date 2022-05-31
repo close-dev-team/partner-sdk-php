@@ -43,6 +43,7 @@ final class ImportTicketsMapper
         $timeslot = $ticket->getTimeslot();
 
         $properties = array_merge($properties, self::forEventTime($ticket->getEventTime()));
+
         if ($timeslot !== null) {
             $properties['time_slot'] = $timeslot;
         }
@@ -61,6 +62,7 @@ final class ImportTicketsMapper
                 'bubble_info' => self::forBubbleInfo($bubbleInfo),
             ]);
         }
+
         $seatInfo = $ticket->getSeatInfo();
         if ($seatInfo !== null) {
             $properties = array_merge($properties, [
