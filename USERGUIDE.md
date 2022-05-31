@@ -93,7 +93,7 @@ The Close app can be used to provide digital tickets to event-visitors. Using th
 
 | Operation | Use-case |
 | -------- | ----------- |
-|**import(eventId,ticketgroup)**| Use when you want to import a ticket.|
+|[import(eventId,ticketgroup)](/examples/ticket/import.md)| Use when you want to import a ticket.|
 |**cancel(eventId, ticketCancelDto)**|Use when you want to cancel a ticket.|
 
 
