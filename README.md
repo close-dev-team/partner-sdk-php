@@ -2,7 +2,7 @@
 
 [![Lastest Version](https://img.shields.io/github/v/tag/close-dev-team/partner-sdk-php)](https://github.com/close-dev-team/partner-sdk-php/releases)
 [![Build Status](https://img.shields.io/github/workflow/status/close-dev-team/partner-sdk-php/run-automated-tests?style=flat)](https://github.com/close-dev-team/partner-sdk-php)
-[![Apache 2 License](https://img.shields.io/github/license/close-dev-team/partner-sdk-php)][apache-license]
+[![Apache 2 License](https://img.shields.io/github/license/close-dev-team/partner-sdk-php)](https://www.apache.org/licenses/LICENSE-2.0)
 
 The **Close SDK for PHP** makes it easy for developers to communicate with [The Close App][the-close-app] in their PHP code. Get started really fast by [installing the SDK through Composer](#Getting-Started).
 
@@ -35,25 +35,143 @@ Jump To:
 // Require the Composer autoloader.
 require 'vendor/autoload.php';
 
-use Close\CloseClient;
+use ClosePartnerSdk\CloseSdk;
+use ClosePartnerSdk\Options;
+use ClosePartnerSdk\Exception\CloseSdkException;
 
-// Instantiate the Close client.
-$closeClient = new CloseClient([
-    'username' => 'your-username',
-    'password'  => 'your-password' // We recommend getting the password from an environment file or secret.
-]);
+try {
+  // Instantiate the Close client using the client credentials given by Close
+  $sdk = new CloseSdk(
+       new Options([
+            'client_id' => 'client_test',
+            'client_secret' => 'client_test_secret',
+       ])
+  );
+} catch (CloseSdkException $closeSdkException) {
+    // You can receive an error if the token was not generated because of invalid credentials
+}
+
 ```
 
 ### Import tickets using the Close App
+#### Import ticket with required information
+```php
+<?php
+use ClosePartnerSdk\Dto\Ticket;
+use ClosePartnerSdk\Dto\EventId;
+use ClosePartnerSdk\Dto\TicketGroup;
+use ClosePartnerSdk\Dto\EventTime;
+use ClosePartnerSdk\Exception\CloseSdkException;
+
+try {  
+  $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
+  $ticketGroup = new TicketGroup('+31666111000');
+  $productTitle = 'Singular entrance ticket';
+  $ticket = new Ticket(
+      $scanCode,
+      new EventTime(new DateTime('2022-10-10 20:00:00')),
+      $productTitle
+  );
+  $ticketGroup->addTicket($ticket);
+  // Call endpoint
+  $sdk
+    ->ticket()
+    ->importTicket($eventId, $ticketGroup);
+} catch (CloseSdkException $e) {
+    echo "The ticket has not been imported.\n";
+    // We recommend to retry after a couple of seconds.
+}
+```
+#### Import ticket with seat information
+```php
+<?php
+use ClosePartnerSdk\Dto\EventId;
+use ClosePartnerSdk\Dto\TicketGroup;
+use ClosePartnerSdk\Dto\EventTime;
+use ClosePartnerSdk\Exception\CloseSdkException;
+use ClosePartnerSdk\Dto\Ticket;
+use ClosePartnerSdk\Dto\SeatInfo;
+
+try {
+  // Define DTO structure
+  $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
+  $ticketGroup = new TicketGroup('+31666111000');
+  $productTitle = 'Singular entrance ticket';
+  
+  $ticket = new Ticket(
+      $scanCode,
+      new EventTime(new DateTime('2022-10-10 20:00:00')),
+      $productTitle
+  );
+  $seatInfo = new SeatInfo;
+  $ticket->withSeatInfo(
+     $seatInfo
+       ->withChair('12')
+       ->withEntrance('E')
+       ->withRow('3')
+       ->withSection('A')
+  )
+  $ticketGroup->addTicket($ticket);
+  // Call endpoint
+  $sdk
+    ->ticket()
+    ->importTicket($eventId, $ticketGroup);
+} catch (CloseSdkException $e) {
+    echo "The ticket has not been imported.\n";
+    // We recommend to retry after a couple of seconds.
+}
+```
+### Cancelling tickets
+
+#### Cancel a ticket in the Close App
 
 ```php
 <?php
+use ClosePartnerSdk\Dto\EventId;
+use ClosePartnerSdk\Dto\Product;
+use ClosePartnerSdk\Dto\EventTime;
+use ClosePartnerSdk\Exception\CloseSdkException;
+use ClosePartnerSdk\Dto\TicketCancelDto;
+
 try {
-    $closeClient->importTickets([
-        'info' => 'info',
-    ]);
-} catch (CloseClient\Exception\CloseException $e) {
-    echo "The ticket has not been imported.\n";
+  // Define DTO structure
+  $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
+  $scanCode = 'ABCD';
+  $phoneNumber = '+31631111111';
+  $eventTime = new EventTime(new DateTime('2022-10-10 20:00:00'))
+  $ticketCancelDto = new TicketCancelDto($scanCode, $phoneNumber, $eventTime);
+  // Call cancel endpoint
+  $sdk
+    ->ticket()
+    ->cancelTicket($eventId, $ticketCancelDto);
+} catch (CloseSdkException $e) {
+    echo "The ticket has not been cancelled.\n";
+    // We recommend to retry after a couple of seconds.
+}
+```
+
+### Sending messages
+
+#### Send a message to all users in a chat
+
+```php
+<?php
+use ClosePartnerSdk\CloseSdk;
+use ClosePartnerSdk\Dto\EventId;
+use ClosePartnerSdk\Dto\ChatId;
+use ClosePartnerSdk\Exception\CloseSdkException;
+
+try {
+  // Define DTO structure
+  $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
+  $chatId = new ChatId('CLECxxxxx');
+  $message = 'This is the message to send';
+  
+  $sdk
+    ->textMessage()
+    ->sendToAllUsersForChat($eventId, $chatId, $message);
+} catch (CloseSdkException $e) {
+    echo "The text has not been sent.\n";
     // We recommend to retry after a couple of seconds.
 }
 ```
@@ -67,11 +185,35 @@ Feel free to let us know if you have encountered any questions or problems using
 
 ## Features
 
-* Provides a very easy way to communicate with our [partner API][partner-api-doc] for all of the supported endpoints. This means that we always fetch the correct data based on your API credentials.
-* It is built on the latest software, with the highest security standards and following the [PSR conventions][PSR].
-* We use [Guzzle][guzzle] to generate these requests and we make use of its technology (async requests, middlewares, etc.).
-* We provide a data structure of our domain that can be easily used by external PHP applications.
+* Provides a very easy way to communicate with our [Partner API](https://partner.closeapi.nl/api/documentation) for all of the supported endpoints. This means that we always fetch the correct data based on your API credentials.
+* It is built on the latest software, with the highest security standards and following the [PSR conventions](https://www.php-fig.org/psr/).
+* You can provide your own Http client as a dependency of the client builder and providing the instance in the options object. You have an example above.
+* We use [Guzzle](https://docs.guzzlephp.org/en/7.0/) to generate these requests, and we make use of its technology (async requests, middlewares, etc.).
+* We provide a data structure f our domain that can be easily used by external PHP applications.
 * We give back clear responses and exceptions in case something doesn't go as expected.
+
+## Advanced features
+1. In case you want to make usage of your own HttpClient, you can provide the implementation to the client builder when instantiating our SDK:
+
+```php
+<?php
+// Require the Composer autoloader.
+require 'vendor/autoload.php';
+
+use ClosePartnerSdk\CloseSdk;
+use ClosePartnerSdk\HttpClient\HttpClientBuilder;
+
+// Instantiate the Close client using the client credentials given by Close
+  return new CloseSdk(
+       new Options([
+            'client_builder' => new HttpClientBuilder($myownHttpClient),
+            'client_id' => 'client_test',
+            'client_secret' => 'client_test_secret',
+       ])
+  );
+```
+*Important: The client needs to implement the [PSR-7](https://www.php-fig.org/psr/psr-7/) conventions to be accepted by our SDK.*
+2. In case you don't provide any instance, we use the discovery functionality from [HttpPlug](http://httplug.io/), which look up for an available implementation of `\Http\Client\HttpClient`.
 
 ## Contributing
 
