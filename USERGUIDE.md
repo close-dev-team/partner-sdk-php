@@ -1,28 +1,29 @@
 # Close PHP SDK user guide
-
-
 In this Close PHP SDK user guide we will explain and demonstrate the use-cases you will encounter when partnering with the Close app. 
 
-
 **Table of Contents:**    
-  - [Getting Started](#getting-started)
-  - [*Examples*](#examples)
-    - [Authorise](#authorise)
-    - [Send text Message](#send-text-message)
-      - [To all users in all chats for an event](#to-all-users-in-all-chats-for-an-event)
-    - [Import tickets using the Close App](#import-tickets-using-the-close-app)
+  - [About the close app:](#about-the-close-app)
+    - [What is the Close app?](#what-is-the-close-app)
+    - [Close system overview](#close-system-overview)
+    - [Useful terms](#useful-terms)
+  - [Getting started](#getting-started)
+  - [Examples:](#examples)
+    - [Setting up the Close Client](#setting-up-the-close-php-sdk-client)
+    - [Sending text messages](#textmessage)
+    - [Importing and canceling tickets](#import-tickets-using-the-close-app)
+    - [Setting or getting properties for users or events](#flowproperty)
   - [Getting Help](#getting-help)
   - [Features](#features)
   - [Contributing](#contributing)
   - [Resources](#resources)
   
----
-###What is the Close app?
+###About the Close app
+####What is the Close app?
 The Close app enables businesses to connect to their visitors/clients in a hyper-personalised way. Close started out in the event industry where we allow visitors to receive their tickets, practical information and live-updates all in one spot: The Close app. 
 
 Using the Close PHP SDK you can easily integrate your APIs and systems with our messaging technology. 
 
-###Close system overview
+####Close system overview
 ```mermaid
 graph TD;
 Close-App-->Event;
@@ -31,7 +32,7 @@ Chat-->User;
 Chat-->Flow-properties-Y;
 User-->Flow-properties-X;
 ```
-Useful terms:
+#### Useful Terms
 
 | Term | Definition |
 | -------- | ----------- |
@@ -40,9 +41,7 @@ Useful terms:
 |**ChatID**|An ID to identify one specific chat for one specific event. Always starts with "CLEC".|
 |**UserID**|An ID to identify one specific Close App user.|
 
-
-
-### Getting Started
+#### Getting Started
 
 For now it is only possible to start using the Close PHP SDK by getting in touch with us first. Get in touch with your contact person at Close or [contact us][contact-us] directly. 
 
@@ -56,12 +55,12 @@ For now it is only possible to start using the Close PHP SDK by getting in touch
 
 4. **Using the SDK** – In this page you will learn how to use the SDK, but if you want to get more information about the calls, you can always see our [Close Partner API Documentation][partner-api-doc], which this SDK is a wrapper of.
 
----
-
-## *Examples*
 
 
-### Setting up the Close PHP SDK client.
+#### Examples [Code & Use-cases]
+
+
+##### Setting up the Close PHP SDK client.
 Let's start with instantiating the Close client using the client credentials given to you by Close. 
 
 ```php
@@ -88,7 +87,7 @@ try {
 ```
 Now that you have the Close Client setup you're ready to continue.
 
-### TextMessage()
+#### TextMessage()
 One of the core features of the Close PHP SDK is sending ultra personalised text messages to Close users. There are 4 operations available in the TextMessageOperation class, with each a different use-case. 
 
 | Operations | Use-case |
@@ -98,11 +97,11 @@ One of the core features of the Close PHP SDK is sending ultra personalised text
 |**sendToUserInChat(eventId, chatId, userId, text)**|Use when you need to reach one specific user, in a specific chat for an event|
 |**toUserInAllChats(eventId, userId)**|Use when you need to reach one specific user in all chats for one event|
 
-#### sendToAllChatsForEvent(eventId,text)
+##### sendToAllChatsForEvent(eventId,text)
 
 
 
-### ticket()
+#### ticket()
 The Close app can be used to provide digital tickets to event-visitors. Using the Close PHP SDK you can both import and cancel tickets. 
 
 
@@ -112,48 +111,28 @@ The Close app can be used to provide digital tickets to event-visitors. Using th
 |**cancel(eventId, ticketCancelDto)**|Use when you want to cancel a ticket.|
 
 *Code examples:*
-#### import(eventId,ticketgroup)
+##### import(eventId,ticketgroup)
 
-#### cancel()
+##### cancel()
 
-### flowproperty()
+#### flowproperty()
 In order to create a personalised messaging experience it can be needed to set or get a custom property for a user or event. You can do this using the flowproperty operations.
 
 
 | Operation | Use-case |
 | -------- | ----------- |
 |**setForOneUserInOneChat(eventId,chatId, userId, itemFlowProperties)**| Set a property for one specific user in one specific chat for an event.|
-|**setForAllUsersInAllChats($eventId, $itemFlowProperties)**|Set a property for all users in all chats for an event.|
+|**setForAllUsersInAllChats(eventId, itemFlowProperties)**|Set a property for all users in all chats for an event.|
 |**setForUserInAllChats(eventId, userId, itemFlowProperties)**|Set a property for one specific user in all chats for one specific event.|
 |**getProperties(eventId, chatId, userId)**|Get an overview of all flowproperties of a specific user, in a specific chat for an event.|
 |**render(eventId, chatId, userId, text)**|-|
 
-## Getting Help
+#### Getting Help
 
 Feel free to let us know if you have encountered any questions or problems using our SDK. We will try to make sure that we will get back to you as soon as possible.
 
 * If you have questions that have not been answered in this documentation, please [contact us][contact-us].
 * If you think that you may have found a bug, feel free to [open an issue][open-issue].
-
-## Features
-
-* Provides a very easy way to communicate with our [partner API][partner-api-doc] for all of the supported endpoints. This means that we always fetch the correct data based on your API credentials.
-* It is built on the latest software, with the highest security standards and following the [PSR conventions][PSR].
-* We use [Guzzle][guzzle] to generate these requests and we make use of its technology (async requests, middlewares, etc.).
-* We provide a data structure of our domain that can be easily used by external PHP applications.
-* We give back clear responses and exceptions in case something doesn't go as expected.
-
-## Contributing
-
-If you have ideas on how to improve our SDK, don't hesitate to [open an issue][open-issue] and let us know! 
-If you already have code ready that would help us improve our system, you are free to [open a PR][open-pr]. All the extra help is highly appreciated!
-
-## Resources
-
-* [API Docs][partner-api-doc] – For more details about the parameters of each endpoint, validation and responses.
-* [Website][the-close-app] – More information about Close and what we do.
-* [Issues][open-issue] – Report issues and submit pull requests.
-* [License][apache-license] – More information about our license.
 
 [contact-us]: devteam@thecloseapp.com
 [partner-api-doc]: https://partner.closeapi.nl/api/documentation
