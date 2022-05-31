@@ -3,27 +3,34 @@ declare(strict_types=1);
 
 namespace ClosePartnerSdk\Dto;
 
-use DateTimeInterface;
-
 class Ticket
 {
     private string $scanCode;
-    private Product $product;
+    private string $productTitle;
     private EventTime $eventTime;
     private ?SeatInfo $seatInfo;
     private ?BubbleInfo $bubbleInfo;
     private int $numberOfItems;
+    private ?string $timeslot;
+    private ?string $productDescription;
+    private ?string $productId;
 
     public function __construct(
         string    $scanCode,
-        Product   $product,
         EventTime $eventTime,
-        int $numberOfItems = 1
+        string $productTitle,
+        int $numberOfItems = 1,
+        string $timeslot = null,
+        string $productDescription = null,
+        string $productId = null
     ) {
         $this->scanCode = $scanCode;
-        $this->product = $product;
         $this->eventTime = $eventTime;
+        $this->productTitle = $productTitle;
         $this->numberOfItems = $numberOfItems;
+        $this->timeslot = $timeslot;
+        $this->productDescription = $productDescription;
+        $this->productId = $productId;
     }
 
     public function withSeatInfo(SeatInfo $seatInfo): self
@@ -52,11 +59,6 @@ class Ticket
         return $this->eventTime;
     }
 
-    public function getProduct(): Product
-    {
-        return $this->product;
-    }
-
     public function getSeatInfo(): ?SeatInfo
     {
         return $this->seatInfo ?? null;
@@ -70,5 +72,25 @@ class Ticket
     public function getNumberOfItems(): int
     {
         return $this->numberOfItems;
+    }
+
+    public function getProductTitle(): string
+    {
+        return $this->productTitle;
+    }
+
+    public function getProductDescription(): ?string
+    {
+        return $this->productDescription;
+    }
+
+    public function getTimeslot(): ?string
+    {
+        return $this->timeslot;
+    }
+
+    public function getProductId(): ?string
+    {
+        return $this->productId;
     }
 }

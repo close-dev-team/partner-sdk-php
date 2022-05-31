@@ -9,7 +9,7 @@ use ClosePartnerSdk\Dto\Mapper\SendMessageMapper;
 use ClosePartnerSdk\Dto\UserId;
 use ClosePartnerSdk\HttpClient\Message\RequestBodyMediator;
 
-final class TextMessageOperation extends CloseEndpoint
+final class TextMessageOperation extends CloseOperation
 {
     public function sendToAllChatsForEvent(EventId $eventId, string $text): void
     {

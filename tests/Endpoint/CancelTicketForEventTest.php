@@ -38,7 +38,7 @@ class CancelTicketForEventTest extends EndpointTestCase
 
         $ticketCancelFactory = TicketCancelFactory::create();
 
-        $this->givenSdk()->ticket()->cancelTicket(
+        $this->givenSdk()->ticket()->cancel(
             new EventId('1234'),
             $ticketCancelFactory
         );
@@ -68,7 +68,7 @@ class CancelTicketForEventTest extends EndpointTestCase
 
         $ticketCancelFactory = TicketCancelFactory::create();
 
-        $this->givenSdk()->ticket()->cancelTicket(
+        $this->givenSdk()->ticket()->cancel(
             new EventId('1234'),
             $ticketCancelFactory
         );
@@ -101,7 +101,7 @@ class CancelTicketForEventTest extends EndpointTestCase
                 return $this->mockResponse([]);
             });
 
-        $this->givenSdk()->ticket()->cancelTicket(
+        $this->givenSdk()->ticket()->cancel(
             $eventId,
             $ticketCancelFactory
         );

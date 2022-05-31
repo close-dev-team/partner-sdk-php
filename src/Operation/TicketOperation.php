@@ -11,9 +11,9 @@ use ClosePartnerSdk\Dto\TicketCancelDto;
 use ClosePartnerSdk\Dto\TicketGroup;
 use ClosePartnerSdk\HttpClient\Message\RequestBodyMediator;
 
-final class TicketOperation extends CloseEndpoint
+final class TicketOperation extends CloseOperation
 {
-    public function importTicket(EventId $eventId, TicketGroup $ticketGroup): void
+    public function import(EventId $eventId, TicketGroup $ticketGroup): void
     {
         $this->sdk
             ->getHttpClient()
@@ -27,7 +27,7 @@ final class TicketOperation extends CloseEndpoint
             );
     }
 
-    public function cancelTicket(EventId $eventId, TicketCancelDto $ticketCancelDto): void
+    public function cancel(EventId $eventId, TicketCancelDto $ticketCancelDto): void
     {
         $this->sdk
             ->getHttpClient()

@@ -3,11 +3,7 @@ declare(strict_types=1);
 
 namespace ClosePartnerSdk\Tests\Factory\Dto;
 
-use ClosePartnerSdk\Dto\BubbleInfo;
 use ClosePartnerSdk\Dto\EventTime;
-use ClosePartnerSdk\Dto\Product;
-use ClosePartnerSdk\Dto\SeatInfo;
-use ClosePartnerSdk\Dto\Ticket;
 use ClosePartnerSdk\Dto\TicketCancelDto;
 use DateTime;
 

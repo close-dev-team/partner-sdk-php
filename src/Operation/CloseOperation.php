@@ -6,7 +6,7 @@ namespace ClosePartnerSdk\Operation;
 use ClosePartnerSdk\CloseSdk;
 use ClosePartnerSdk\Config;
 
-abstract class CloseEndpoint
+abstract class CloseOperation
 {
     protected CloseSdk $sdk;
 

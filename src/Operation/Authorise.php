@@ -16,7 +16,7 @@ use ClosePartnerSdk\HttpClient\Message\ResponseMediator;
 use ClosePartnerSdk\Validator\AuthoriseValidator;
 use Http\Client\Common\Exception\ClientErrorException;
 
-final class Authorise extends CloseEndpoint
+final class Authorise extends CloseOperation
 {
     /**
      * @param AuthCredentials $authCredentials

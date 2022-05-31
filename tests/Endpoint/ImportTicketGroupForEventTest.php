@@ -4,14 +4,10 @@ declare(strict_types=1);
 namespace ClosePartnerSdk\Tests\Endpoint;
 
 use ClosePartnerSdk\Dto\EventId;
-use ClosePartnerSdk\Dto\EventTime;
 use ClosePartnerSdk\Dto\Mapper\ImportTicketsMapper;
-use ClosePartnerSdk\Dto\Product;
-use ClosePartnerSdk\Dto\Ticket;
 use ClosePartnerSdk\Dto\TicketGroup;
 use ClosePartnerSdk\Exception\Auth\InvalidCredentialsException;
 use ClosePartnerSdk\Tests\Factory\Dto\TicketGroupFactory;
-use DateTime;
 use Http\Client\Common\Exception\ClientErrorException;
 use Http\Message\RequestMatcher\RequestMatcher;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -42,7 +38,7 @@ class ImportTicketGroupForEventTest extends EndpointTestCase
             });
 
 
-        $this->givenSdk()->ticket()->importTicket(
+        $this->givenSdk()->ticket()->import(
             new EventId('1234'),
             new TicketGroup('+31666111000')
         );
@@ -70,7 +66,7 @@ class ImportTicketGroupForEventTest extends EndpointTestCase
 
         $this->expectException(InvalidCredentialsException::class);
 
-        $this->givenSdk()->ticket()->importTicket(
+        $this->givenSdk()->ticket()->import(
             new EventId('1234'),
             new TicketGroup('+31666111000')
         );
@@ -94,11 +90,11 @@ class ImportTicketGroupForEventTest extends EndpointTestCase
 
 
         $endpoint = $this->givenSdk()->ticket();
-        $endpoint->importTicket(
+        $endpoint->import(
             new EventId('1234'),
             new TicketGroup('+31666111000')
         );
-        $endpoint->importTicket(
+        $endpoint->import(
             new EventId('1234'),
             new TicketGroup('+31666111000')
         );
@@ -134,7 +130,7 @@ class ImportTicketGroupForEventTest extends EndpointTestCase
                 return $this->mockResponse([]);
             });
 
-        $this->givenSdk()->ticket()->importTicket(
+        $this->givenSdk()->ticket()->import(
             $eventId,
             $ticketGroup
         );

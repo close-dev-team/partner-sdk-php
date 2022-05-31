@@ -5,7 +5,6 @@ namespace ClosePartnerSdk\Tests\Factory\Dto;
 
 use ClosePartnerSdk\Dto\BubbleInfo;
 use ClosePartnerSdk\Dto\EventTime;
-use ClosePartnerSdk\Dto\Product;
 use ClosePartnerSdk\Dto\SeatInfo;
 use ClosePartnerSdk\Dto\Ticket;
 use DateTime;
@@ -20,8 +19,8 @@ final class TicketFactory
 
         return new Ticket(
             $scanCode,
-            self::buildProduct($productTitle),
-            self::buildEventTime($startDateTime)
+            self::buildEventTime($startDateTime),
+            $productTitle
         );
     }
 
@@ -30,11 +29,14 @@ final class TicketFactory
         $scanCode = sprintf('SCAN-%s',rand(10000,110000));
         $productTitle = sprintf('Simple product %s', rand(10000,110000));
         $startDateTime = '2022-01-03T10:00:00+01:00';
+        $timeslot = '11:00-12:00';
 
         return new Ticket(
             $scanCode,
-            self::buildProduct($productTitle),
-            self::buildEventTime($startDateTime)->withTimeSlot('10:00-11:00')
+            self::buildEventTime($startDateTime),
+            $productTitle,
+            1,
+            $timeslot
         );
     }
 
@@ -43,14 +45,17 @@ final class TicketFactory
         $scanCode = sprintf('SCAN-%s',rand(10000,110000));
         $productId = (string)rand(10000, 110000);
         $productTitle = sprintf('Simple product %s', $productId);
+        $productDescription = sprintf('Simple description %s', $productId);
         $startDateTime = '2022-01-03T10:00:00+01:00';
 
         return new Ticket(
             $scanCode,
-            self::buildProduct($productTitle)
-                ->withDescription('The best product description')
-                ->withId($productId),
-            self::buildEventTime($startDateTime)
+            self::buildEventTime($startDateTime),
+            $productTitle,
+            1,
+            null,
+            $productDescription,
+            $productId
         );
     }
 
@@ -82,10 +87,5 @@ final class TicketFactory
     private static function buildEventTime(string $startDateTime): EventTime
     {
         return new EventTime(new DateTime($startDateTime));
-    }
-
-    private static function buildProduct(string $productTitle): Product
-    {
-        return new Product($productTitle);
     }
 }

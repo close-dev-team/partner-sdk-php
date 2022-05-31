@@ -6,7 +6,6 @@ namespace ClosePartnerSdk\Dto\Mapper;
 use ClosePartnerSdk\Dto\BubbleInfo;
 use ClosePartnerSdk\Dto\EventId;
 use ClosePartnerSdk\Dto\EventTime;
-use ClosePartnerSdk\Dto\Product;
 use ClosePartnerSdk\Dto\SeatInfo;
 use ClosePartnerSdk\Dto\Ticket;
 use ClosePartnerSdk\Dto\TicketGroup;
@@ -37,9 +36,25 @@ final class ImportTicketsMapper
         $properties = [
             'scan_code' => $ticket->getScanCode(),
             'number_of_items' => $ticket->getNumberOfItems(),
+            'product_title' => $ticket->getProductTitle()
         ];
+        $productDescription = $ticket->getProductDescription();
+        $productId = $ticket->getProductId();
+        $timeslot = $ticket->getTimeslot();
+
         $properties = array_merge($properties, self::forEventTime($ticket->getEventTime()));
-        $properties = array_merge($properties, self::forProduct($ticket->getProduct()));
+        if ($timeslot !== null) {
+            $properties['time_slot'] = $timeslot;
+        }
+
+        if ($productDescription !== null) {
+            $properties['product_description'] = $productDescription;
+        }
+
+        if ($productId !== null) {
+            $properties['product_id'] = $productId;
+        }
+
         $bubbleInfo = $ticket->getBubbleInfo();
         if ($bubbleInfo !== null) {
             $properties = array_merge($properties, [

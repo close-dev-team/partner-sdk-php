@@ -10,7 +10,7 @@ use ClosePartnerSdk\Dto\Mapper\FlowPropertiesMapper;
 use ClosePartnerSdk\Dto\UserId;
 use ClosePartnerSdk\HttpClient\Message\RequestBodyMediator;
 
-final class FlowPropertyOperation extends CloseEndpoint
+final class FlowPropertyOperation extends CloseOperation
 {
     /**
      * @param EventId $eventId
