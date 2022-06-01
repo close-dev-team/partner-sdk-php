@@ -14,9 +14,9 @@ In this Close PHP SDK user guide we will explain and demonstrate the use-cases y
   - [Getting Help](#getting-help)
   - [Useful terms (DTOs)](#useful-terms)
   
-####About the Close app
+#### About the Close app
 
-#####What is the Close app?
+##### What is the Close app?
 The Close app enables businesses to connect to their visitors/clients in a hyper-personalised way. Close started out in the event industry where we allow visitors to receive their tickets, practical information and live-updates all in one spot: The Close app. 
 
 Using the Close PHP SDK you can easily integrate your APIs and systems with our messaging technology. 
