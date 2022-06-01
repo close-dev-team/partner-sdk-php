@@ -12,7 +12,6 @@ In this Close PHP SDK user guide we will explain and demonstrate the use-cases y
     - [Importing and canceling tickets](#import-tickets-using-the-close-app)
     - [Setting or getting properties for users or events](#flowproperty)
   - [Getting Help](#getting-help)
-  - [Useful terms (DTOs)](#useful-terms)
   
 ### About the Close app
 
@@ -83,10 +82,19 @@ One of the core features of the Close PHP SDK is sending ultra personalised text
 
 | Operations | Use-case |
 | -------- | ----------- |
-|[sendToAllChatsForEvent(eventId, text)](/examples/text%20message/sendToAllChatsForEvent.md)| Use when you need to reach all users for an event|
-|[sendToAllUsersForChat(eventId, chatId, text)](/examples/text%20message/sendToAllUsersForChat.md)|Use when you need to reach all users in one specific chat for an event |
-|[sendToUserInChat(eventId, chatId, userId, text)](/examples/text%20message/sendToUserInChat.md)|Use when you need to reach one specific user, in a specific chat for an event|
-|[sendToUserInAllChats(eventId, userId)](/examples/text%20message/sendToUserInAllChats.md)|Use when you need to reach one specific user in all chats for one event|
+|[sendToAllChatsForEvent(eventId, text)](/examples/text%20message/sendToAllChatsForEvent.md)| Use when you need to reach all users for an event.|
+|[sendToAllUsersForChat(eventId, chatId, text)](/examples/text%20message/sendToAllUsersForChat.md)|Use when you need to reach all users in one specific chat for an event.|
+|[sendToUserInChat(eventId, chatId, userId, text)](/examples/text%20message/sendToUserInChat.md)|Use when you need to reach one specific user, in a specific chat for an event.|
+|[sendToUserInAllChats(eventId, userId)](/examples/text%20message/sendToUserInAllChats.md)|Use when you need to reach one specific user in all chats for one event.|
+
+You can create personalised messages using template variables. To do this you can use existing [flowproperties](#flowproperty) or set new ones first. These flowproperties can then be used in messages like this:
+
+* {user.nickname}
+* {user.phonenumber}
+* {show.date}
+* {show.venue}
+* {chat.user.*} values stored per user e.g. survey answers.
+* {chat.user.import.*} values linked to imported tickets.
 
 #### ticket
 The Close app can be used to provide digital tickets to event-visitors. Using the Close PHP SDK you can both import and cancel tickets. 
@@ -99,7 +107,7 @@ The Close app can be used to provide digital tickets to event-visitors. Using th
 
 
 #### flowproperty
-In order to create a personalised messaging experience it can be needed to set or get a custom property for a user or event. You can do this using the flowproperty operations.
+In order to create a personalised messaging experience it can be needed to set or get a custom property for a user or event. You can do this using the flowproperty operations. Using these properties you can create templated text messages, conditional messages and more.
 
 
 | Operation | Use-case |
@@ -108,7 +116,7 @@ In order to create a personalised messaging experience it can be needed to set o
 |[setForAllUsersInAllChats(eventId, itemFlowProperties)](/examples/flowproperties/setForAllUsersInAllChats.md)|Set a property for all users in all chats for an event.|
 |[setForUserInAllChats(eventId, userId, itemFlowProperties)](/examples/flowproperties/setForUserInAllChats.md)|Set a property for one specific user in all chats for one specific event.|
 |[getProperties(eventId, chatId, userId)](/examples/flowproperties/getProperties.md)|Get an overview of all flowproperties of a specific user, in a specific chat for an event.|
-|[render(eventId, chatId, userId, text)](/examples/flowproperties/render.md)|-|
+|[render(eventId, chatId, userId, text)](/examples/flowproperties/render.md)|Use to test a property for a specific user in a specific chat. |
 
 ---
 
@@ -122,14 +130,5 @@ Feel free to let us know if you have encountered any questions or problems using
 
 
 [contact-us]: devteam@thecloseapp.com
-[partner-api-doc]: https://partner.closeapi.nl/api/documentation
-[apache-license]: https://www.apache.org/licenses/LICENSE-2.0
-[PSR]: https://www.php-fig.org/psr/
-
 [open-issue]: https://github.com/close-dev-team/partner-sdk-php/issues/new/choose
-[open-pr]: https://github.com/close-dev-team/partner-sdk-php/compare
-
-[the-close-app]: http://thecloseapp.com
-[guzzle]: http://guzzlephp.org
-[composer]: http://getcomposer.org
 

@@ -9,6 +9,7 @@ The **Close SDK for PHP** makes it easy for developers to communicate with [The 
 Jump To:
 * [Getting Started](#Getting-Started)
 * [Quick Examples](#Quick-Examples)
+* [Full user guide](/USERGUIDE.md)
 * [Getting Help](#Getting-Help)
 * [Features](#Features)
 * [Contributing](#Contributing)
