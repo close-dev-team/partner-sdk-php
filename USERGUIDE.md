@@ -1,7 +1,7 @@
 # Close PHP SDK user guide
 In this Close PHP SDK user guide we will explain and demonstrate the use-cases you will encounter when partnering with the Close app and their according SDK elements.
 
-**Table of Contents:**    
+### Table of Contents:   
   - [About the close app:](#about-the-close-app)
     - [What is the Close app?](#what-is-the-close-app)
     - [Close system overview](#close-system-overview)
@@ -14,14 +14,14 @@ In this Close PHP SDK user guide we will explain and demonstrate the use-cases y
   - [Getting Help](#getting-help)
   - [Useful terms (DTOs)](#useful-terms)
   
-#### About the Close app
+### About the Close app
 
-##### What is the Close app?
+#### What is the Close app?
 The Close app enables businesses to connect to their visitors/clients in a hyper-personalised way. Close started out in the event industry where we allow visitors to receive their tickets, practical information and live-updates all in one spot: The Close app. 
 
 Using the Close PHP SDK you can easily integrate your APIs and systems with our messaging technology. 
 
-#####Close system overview
+#### Close system overview
 ```mermaid
 graph TD;
 Close-App-->Event;
@@ -30,7 +30,7 @@ Chat-->User;
 Chat-->Flow-properties-Y;
 User-->Flow-properties-X;
 ```
-#### Getting Started
+### Getting Started
 
 For now it is only possible to start using the Close PHP SDK by getting in touch with us first. Get in touch with your contact person at Close or [contact us][contact-us] directly. 
 
@@ -46,10 +46,10 @@ For now it is only possible to start using the Close PHP SDK by getting in touch
 
 
 
-#### Examples [Code & Use-cases]
+### Examples [Code & Use-cases]
 
 
-##### Setting up the Close PHP SDK client.
+#### Setting up the Close PHP SDK client.
 Let's start with instantiating the Close client using the client credentials given to you by Close. 
 
 ```php
