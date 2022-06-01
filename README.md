@@ -76,7 +76,7 @@ try {
   // Call endpoint
   $sdk
     ->ticket()
-    ->importTicket($eventId, $ticketGroup);
+    ->import($eventId, $ticketGroup);
 } catch (CloseSdkException $e) {
     echo "The ticket has not been imported.\n";
     // We recommend to retry after a couple of seconds.
@@ -115,7 +115,7 @@ try {
   // Call endpoint
   $sdk
     ->ticket()
-    ->importTicket($eventId, $ticketGroup);
+    ->import($eventId, $ticketGroup);
 } catch (CloseSdkException $e) {
     echo "The ticket has not been imported.\n";
     // We recommend to retry after a couple of seconds.
@@ -143,7 +143,7 @@ try {
   // Call cancel endpoint
   $sdk
     ->ticket()
-    ->cancelTicket($eventId, $ticketCancelDto);
+    ->cancel($eventId, $ticketCancelDto);
 } catch (CloseSdkException $e) {
     echo "The ticket has not been cancelled.\n";
     // We recommend to retry after a couple of seconds.
@@ -172,6 +172,35 @@ try {
     ->sendToAllUsersForChat($eventId, $chatId, $message);
 } catch (CloseSdkException $e) {
     echo "The text has not been sent.\n";
+    // We recommend to retry after a couple of seconds.
+}
+```
+
+### Flow Properties
+
+#### To set a value in the flow properties
+
+```php
+<?php
+use ClosePartnerSdk\CloseSdk;
+use ClosePartnerSdk\Dto\EventId;
+use ClosePartnerSdk\Dto\ItemFlowProperty;
+use ClosePartnerSdk\Exception\CloseSdkException;
+
+try {
+  // Define DTO structure
+  $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
+  $properties = [
+    new ItemFlowProperty('vip', 'This is a great vip event!'),
+    new ItemFlowProperty('promotion', 'This event has a special promotion'),
+  ];
+  
+  $this->givenSdk()->flowProperty()->setForAllUsersInAllChats(
+    $eventId,
+    $properties
+  );
+} catch (CloseSdkException $e) {
+    echo "The property has not been sent.\n";
     // We recommend to retry after a couple of seconds.
 }
 ```
