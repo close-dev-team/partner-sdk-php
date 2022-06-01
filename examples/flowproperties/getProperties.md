@@ -16,9 +16,8 @@ try {
     $chatId = new ChatId('CLECxxxxx');
     $userId = new UserId('CLUSxxxxxxxxx');
   
-  $sdk
-    ->textMessage()
-    ->getProperties($eventId, $chatId, $userId):;
+  $this->givenSdk()->flowProperty()->getProperties($eventId, $chatId, $userId);
+
 } catch (CloseSdkException $e) {
     echo "The properties could not be retrieved. \n";
     // We recommend to retry after a couple of seconds.
