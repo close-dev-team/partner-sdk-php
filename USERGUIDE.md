@@ -83,10 +83,10 @@ One of the core features of the Close PHP SDK is sending ultra personalised text
 
 | Operations | Use-case |
 | -------- | ----------- |
-|**sendToAllChatsForEvent(eventId, text)**| Use when you need to reach all users for an event|
-|**sendToAllUsersForChat(eventId, chatId, text)**|Use when you need to reach all users in one specific chat for an event |
-|**sendToUserInChat(eventId, chatId, userId, text)**|Use when you need to reach one specific user, in a specific chat for an event|
-|**toUserInAllChats(eventId, userId)**|Use when you need to reach one specific user in all chats for one event|
+|[sendToAllChatsForEvent(eventId, text)](/examples/text%20message/sendToAllChatsForEvent.md)| Use when you need to reach all users for an event|
+|[sendToAllUsersForChat(eventId, chatId, text)](/examples/text%20message/sendToAllUsersForChat.md)|Use when you need to reach all users in one specific chat for an event |
+|[sendToUserInChat(eventId, chatId, userId, text)](/examples/text%20message/sendToUserInChat.md)|Use when you need to reach one specific user, in a specific chat for an event|
+|[sendToUserInAllChats(eventId, userId)](/examples/text%20message/sendToUserInAllChats.md)|Use when you need to reach one specific user in all chats for one event|
 
 #### ticket()
 The Close app can be used to provide digital tickets to event-visitors. Using the Close PHP SDK you can both import and cancel tickets. 

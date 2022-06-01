@@ -1,9 +1,9 @@
 # Canceling tickets
 The Close app can be used to provide digital tickets to event-visitors. Using the Close PHP SDK you can both import and cancel tickets. 
 
-To cancel tickets use the Ticket cancel operation.
+To cancel tickets use the Ticket cancel operation. To read more about importing tickets go [here](/examples/ticket/import.md).
 
-#####example:
+##### example:
 ```php
 <?php
 use ClosePartnerSdk\Dto\EventId;
@@ -28,9 +28,11 @@ try {
     // We recommend to retry after a couple of seconds.
 }
 ```
-#####DTOs explained:
+##### DTOs explained:
 | DTO | info |
 | -------- | ----------- |
 |EventId| Identifies one specific event.|
 |EventTime| The DateTime at wich the event is planned.|
 |TicketCancelDTO| Used to identify a specific ticket to be canceled.|
+
+[Back to User Guide](/USERGUIDE.md)
