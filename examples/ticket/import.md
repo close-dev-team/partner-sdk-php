@@ -38,4 +38,4 @@ try {
 |Ticket| A ticket for an event.|
 |TicketGroup| A collection of tickets linked to telephone number of the ticket buyer.|
 
-[Back to User Guide](/USERGUIDE.md)
+[Back to User Guide](/USERGUIDE.md#ticket)

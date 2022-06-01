@@ -28,4 +28,4 @@ try {
 |EventId| Identifies one specific event. Always starts with "CLEV"|
 |Message| A string of text that you'd like to send.|
 
-[Back to User Guide](/USERGUIDE.md)
+[Back to User Guide](/USERGUIDE.md#textmessage)

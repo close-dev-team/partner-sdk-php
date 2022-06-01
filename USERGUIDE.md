@@ -78,7 +78,7 @@ Now that you have the Close Client setup you're ready to continue.
 
 ### Available classes:
 
-#### TextMessage()
+#### TextMessage
 One of the core features of the Close PHP SDK is sending ultra personalised text messages to Close users. There are 4 operations available in the TextMessage class, with each a different use-case. 
 
 | Operations | Use-case |
@@ -88,7 +88,7 @@ One of the core features of the Close PHP SDK is sending ultra personalised text
 |[sendToUserInChat(eventId, chatId, userId, text)](/examples/text%20message/sendToUserInChat.md)|Use when you need to reach one specific user, in a specific chat for an event|
 |[sendToUserInAllChats(eventId, userId)](/examples/text%20message/sendToUserInAllChats.md)|Use when you need to reach one specific user in all chats for one event|
 
-#### ticket()
+#### ticket
 The Close app can be used to provide digital tickets to event-visitors. Using the Close PHP SDK you can both import and cancel tickets. 
 
 
@@ -98,19 +98,20 @@ The Close app can be used to provide digital tickets to event-visitors. Using th
 |[cancel(eventId, ticketCancelDto)](/examples/ticket/cancel.md)|Use when you want to cancel a ticket.|
 
 
-#### flowproperty()
+#### flowproperty
 In order to create a personalised messaging experience it can be needed to set or get a custom property for a user or event. You can do this using the flowproperty operations.
 
 
 | Operation | Use-case |
 | -------- | ----------- |
-|**setForOneUserInOneChat(eventId,chatId, userId, itemFlowProperties)**| Set a property for one specific user in one specific chat for an event.|
-|**setForAllUsersInAllChats(eventId, itemFlowProperties)**|Set a property for all users in all chats for an event.|
-|**setForUserInAllChats(eventId, userId, itemFlowProperties)**|Set a property for one specific user in all chats for one specific event.|
-|**getProperties(eventId, chatId, userId)**|Get an overview of all flowproperties of a specific user, in a specific chat for an event.|
-|**render(eventId, chatId, userId, text)**|-|
+|[setForOneUserInOneChat(eventId,chatId, userId, itemFlowProperties)](/examples/flowproperties/setForOneUserInOneChat.md)| Set a property for one specific user in one specific chat for an event.|
+|[setForAllUsersInAllChats(eventId, itemFlowProperties)](/examples/flowproperties/setForAllUsersInAllChats.md)|Set a property for all users in all chats for an event.|
+|[setForUserInAllChats(eventId, userId, itemFlowProperties)](/examples/flowproperties/setForUserInAllChats.md)|Set a property for one specific user in all chats for one specific event.|
+|[getProperties(eventId, chatId, userId)](/examples/flowproperties/getProperties.md)|Get an overview of all flowproperties of a specific user, in a specific chat for an event.|
+|[render(eventId, chatId, userId, text)](/examples/flowproperties/render.md)|-|
 
 ---
+
 #### Getting Help
 
 Feel free to let us know if you have encountered any questions or problems using our SDK. We will try to make sure that we will get back to you as soon as possible.

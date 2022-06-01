@@ -1,6 +1,5 @@
-# Sending a message to all users in one specific chat.
-Do you want to send a message to everyone in one specific chat? Then you can use the sendToAllUsersForChat() operation.
-
+# Get all properties of one specific user in one specific chat for an event.
+Do you want to know the properties of one specific user? Then use the getProperties() operation. 
 
 ##### example:
 ```php
@@ -8,19 +7,20 @@ Do you want to send a message to everyone in one specific chat? Then you can use
 use ClosePartnerSdk\CloseSdk;
 use ClosePartnerSdk\Dto\EventId;
 use ClosePartnerSdk\Dto\ChatId;
+use ClosePartnerSdk\Dto\UserId;
 use ClosePartnerSdk\Exception\CloseSdkException;
 
 try {
   // Define DTO structure
-  $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
-  $chatId = new ChatId('CLECxxxxx');
-  $message = 'This is the message to send';
+    $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
+    $chatId = new ChatId('CLECxxxxx');
+    $userId = new UserId('CLUSxxxxxxxxx');
   
   $sdk
     ->textMessage()
-    ->sendToAllUsersForChat($eventId, $chatId, $message);
+    ->getProperties($eventId, $chatId, $userId):;
 } catch (CloseSdkException $e) {
-    echo "The text has not been sent.\n";
+    echo "The properties could not be retrieved. \n";
     // We recommend to retry after a couple of seconds.
 }
 ```
@@ -28,7 +28,7 @@ try {
 | DTO | info |
 | -------- | ----------- |
 |EventId| Identifies one specific event. Always starts with "CLEV"|
+|UserId| Identifies one specific user. Always starts with "CLUS"|
 |ChatId| Identifies one specific chat. Always starts with "CLEC"|
-|Message| A string of text that you'd like to send.|
 
 [Back to User Guide](/USERGUIDE.md#textmessage)

@@ -30,4 +30,4 @@ try {
 |UserId| Identifies one specific user. Always starts with "CLUS"|
 |Message| A string of text that you'd like to send.|
 
-[Back to User Guide](/USERGUIDE.md)
+[Back to User Guide](/USERGUIDE.md#textmessage)

@@ -35,4 +35,4 @@ try {
 |EventTime| The DateTime at wich the event is planned.|
 |TicketCancelDTO| Used to identify a specific ticket to be canceled.|
 
-[Back to User Guide](/USERGUIDE.md)
+[Back to User Guide](/USERGUIDE.md#ticket)
