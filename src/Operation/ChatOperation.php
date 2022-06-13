@@ -6,13 +6,8 @@ namespace ClosePartnerSdk\Operation;
 use ClosePartnerSdk\Dto\ChatId;
 use ClosePartnerSdk\Dto\EventId;
 use ClosePartnerSdk\Dto\Chat;
-use ClosePartnerSdk\Dto\ItemFlowProperty;
-use ClosePartnerSdk\Dto\Mapper\FlowPropertiesMapper;
 use ClosePartnerSdk\Dto\User;
 use ClosePartnerSdk\Dto\UserId;
-use ClosePartnerSdk\HttpClient\Message\RequestBodyMediator;
-use ClosePartnerSdk\HttpClient\Message\ResponseMediator;
-use Psr\Http\Message\ResponseInterface;
 
 final class ChatOperation extends CloseOperation
 {
