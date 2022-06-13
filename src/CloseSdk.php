@@ -6,6 +6,7 @@ namespace ClosePartnerSdk;
 use ClosePartnerSdk\Dto\AuthCredentials;
 use ClosePartnerSdk\Dto\Token;
 use ClosePartnerSdk\Operation\Authorise;
+use ClosePartnerSdk\Operation\ChatOperation;
 use ClosePartnerSdk\Operation\FlowPropertyOperation;
 use ClosePartnerSdk\Operation\TicketOperation;
 use ClosePartnerSdk\Operation\TextMessageOperation;
@@ -98,6 +99,18 @@ class CloseSdk
             $this->authoriseRequest();
         }
         return new FlowPropertyOperation($this);
+    }
+
+    /**
+     * @throws InvalidCredentialsException
+     * @throws Exception\ApiErrorException
+     */
+    public function chat(): ChatOperation
+    {
+        if ($this->token === null) {
+            $this->authoriseRequest();
+        }
+        return new ChatOperation($this);
     }
 
     public function getHttpClient(): HttpMethodsClientInterface
