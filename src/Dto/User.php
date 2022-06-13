@@ -41,11 +41,12 @@ class User
         return $this->userId;
     }
 
-    public function getPhoneNumber(): string
+    public function getPhoneNumber(): ?string
     {
         return $this->phoneNumber;
     }
-    public function getNickname(): string
+    
+    public function getNickname(): ?string
     {
         return $this->nickname;
     }
