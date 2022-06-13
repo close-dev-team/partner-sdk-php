@@ -52,6 +52,6 @@ class RenderFlowPropertiesFromAUserInAChatForAnEventTest extends EndpointTestCas
             $text,
         );
 
-        $this->assertEquals('John', $renderedValue);
+        $this->assertEquals('Hello John', $renderedValue);
     }
 }
