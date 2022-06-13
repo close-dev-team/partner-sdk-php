@@ -21,6 +21,7 @@ final class ChatOperation extends CloseOperation
      * @param ChatId $chatId
      * @return Chat
      * @throws \Http\Client\Exception
+     * @throws \JsonException
      */
     public function lookupChat(EventId $eventId, ChatId $chatId): Chat
     {
@@ -31,8 +32,12 @@ final class ChatOperation extends CloseOperation
                 []
             );
 
-        $obj = json_decode($response->getBody()->getContents());
-        $chat = new Chat(new EventId($obj->event_id), new ChatId($obj->chat_id));
+        $obj = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
+
+        $chat = new Chat(
+            new EventId($obj->event_id),
+            new ChatId($obj->chat_id)
+        );
         foreach ($obj->users as $user) {
             $userInChat = new User(new UserId($user->user_id));
             if (!empty($user->phone_number)) {
