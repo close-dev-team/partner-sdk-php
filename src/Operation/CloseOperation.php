@@ -17,6 +17,10 @@ abstract class CloseOperation
 
     protected function buildUriWithLatestVersion(string $endpoint): string
     {
+        // drop trailing slash
+        if (str_starts_with($endpoint, '/')) {
+            $endpoint = substr($endpoint, 1);
+        }
         return sprintf('/api/%s/%s',Config::VERSION, $endpoint);
     }
 }

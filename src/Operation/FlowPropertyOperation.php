@@ -97,12 +97,13 @@ final class FlowPropertyOperation extends CloseOperation
      * @param UserId $userId
      * @param ChatId $chatId
      * @param string $text
-     * @return void
+     * @return string
      * @throws \Http\Client\Exception
+     * @throws \JsonException
      */
-    public function render(EventId $eventId, ChatId $chatId, UserId $userId, string $text): void
+    public function render(EventId $eventId, ChatId $chatId, UserId $userId, string $text): string
     {
-        $this->sdk
+        $response = $this->sdk
             ->getHttpClient()
             ->post(
                 $this->buildUriWithLatestVersion('/events/'.$eventId.'/chats/'.$chatId.'/users/'.$userId.'/properties/render'),
@@ -112,5 +113,12 @@ final class FlowPropertyOperation extends CloseOperation
                     FlowPropertiesMapper::render($text)
                 )
             );
+
+        $obj = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
+        if (!isset($obj) && !isset($obj->text) && empty($obj->text)) {
+            return "";
+        }
+
+        return $obj->text;
     }
 }

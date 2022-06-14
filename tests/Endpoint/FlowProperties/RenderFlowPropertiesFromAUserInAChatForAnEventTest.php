@@ -42,14 +42,16 @@ class RenderFlowPropertiesFromAUserInAChatForAnEventTest extends EndpointTestCas
                         FlowPropertiesMapper::render($text),
                         json_decode($request->getBody()->getContents(), true),
                     );
-                    return $this->mockResponse([]);
+                    return $this->mockResponse(['text'=>'Hello John']);
                 });
 
-        $this->givenSdk()->flowProperty()->render(
+        $renderedValue = $this->givenSdk()->flowProperty()->render(
             $eventId,
             $chatId,
             $userId,
             $text,
         );
+
+        $this->assertEquals('Hello John', $renderedValue);
     }
 }
