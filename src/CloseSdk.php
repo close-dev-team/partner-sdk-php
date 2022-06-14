@@ -7,6 +7,8 @@ use ClosePartnerSdk\Dto\AuthCredentials;
 use ClosePartnerSdk\Dto\Token;
 use ClosePartnerSdk\Operation\Authorise;
 use ClosePartnerSdk\Operation\ChatOperation;
+use ClosePartnerSdk\Operation\EventOperation;
+use ClosePartnerSdk\Operation\FlowConfigOperation;
 use ClosePartnerSdk\Operation\FlowPropertyOperation;
 use ClosePartnerSdk\Operation\TicketOperation;
 use ClosePartnerSdk\Operation\TextMessageOperation;
@@ -111,6 +113,30 @@ class CloseSdk
             $this->authoriseRequest();
         }
         return new ChatOperation($this);
+    }
+
+    /**
+     * @throws InvalidCredentialsException
+     * @throws Exception\ApiErrorException
+     */
+    public function event(): EventOperation
+    {
+        if ($this->token === null) {
+            $this->authoriseRequest();
+        }
+        return new EventOperation($this);
+    }
+
+    /**
+     * @throws InvalidCredentialsException
+     * @throws Exception\ApiErrorException
+     */
+    public function flowConfig(): FlowConfigOperation
+    {
+        if ($this->token === null) {
+            $this->authoriseRequest();
+        }
+        return new FlowConfigOperation($this);
     }
 
     public function getHttpClient(): HttpMethodsClientInterface
