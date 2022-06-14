@@ -68,6 +68,7 @@ try {
   $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
   $ticketGroup = new TicketGroup('+31666111000');
   $productTitle = 'Singular entrance ticket';
+  $scanCode = '1234567890123';
   $ticket = new Ticket(
       $scanCode,
       new EventTime(new DateTime('2022-10-10 20:00:00')),
@@ -98,6 +99,7 @@ try {
   $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
   $ticketGroup = new TicketGroup('+31666111000');
   $productTitle = 'Singular entrance ticket';
+  $scanCode = '1234567890123';
   
   $ticket = new Ticket(
       $scanCode,
