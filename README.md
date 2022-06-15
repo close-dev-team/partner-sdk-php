@@ -198,7 +198,7 @@ try {
     new ItemFlowProperty('promotion', 'This event has a special promotion'),
   ];
   
-  $this->givenSdk()->flowProperty()->setForAllUsersInAllChats(
+  $sdk->flowProperty()->setForAllUsersInAllChats(
     $eventId,
     $properties
   );
