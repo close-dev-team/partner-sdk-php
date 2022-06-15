@@ -141,7 +141,7 @@ try {
   $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
   $scanCode = 'ABCD';
   $phoneNumber = '+31631111111';
-  $eventTime = new EventTime(new DateTime('2022-10-10 20:00:00'))
+  $eventTime = new EventTime(new DateTime('2022-10-10 20:00:00'));
   $ticketCancelDto = new TicketCancelDto($scanCode, $phoneNumber, $eventTime);
   // Call cancel endpoint
   $sdk
