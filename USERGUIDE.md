@@ -129,6 +129,6 @@ Feel free to let us know if you have encountered any questions or problems using
 
 
 
-[contact-us]: devteam@thecloseapp.com
+[contact-us]: mailto:devteam@thecloseapp.com
 [open-issue]: https://github.com/close-dev-team/partner-sdk-php/issues/new/choose
 
