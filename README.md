@@ -106,14 +106,15 @@ try {
       new EventTime(new DateTime('2022-10-10 20:00:00')),
       $productTitle
   );
-  $seatInfo = new SeatInfo;
-  $ticket->withSeatInfo(
-     $seatInfo
-       ->withChair('12')
-       ->withEntrance('E')
-       ->withRow('3')
-       ->withSection('A')
-  )
+
+  $seatInfo = new SeatInfo()
+    ->withChair('12')
+    ->withEntrance('E')
+    ->withRow('3')
+    ->withSection('A');
+
+  $ticket = $ticket->withSeatInfo($seatInfo);
+
   $ticketGroup->addTicket($ticket);
   // Call endpoint
   $sdk
