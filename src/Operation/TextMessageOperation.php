@@ -30,7 +30,7 @@ final class TextMessageOperation extends CloseOperation
         $this->sdk
             ->getHttpClient()
             ->post(
-                $this->buildUriWithLatestVersion('/events/'.$eventId.'chats/'.$chatId.'/messages/text'),
+                $this->buildUriWithLatestVersion('/events/'.$eventId.'/chats/'.$chatId.'/messages/text'),
                 [],
                 RequestBodyMediator::convertStreamFromArray(
                     $this->sdk,
@@ -44,7 +44,7 @@ final class TextMessageOperation extends CloseOperation
         $this->sdk
             ->getHttpClient()
             ->post(
-                $this->buildUriWithLatestVersion('/events/'.$eventId.'chats/'.$chatId.'users/'.$userId.'/messages/text'),
+                $this->buildUriWithLatestVersion('/events/'.$eventId.'/chats/'.$chatId.'/users/'.$userId.'/messages/text'),
                 [],
                 RequestBodyMediator::convertStreamFromArray(
                     $this->sdk,
@@ -58,7 +58,7 @@ final class TextMessageOperation extends CloseOperation
         $this->sdk
             ->getHttpClient()
             ->post(
-                $this->buildUriWithLatestVersion('/events/'.$eventId.'users/'.$userId.'/messages/text'),
+                $this->buildUriWithLatestVersion('/events/'.$eventId.'/users/'.$userId.'/messages/text'),
                 [],
                 RequestBodyMediator::convertStreamFromArray(
                     $this->sdk,
