@@ -22,7 +22,7 @@ Jump To:
 3. **Install the SDK** – The recommended way to use the Close SDK is by installing it with [Composer][composer]:
 
    ```
-   composer require close-dev-team/partner-sdk-php
+   composer require close/partner-sdk
    ```
 
 4. **Using the SDK** – In this page you will learn how to use the SDK, but if you want to get more information about the calls, you can always see our [Close Partner API Documentation][partner-api-doc], which this SDK is a wrapper of.
