@@ -27,6 +27,9 @@ Jump To:
 
 4. **Using the SDK** – In this page you will learn how to use the SDK, but if you want to get more information about the calls, you can always see our [Close Partner API Documentation][partner-api-doc], which this SDK is a wrapper of.
 
+## Full user guide
+For an in-depth explanation of the Close app and an elaborate overview of the possibilities of our PHP SDK visit chec kout our [Full user guide](/USERGUIDE.md)
+
 ## Quick Examples
 
 ### Create the Close SDK client
