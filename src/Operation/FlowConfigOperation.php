@@ -64,7 +64,7 @@ final class FlowConfigOperation extends CloseOperation
         $response = $this->sdk
             ->getHttpClient()
             ->get(
-                $this->buildUriWithLatestVersion('/events/' . $eventId . '/config/chats/' . $chatId),
+                $this->buildUriWithLatestVersion('/events/' . $eventId . '/chats/' . $chatId . '/config'),
                 []
             );
 
@@ -89,7 +89,7 @@ final class FlowConfigOperation extends CloseOperation
         $this->sdk
             ->getHttpClient()
             ->post(
-                $this->buildUriWithLatestVersion('/events/' . $eventId . '/config/chats/' . $chatId),
+                $this->buildUriWithLatestVersion('/events/' . $eventId . '/chats/' . $chatId . '/config'),
                 [],
                 RequestBodyMediator::convertStreamFromArray(
                     $this->sdk,
