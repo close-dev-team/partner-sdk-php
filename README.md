@@ -209,6 +209,78 @@ try {
 }
 ```
 
+#### Setting properties in the chat
+You can also retrieve and set properties that will be available for everyone who is in the chat of the show.
+
+For retrieving all the flow properties:
+
+```php
+<?php
+use ClosePartnerSdk\CloseSdk;
+use ClosePartnerSdk\Dto\EventId;
+use ClosePartnerSdk\Exception\CloseSdkException;
+
+try {
+  // Define DTO structure
+  $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
+  
+  $properties = $sdk->flowConfig()->getChatConfig($eventId);
+  
+} catch (CloseSdkException $e) {
+    echo "The event is not found sent.\n";
+    // We recommend to retry after a couple of seconds.
+}
+```
+
+For setting a property for the whole chat:
+
+```php
+<?php
+use ClosePartnerSdk\CloseSdk;
+use ClosePartnerSdk\Dto\EventId;
+use ClosePartnerSdk\Dto\ChatId;
+use ClosePartnerSdk\Dto\ItemFlowProperty;
+use ClosePartnerSdk\Exception\CloseSdkException;
+
+try {
+  // Define DTO structure
+  $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
+  $chatId = new ChatId('CLECxxxxx');
+  
+  $properties = $sdk->flowConfig()->getChatConfig($eventId);
+  
+   $itemFlowProperties = [
+      new ItemFlowProperty('vip', 'true'),
+      new ItemFlowProperty('promotion', 'This chat is the selected winner!'),
+   ];
+
+    $this->givenSdk()->flowConfig()->setChatConfig($eventId, $chatId, $itemFlowProperties);
+  
+} catch (CloseSdkException $e) {
+    echo "The event is not found sent.\n";
+    // We recommend to retry after a couple of seconds.
+}
+```
+
+```php
+<?php
+use ClosePartnerSdk\CloseSdk;
+use ClosePartnerSdk\Dto\EventId;
+use ClosePartnerSdk\Dto\ItemFlowProperty;
+use ClosePartnerSdk\Exception\CloseSdkException;
+
+try {
+  // Define DTO structure
+  $eventId = new EventId('CLEV3BX47D58YCMERC6CGJ2L7xxx');
+  
+  $properties = $sdk->flowConfig()->getChatConfig($eventId);
+  
+} catch (CloseSdkException $e) {
+    echo "The event is not found sent.\n";
+    // We recommend to retry after a couple of seconds.
+}
+```
+
 ## Getting Help
 
 Feel free to let us know if you have encountered any questions or problems using our SDK. We will try to make sure that we will get back to you as soon as possible.
