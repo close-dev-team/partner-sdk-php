@@ -254,7 +254,7 @@ try {
       new ItemFlowProperty('promotion', 'This chat is the selected winner!'),
    ];
 
-    $this->givenSdk()->flowConfig()->setChatConfig($eventId, $chatId, $itemFlowProperties);
+    $sdk->flowConfig()->setChatConfig($eventId, $chatId, $itemFlowProperties);
   
 } catch (CloseSdkException $e) {
     echo "The event is not found sent.\n";
