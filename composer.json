@@ -8,7 +8,7 @@
         "psr/http-client": "^1.0",
         "php-http/client-common": "^2.5",
         "php-http/discovery": "^1.14",
-        "symfony/options-resolver": "^6.0",
+        "symfony/options-resolver": "^5.4",
         "ext-json": "*",
         "php-http/guzzle7-adapter": "^1.0"
     },
