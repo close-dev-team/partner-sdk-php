@@ -9,13 +9,14 @@ use ClosePartnerSdk\Dto\EventId;
 use ClosePartnerSdk\Dto\EventTime;
 use ClosePartnerSdk\HttpClient\Message\RequestBodyMediator;
 use Http\Client\Exception;
+use JsonException;
 
 final class EventOperation extends CloseOperation
 {
     /**
      * @return Event[]
      * @throws \Http\Client\Exception
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function getEvents(): array
     {
@@ -41,7 +42,7 @@ final class EventOperation extends CloseOperation
      * @param EventId $eventId
      * @return Event
      * @throws \Http\Client\Exception
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function getEvent(EventId $eventId): Event
     {
@@ -61,7 +62,7 @@ final class EventOperation extends CloseOperation
      * @param array $updates
      * @return Event
      * @throws \Http\Client\Exception
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function updateEvent(EventId $eventId, array $updates): Event
     {
@@ -84,7 +85,7 @@ final class EventOperation extends CloseOperation
      * @param EventId $eventId
      * @return Event
      * @throws \Http\Client\Exception
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function copyEvent(EventId $eventId): Event
     {
@@ -104,7 +105,7 @@ final class EventOperation extends CloseOperation
      * @param EventTime $eventTime;
      * @return Event
      * @throws \Http\Client\Exception
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function cloneEvent(EventId $eventId, EventTime $eventTime): Event
     {
@@ -125,7 +126,7 @@ final class EventOperation extends CloseOperation
      * @param EventId $eventId
      * @param string $name
      * @return Carousel
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function createCarousel(EventId $eventId, string $name): Carousel
     {
@@ -133,9 +134,8 @@ final class EventOperation extends CloseOperation
             ->getHttpClient()
             ->post(
                 $this->buildUriWithLatestVersion('/events/' . $eventId . '/carousels'),
-                [
-                    'name' => $name
-                ]
+                [],
+                json_encode(['name' => $name])
             );
 
         $obj = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
@@ -147,7 +147,7 @@ final class EventOperation extends CloseOperation
      * @param EventId $eventId
      * @param string $name
      * @return Carousel
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function getCarousel(EventId $eventId, string $name): Carousel
     {
@@ -155,9 +155,8 @@ final class EventOperation extends CloseOperation
             ->getHttpClient()
             ->get(
                 $this->buildUriWithLatestVersion('/events/' . $eventId . '/carousels'),
-                [
-                    'name' => $name
-                ]
+                [],
+                json_encode(['name' => $name])
             );
 
         $obj = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
