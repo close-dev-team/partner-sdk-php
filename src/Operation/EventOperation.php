@@ -3,10 +3,12 @@ declare(strict_types=1);
 
 namespace ClosePartnerSdk\Operation;
 
+use ClosePartnerSdk\Dto\Carousel;
 use ClosePartnerSdk\Dto\Event;
 use ClosePartnerSdk\Dto\EventId;
 use ClosePartnerSdk\Dto\EventTime;
 use ClosePartnerSdk\HttpClient\Message\RequestBodyMediator;
+use Http\Client\Exception;
 
 final class EventOperation extends CloseOperation
 {
@@ -117,5 +119,49 @@ final class EventOperation extends CloseOperation
 
         $obj = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
         return Event::buildFromRepsonseObject($obj);
+    }
+
+    /**
+     * @param EventId $eventId
+     * @param string $name
+     * @return Carousel
+     * @throws \JsonException
+     */
+    public function createCarousel(EventId $eventId, string $name): Carousel
+    {
+        $response = $this->sdk
+            ->getHttpClient()
+            ->post(
+                $this->buildUriWithLatestVersion('/events/' . $eventId . '/carousels'),
+                [
+                    'name' => $name
+                ]
+            );
+
+        $obj = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
+
+        return Carousel::buildFromResponseObject($obj);
+    }
+
+    /**
+     * @param EventId $eventId
+     * @param string $name
+     * @return Carousel
+     * @throws \JsonException
+     */
+    public function getCarousel(EventId $eventId, string $name): Carousel
+    {
+        $response = $this->sdk
+            ->getHttpClient()
+            ->get(
+                $this->buildUriWithLatestVersion('/events/' . $eventId . '/carousels'),
+                [
+                    'name' => $name
+                ]
+            );
+
+        $obj = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
+
+        return Carousel::buildFromResponseObject($obj);
     }
 }
