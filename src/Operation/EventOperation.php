@@ -154,9 +154,8 @@ final class EventOperation extends CloseOperation
         $response = $this->sdk
             ->getHttpClient()
             ->get(
-                $this->buildUriWithLatestVersion('/events/' . $eventId . '/carousels'),
+                $this->buildUriWithLatestVersion('/events/' . $eventId . '/carousels?name=' . $name),
                 [],
-                json_encode(['name' => $name])
             );
 
         $obj = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
