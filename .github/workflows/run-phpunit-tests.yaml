@@ -13,4 +13,4 @@ jobs:
       - name: Install dependencies
         uses: php-actions/composer@v6
       - name: Run tests
-        uses: php-actions/phpunit@v9.5.0
+        uses: php-actions/phpunit@v9
