@@ -8,7 +8,7 @@ use ClosePartnerSdk\Dto\Event;
 use ClosePartnerSdk\Dto\EventId;
 use ClosePartnerSdk\Dto\EventTime;
 use ClosePartnerSdk\HttpClient\Message\RequestBodyMediator;
-use Http\Client\Exception;
+use DateTimeInterface;
 use JsonException;
 
 final class EventOperation extends CloseOperation
