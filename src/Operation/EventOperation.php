@@ -137,9 +137,7 @@ final class EventOperation extends CloseOperation
                 [],
                 json_encode(['name' => $name])
             );
-
         $obj = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
-
         return Carousel::buildFromResponseObject($obj);
     }
 

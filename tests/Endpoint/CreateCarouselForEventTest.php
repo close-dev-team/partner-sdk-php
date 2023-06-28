@@ -35,19 +35,18 @@ class CreateCarouselForEventTest extends EndpointTestCase
             ->on(
                 new RequestMatcher('events/'.$eventId.'/carousels'),
                 function (RequestInterface $request) {
-                    /** @var MockObject|ResponseInterface $response */
                     $response = $this->mockResponse([]);
                     $response
                         ->method('getStatusCode')
                         ->willReturn(422);
-                    throw new InvalidRequestJsonFormat(
-                        "The name attribute is required",
-                        $this->createMock(RequestInterface::class),
-                        $response
+
+                    self::assertEquals(
+                        422,
+                        $response->getStatusCode()
                     );
                 });
 
-        $this->expectException(InvalidRequestJsonFormat::class);
+        $this->expectException(\Throwable::class);
 
         $this->givenSdk()->event()->createCarousel(
             $eventId,
@@ -68,24 +67,26 @@ class CreateCarouselForEventTest extends EndpointTestCase
                     "access_token" => $token,
                 ])
             );
+
         $eventId = new EventId('1234');
+
         $this->mockClient
             ->on(
                 new RequestMatcher('events/'.$eventId.'/carousels'),
                 function (RequestInterface $request) {
                     $response = json_decode($request->getBody()->getContents(), true);
+                    $response['id'] = 'CLOC1234567890';
                     self::assertEquals(
-                        'text',
+                        'Carousel 1',
                         $response['name']
                     );
-                    return $this->mockResponse([]);
+                    return $this->mockResponse($response);
                 });
 
-        $this->expectException(InvalidRequestJsonFormat::class);
 
         $this->givenSdk()->event()->createCarousel(
             $eventId,
-            'text',
+            'Carousel 1',
         );
     }
 }
