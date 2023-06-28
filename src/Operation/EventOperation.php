@@ -113,6 +113,7 @@ final class EventOperation extends CloseOperation
             ->getHttpClient()
             ->post(
                 $this->buildUriWithLatestVersion('/events/' . $eventId . '/clone'),
+                [],
                 [
                     'start_date_time' => $eventTime->getStartDateTime()->format(DateTimeInterface::W3C)
                 ]
@@ -147,7 +148,7 @@ final class EventOperation extends CloseOperation
      * @return Carousel
      * @throws JsonException
      */
-    public function getCarousel(EventId $eventId, string $name): Carousel
+    public function lookupCarousel(EventId $eventId, string $name): Carousel
     {
         $response = $this->sdk
             ->getHttpClient()
