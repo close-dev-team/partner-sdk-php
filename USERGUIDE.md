@@ -100,6 +100,12 @@ You can create personalised messages using template variables. To do this you ca
 The Close app can be used to provide digital tickets to event-visitors. Using the Close PHP SDK you can both import and cancel tickets. 
 
 
+### carousel
+| Operations                                                                    | Use-case                                                 |
+|-------------------------------------------------------------------------------|----------------------------------------------------------|
+| [getCarousel(eventId, text)](/examples/carousel/getCarousel.md)               | Use when you need to lookup a carousel by carousel name. |
+| [createCarousel(eventId, chatId, text)](/examples/carousel/createCarousel.md) | Use when you need to create a carousel for an event.     |
+
 | Operation | Use-case |
 | -------- | ----------- |
 |[import(eventId,ticketgroup)](/examples/ticket/import.md)| Use when you want to import a ticket.|
