@@ -1,5 +1,5 @@
-# Sending a message to all users in all chats for one event.
-Do you want to send a message to all users going to a specific event? Then you can use the sendToAllChatsForEvent() operation.
+# Creating a carousel for an event.
+Do you want to create a carousel for a specific event? Then you can use the createCarousel() operation.
 
 
 ##### example:
