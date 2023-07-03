@@ -96,6 +96,25 @@ You can create personalised messages using template variables. To do this you ca
 * {chat.user.*} values stored per user e.g. survey answers.
 * {chat.user.import.*} values linked to imported tickets.
 
+#### CardMessage
+One of the core features of the Close PHP SDK is sending ultra personalised card messages to Close users. There are 4 operations available in the CardMessage class, with each a different use-case.
+
+| Operations                                                                                           | Use-case |
+|------------------------------------------------------------------------------------------------------| ----------- |
+| [sendToAllChatsForEvent(eventId, request)](/examples/card%20message/sendToAllChatsForEvent.md)       | Use when you need to reach all users for an event.|
+| [sendToAllUsersForChat(eventId, chatId, request)](/examples/card%20message/sendToAllUsersForChat.md) |Use when you need to reach all users in one specific chat for an event.|
+| [sendToUserInChat(eventId, chatId, userId, request)](/examples/card%20message/sendToUserInChat.md)   |Use when you need to reach one specific user, in a specific chat for an event.|
+| [sendToUserInAllChats(eventId, request)](/examples/card%20message/sendToUserInAllChats.md)           |Use when you need to reach one specific user in all chats for one event.|
+
+You can create personalised messages using template variables. To do this you can use existing [flowproperties](#flowproperty) or set new ones first. These flowproperties can then be used in messages like this:
+
+* {user.nickname}
+* {user.phonenumber}
+* {show.date}
+* {show.venue}
+* {chat.user.*} values stored per user e.g. survey answers.
+* {chat.user.import.*} values linked to imported tickets.
+
 #### ticket
 The Close app can be used to provide digital tickets to event-visitors. Using the Close PHP SDK you can both import and cancel tickets. 
 

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="ClosePartnerSdk\Tests\Endpoint\SendCardMessageToUserInAllChatsTest" file="/Users/chriscalalang/Sites/partner-sdk-php/tests/Endpoint/SendCardMessageToUserInAllChatsTest.php" tests="1" assertions="1" errors="0" warnings="0" failures="0" skipped="0" time="0.015574">
+    <testcase name="it_can_send_card_message_to_a_user_in_all_chats" class="ClosePartnerSdk\Tests\Endpoint\SendCardMessageToUserInAllChatsTest" classname="ClosePartnerSdk.Tests.Endpoint.SendCardMessageToUserInAllChatsTest" file="/Users/chriscalalang/Sites/partner-sdk-php/tests/Endpoint/SendCardMessageToUserInAllChatsTest.php" line="16" assertions="1" time="0.015574"/>
+  </testsuite>
+</testsuites>
