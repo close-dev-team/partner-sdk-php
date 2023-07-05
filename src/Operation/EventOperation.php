@@ -3,17 +3,20 @@ declare(strict_types=1);
 
 namespace ClosePartnerSdk\Operation;
 
+use ClosePartnerSdk\Dto\Carousel;
 use ClosePartnerSdk\Dto\Event;
 use ClosePartnerSdk\Dto\EventId;
 use ClosePartnerSdk\Dto\EventTime;
 use ClosePartnerSdk\HttpClient\Message\RequestBodyMediator;
+use DateTimeInterface;
+use JsonException;
 
 final class EventOperation extends CloseOperation
 {
     /**
      * @return Event[]
      * @throws \Http\Client\Exception
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function getEvents(): array
     {
@@ -39,7 +42,7 @@ final class EventOperation extends CloseOperation
      * @param EventId $eventId
      * @return Event
      * @throws \Http\Client\Exception
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function getEvent(EventId $eventId): Event
     {
@@ -59,7 +62,7 @@ final class EventOperation extends CloseOperation
      * @param array $updates
      * @return Event
      * @throws \Http\Client\Exception
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function updateEvent(EventId $eventId, array $updates): Event
     {
@@ -82,7 +85,7 @@ final class EventOperation extends CloseOperation
      * @param EventId $eventId
      * @return Event
      * @throws \Http\Client\Exception
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function copyEvent(EventId $eventId): Event
     {
@@ -102,7 +105,7 @@ final class EventOperation extends CloseOperation
      * @param EventTime $eventTime;
      * @return Event
      * @throws \Http\Client\Exception
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function cloneEvent(EventId $eventId, EventTime $eventTime): Event
     {
@@ -110,6 +113,7 @@ final class EventOperation extends CloseOperation
             ->getHttpClient()
             ->post(
                 $this->buildUriWithLatestVersion('/events/' . $eventId . '/clone'),
+                [],
                 [
                     'start_date_time' => $eventTime->getStartDateTime()->format(DateTimeInterface::W3C)
                 ]
@@ -117,5 +121,44 @@ final class EventOperation extends CloseOperation
 
         $obj = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
         return Event::buildFromRepsonseObject($obj);
+    }
+
+    /**
+     * @param EventId $eventId
+     * @param string $name
+     * @return Carousel
+     * @throws JsonException
+     */
+    public function createCarousel(EventId $eventId, string $name): Carousel
+    {
+        $response = $this->sdk
+            ->getHttpClient()
+            ->post(
+                $this->buildUriWithLatestVersion('/events/' . $eventId . '/carousels'),
+                [],
+                json_encode(['name' => $name])
+            );
+        $obj = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
+        return Carousel::buildFromResponseObject($obj);
+    }
+
+    /**
+     * @param EventId $eventId
+     * @param string $name
+     * @return Carousel
+     * @throws JsonException
+     */
+    public function lookupCarousel(EventId $eventId, string $name): Carousel
+    {
+        $response = $this->sdk
+            ->getHttpClient()
+            ->get(
+                $this->buildUriWithLatestVersion('/events/' . $eventId . '/carousels?name=' . $name),
+                [],
+            );
+
+        $obj = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
+
+        return Carousel::buildFromResponseObject($obj);
     }
 }

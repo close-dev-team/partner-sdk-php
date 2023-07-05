@@ -6,6 +6,7 @@ namespace ClosePartnerSdk;
 use ClosePartnerSdk\Dto\AuthCredentials;
 use ClosePartnerSdk\Dto\Token;
 use ClosePartnerSdk\Operation\Authorise;
+use ClosePartnerSdk\Operation\CardMessageOperation;
 use ClosePartnerSdk\Operation\ChatOperation;
 use ClosePartnerSdk\Operation\EventOperation;
 use ClosePartnerSdk\Operation\FlowConfigOperation;
@@ -89,6 +90,18 @@ class CloseSdk
             $this->authoriseRequest();
         }
         return new TextMessageOperation($this);
+    }
+
+    /**
+     * @return CardMessageOperation
+     * @throws Exception\ApiErrorException
+     */
+    public function cardMessage(): CardMessageOperation
+    {
+        if ($this->token === null) {
+            $this->authoriseRequest();
+        }
+        return new CardMessageOperation($this);
     }
 
     /**
