@@ -32,5 +32,10 @@
             "name": "Close team",
             "email": "devteam@thecloseapp.com"
         }
-    ]
+    ],
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": false
+        }
+    }
 }
