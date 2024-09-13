@@ -11,7 +11,7 @@ use ClosePartnerSdk\HttpClient\Message\RequestBodyMediator;
 
 final class TextMessageOperation extends CloseOperation
 {
-    public function sendToAllChatsForEvent(EventId $eventId, string $text): void
+    public function sendToAllChatsForEvent(EventId $eventId, string $text, bool $sendPush = true): void
     {
         $this->sdk
             ->getHttpClient()
@@ -20,12 +20,12 @@ final class TextMessageOperation extends CloseOperation
                 [],
                 RequestBodyMediator::convertStreamFromArray(
                     $this->sdk,
-                    SendMessageMapper::withText($text)
+                    SendMessageMapper::withTextAndSendPush($text, $sendPush)
                 )
             );
     }
 
-    public function sendToAllUsersForChat(EventId $eventId, ChatId $chatId, string $text): void
+    public function sendToAllUsersForChat(EventId $eventId, ChatId $chatId, string $text, bool $sendPush = true): void
     {
         $this->sdk
             ->getHttpClient()
@@ -34,12 +34,12 @@ final class TextMessageOperation extends CloseOperation
                 [],
                 RequestBodyMediator::convertStreamFromArray(
                     $this->sdk,
-                    SendMessageMapper::withText($text)
+                    SendMessageMapper::withTextAndSendPush($text, $sendPush)
                 )
             );
     }
 
-    public function sendToUserInChat(EventId $eventId, ChatId $chatId, UserId $userId, string $text): void
+    public function sendToUserInChat(EventId $eventId, ChatId $chatId, UserId $userId, string $text, bool $sendPush = true): void
     {
         $this->sdk
             ->getHttpClient()
@@ -48,12 +48,12 @@ final class TextMessageOperation extends CloseOperation
                 [],
                 RequestBodyMediator::convertStreamFromArray(
                     $this->sdk,
-                    SendMessageMapper::withText($text)
+                    SendMessageMapper::withTextAndSendPush($text, $sendPush)
                 )
             );
     }
 
-    public function sendToUserInAllChats(EventId $eventId, UserId $userId, string $text): void
+    public function sendToUserInAllChats(EventId $eventId, UserId $userId, string $text, $sendPush = true): void
     {
         $this->sdk
             ->getHttpClient()
@@ -62,7 +62,7 @@ final class TextMessageOperation extends CloseOperation
                 [],
                 RequestBodyMediator::convertStreamFromArray(
                     $this->sdk,
-                    SendMessageMapper::withText($text)
+                    SendMessageMapper::withTextAndSendPush($text, $sendPush)
                 )
             );
     }

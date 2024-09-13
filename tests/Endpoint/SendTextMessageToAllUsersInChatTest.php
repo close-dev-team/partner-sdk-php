@@ -33,7 +33,7 @@ class SendTextMessageToAllUsersInChatTest extends EndpointTestCase
                 new RequestMatcher('events/'.$eventId. '/chats/'.$chatId.'/messages/text'),
                 function (RequestInterface $request) {
                 self::assertEquals(
-                    SendMessageMapper::withText('text'),
+                    SendMessageMapper::withTextAndSendPush('text', true),
                     json_decode($request->getBody()->getContents(), true)
                 );
                 return $this->mockResponse([]);

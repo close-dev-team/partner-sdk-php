@@ -11,6 +11,7 @@ use ClosePartnerSdk\Operation\ChatOperation;
 use ClosePartnerSdk\Operation\EventOperation;
 use ClosePartnerSdk\Operation\FlowConfigOperation;
 use ClosePartnerSdk\Operation\FlowPropertyOperation;
+use ClosePartnerSdk\Operation\TargetAudienceOperation;
 use ClosePartnerSdk\Operation\TicketOperation;
 use ClosePartnerSdk\Operation\TextMessageOperation;
 use ClosePartnerSdk\Exception\Auth\InvalidCredentialsException;
@@ -150,6 +151,18 @@ class CloseSdk
             $this->authoriseRequest();
         }
         return new FlowConfigOperation($this);
+    }
+
+    /**
+     * @throws InvalidCredentialsException
+     * @throws Exception\ApiErrorException
+     */
+    public function targetAudience(): TargetAudienceOperation
+    {
+        if ($this->token === null) {
+            $this->authoriseRequest();
+        }
+        return new TargetAudienceOperation($this);
     }
 
     public function getHttpClient(): HttpMethodsClientInterface
