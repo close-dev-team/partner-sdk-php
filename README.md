@@ -46,6 +46,7 @@ try {
        new Options([
             'client_id' => 'client_test',
             'client_secret' => 'client_test_secret',
+            'base_uri' => 'the endpoint for your environment, default is the close app production',
        ])
   );
 } catch (CloseSdkException $closeSdkException) {

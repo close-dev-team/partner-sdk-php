@@ -5,6 +5,7 @@ namespace ClosePartnerSdk;
 
 use ClosePartnerSdk\Dto\AuthCredentials;
 use ClosePartnerSdk\HttpClient\HttpClientBuilder;
+use ClosePartnerSdk\Config;
 use Http\Discovery\Psr17FactoryDiscovery;
 use Psr\Http\Message\UriFactoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -28,6 +29,7 @@ final class Options
             [
                 'client_builder' => new HttpClientBuilder,
                 'uri_factory' => Psr17FactoryDiscovery::findUriFactory(),
+                'base_uri' => Config::BASE_URI,
             ]
         );
 
@@ -48,5 +50,10 @@ final class Options
     public function getAuthCredentials(): AuthCredentials
     {
         return new AuthCredentials($this->options['client_id'], $this->options['client_secret']);
+    }
+
+    public function getBaseUri(): string
+    {
+        return $this->options['base_uri'];
     }
 }
