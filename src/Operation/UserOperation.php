@@ -74,7 +74,6 @@ final class UserOperation extends CloseOperation
                 );
             $obj = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
 
-            var_dump($obj);
             foreach ($obj->data as $userObj) {
                 $userIds[] = new UserId($userObj->user_id);
             }
