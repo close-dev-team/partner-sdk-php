@@ -11,8 +11,9 @@ class SendMessageMapperTest extends TestCase
     /** @test * */
     public function provide_valid_values_in_the_request()
     {
-        $request = SendMessageMapper::withText('text');
+        $request = SendMessageMapper::withTextAndSendPush('text', true);
 
         self::assertEquals('text', $request['text']);
+        self::assertEquals(true, $request['send_push']);
     }
 }
