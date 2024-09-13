@@ -9,8 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Go to branch
-        uses: actions/checkout
+        uses: actions/checkout@v2
       - name: Install dependencies
-        uses: php-actions/composer
+        uses: php-actions/composer@latest
       - name: Run tests
-        uses: php-actions/phpunit
+        uses: php-actions/phpunit@latest
