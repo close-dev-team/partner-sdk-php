@@ -46,6 +46,7 @@ try {
        new Options([
             'client_id' => 'client_test',
             'client_secret' => 'client_test_secret',
+            'base_uri' => 'the endpoint for your environment, default is the close app production endpoint url',
        ])
   );
 } catch (CloseSdkException $closeSdkException) {
@@ -343,4 +344,5 @@ If you already have code ready that would help us improve our system, you are fr
 [the-close-app]: http://thecloseapp.com
 [guzzle]: http://guzzlephp.org
 [composer]: http://getcomposer.org
+
 

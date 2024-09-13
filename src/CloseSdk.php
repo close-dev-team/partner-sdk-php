@@ -59,7 +59,7 @@ class CloseSdk
     private function buildUri(Options $options): BaseUriPlugin
     {
         return new BaseUriPlugin(
-            $options->getUriFactory()->createUri(Config::BASE_URI)
+            $options->getUriFactory()->createUri($options->getBaseUri())
         );
     }
 

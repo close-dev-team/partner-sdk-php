@@ -3,7 +3,7 @@
     "description": "Official SDK for Close partners.",
     "type": "library",
     "require": {
-      "php": "^7.4|^8.0",
+      "php": "^7.4|^8.0|^8.1",
         "psr/http-factory": "^1.0",
         "psr/http-client": "^1.0",
         "php-http/client-common": "^2.5",
@@ -32,5 +32,10 @@
             "name": "Close team",
             "email": "devteam@thecloseapp.com"
         }
-    ]
+    ],
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": false
+        }
+    }
 }
