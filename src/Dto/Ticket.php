@@ -20,9 +20,9 @@ class Ticket
         EventTime $eventTime,
         string $productTitle,
         int $numberOfItems = 1,
-        string $timeslot = null,
-        string $productDescription = null,
-        string $productId = null
+        ?string $timeslot = null,
+        ?string $productDescription = null,
+        ?string $productId = null
     ) {
         $this->scanCode = $scanCode;
         $this->eventTime = $eventTime;
