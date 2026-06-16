@@ -31,7 +31,7 @@ class CloseSdk
     /**
      * @throws Exception\ApiErrorException
      */
-    public function __construct(Options $options = null) {
+    public function __construct(?Options $options = null) {
         $options = $options ?? new Options;
         $this->buildClientBuilder($options);
         $this->authCredentials = $options->getAuthCredentials();
