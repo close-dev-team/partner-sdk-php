@@ -114,9 +114,12 @@ final class EventOperation extends CloseOperation
             ->post(
                 $this->buildUriWithLatestVersion('/events/' . $eventId . '/clone'),
                 [],
-                [
-                    'start_date_time' => $eventTime->getStartDateTime()->format(DateTimeInterface::W3C)
-                ]
+                RequestBodyMediator::convertStreamFromArray(
+                    $this->sdk,
+                    [
+                        'start_date_time' => $eventTime->getStartDateTime()->format(DateTimeInterface::W3C)
+                    ]
+                )
             );
 
         $obj = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
