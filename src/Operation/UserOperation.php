@@ -6,12 +6,16 @@ namespace ClosePartnerSdk\Operation;
 use ClosePartnerSdk\Dto\ChatId;
 use ClosePartnerSdk\Dto\EventId;
 use ClosePartnerSdk\Dto\User;
+use ClosePartnerSdk\Dto\UserPage;
 use ClosePartnerSdk\Dto\UserId;
 
 final class UserOperation extends CloseOperation
 {
     /**
      * Every user that joined the event.
+     *
+     * The endpoint pages at 100 users, so this walks every page and returns
+     * the whole set. Use getUsersForEventPage() to page through it by hand.
      *
      * This response carries a smaller shape than the lookups below: user_id
      * plus whichever identifier the deployment is configured for. Nickname
@@ -23,12 +27,37 @@ final class UserOperation extends CloseOperation
      */
     public function getUsersForEvent(EventId $eventId): array
     {
+        $users = [];
+        $page = 1;
+
+        do {
+            $pageOfUsers = $this->getUsersForEventPage($eventId, $page);
+            foreach ($pageOfUsers->getUsers() as $user) {
+                $users[] = $user;
+            }
+            $page++;
+        } while ($page <= $pageOfUsers->getLastPage());
+
+        return $users;
+    }
+
+    /**
+     * One page of the users that joined the event, for callers that would
+     * rather not pull an entire large event into memory.
+     *
+     * @throws \Http\Client\Exception
+     * @throws \JsonException
+     */
+    public function getUsersForEventPage(EventId $eventId, int $page = 1): UserPage
+    {
+        $endpoint = '/events/' . $eventId . '/users';
+        if ($page > 1) {
+            $endpoint .= '?page=' . $page;
+        }
+
         $response = $this->sdk
             ->getHttpClient()
-            ->get(
-                $this->buildUriWithLatestVersion('/events/' . $eventId . '/users'),
-                []
-            );
+            ->get($this->buildUriWithLatestVersion($endpoint), []);
 
         $obj = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
         $users = [];
@@ -36,7 +65,11 @@ final class UserOperation extends CloseOperation
             $users[] = User::buildFromResponseObject($userObj);
         }
 
-        return $users;
+        return new UserPage(
+            $users,
+            (int)($obj->meta->current_page ?? $page),
+            (int)($obj->meta->last_page ?? $page)
+        );
     }
 
     /**
