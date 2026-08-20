@@ -3,10 +3,12 @@ declare(strict_types=1);
 
 namespace ClosePartnerSdk\Operation;
 
+use ClosePartnerSdk\Dto\AdminGrant;
 use ClosePartnerSdk\Dto\Carousel;
 use ClosePartnerSdk\Dto\Event;
 use ClosePartnerSdk\Dto\EventId;
 use ClosePartnerSdk\Dto\EventTime;
+use ClosePartnerSdk\Dto\UserId;
 use ClosePartnerSdk\HttpClient\Message\RequestBodyMediator;
 use DateTimeInterface;
 use JsonException;
@@ -166,5 +168,81 @@ final class EventOperation extends CloseOperation
         $obj = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
 
         return Carousel::buildFromResponseObject($obj);
+    }
+
+    /**
+     * Make a user an admin of the event.
+     *
+     * Idempotent: adding someone who is already an admin changes nothing and
+     * answers false.
+     *
+     * @return bool whether this call is what made them an admin
+     * @throws \Http\Client\Exception
+     * @throws JsonException
+     */
+    public function addAdmin(EventId $eventId, UserId $userId): bool
+    {
+        $response = $this->sdk
+            ->getHttpClient()
+            ->post(
+                $this->buildUriWithLatestVersion('/events/' . $eventId . '/admins/' . $userId),
+                []
+            );
+
+        $obj = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
+
+        return (bool)($obj->added ?? false);
+    }
+
+    /**
+     * Drop a user as admin of the event.
+     *
+     * Idempotent: removing someone who is not an admin changes nothing and
+     * answers false.
+     *
+     * @return bool whether this call is what removed them
+     * @throws \Http\Client\Exception
+     * @throws JsonException
+     */
+    public function removeAdmin(EventId $eventId, UserId $userId): bool
+    {
+        $response = $this->sdk
+            ->getHttpClient()
+            ->delete(
+                $this->buildUriWithLatestVersion('/events/' . $eventId . '/admins/' . $userId),
+                []
+            );
+
+        $obj = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
+
+        return (bool)($obj->deleted ?? false);
+    }
+
+    /**
+     * Make the holder of a phone number an admin, for when the organiser is
+     * known but not whether they have an account yet.
+     *
+     * A pending outcome is a success, not a failure: the grant is recorded
+     * and takes effect when that number registers.
+     *
+     * @throws \Http\Client\Exception
+     * @throws JsonException
+     */
+    public function addAdminByPhoneNumber(EventId $eventId, string $phoneNumber): AdminGrant
+    {
+        $response = $this->sdk
+            ->getHttpClient()
+            ->post(
+                $this->buildUriWithLatestVersion('/events/' . $eventId . '/admins/by-phone'),
+                [],
+                RequestBodyMediator::convertStreamFromArray(
+                    $this->sdk,
+                    ['phone_number' => $phoneNumber]
+                )
+            );
+
+        $obj = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
+
+        return AdminGrant::buildFromResponseObject($obj);
     }
 }
