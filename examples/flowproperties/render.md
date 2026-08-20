@@ -22,7 +22,7 @@ try {
     $userId = new UserId('CLUSxxxxxxxxx');
     $message = '{user.nickname}';
 
-  $this->givenSdk()->flowProperty()->render($eventId, $chatId, $userId, $message);
+  $sdk->flowProperty()->render($eventId, $chatId, $userId, $message);
 } catch (CloseSdkException $e) {
     echo "The property has not been sent.\n";
     // We recommend to retry after a couple of seconds.

@@ -19,7 +19,7 @@ try {
     new ItemFlowProperty('promotion', 'This event has a special promotion'),
   ];
   
-  $this->givenSdk()->flowProperty()->setForUserInAllChats($eventId, $userId, $itemFlowProperties);
+  $sdk->flowProperty()->setForUserInAllChats($eventId, $userId, $itemFlowProperties);
 } catch (CloseSdkException $e) {
     echo "The property has not been sent.\n";
     // We recommend to retry after a couple of seconds.

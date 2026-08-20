@@ -16,7 +16,11 @@ try {
     $chatId = new ChatId('CLECxxxxx');
     $userId = new UserId('CLUSxxxxxxxxx');
   
-  $this->givenSdk()->flowProperty()->getProperties($eventId, $chatId, $userId);
+  $properties = $sdk->flowProperty()->getProperties($eventId, $chatId, $userId);
+
+  foreach ($properties as $property) {
+      echo $property->getKey() . ': ' . $property->getValue() . "\n";
+  }
 
 } catch (CloseSdkException $e) {
     echo "The properties could not be retrieved. \n";
@@ -29,5 +33,8 @@ try {
 |EventId| Identifies one specific event. Always starts with "CLEV"|
 |UserId| Identifies one specific user. Always starts with "CLUS"|
 |ChatId| Identifies one specific chat. Always starts with "CLEC"|
+
+##### returns:
+An array of `ItemFlowProperty`, each with a `getKey()` and a `getValue()`.
 
 [Back to User Guide](/USERGUIDE.md#textmessage)
