@@ -115,7 +115,7 @@ final class FlowPropertyOperation extends CloseOperation
             );
 
         $obj = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
-        if (!isset($obj) && !isset($obj->text) && empty($obj->text)) {
+        if (!isset($obj->text) || $obj->text === '') {
             return "";
         }
 
