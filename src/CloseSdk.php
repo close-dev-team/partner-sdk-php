@@ -15,6 +15,7 @@ use ClosePartnerSdk\Operation\ImageMessageOperation;
 use ClosePartnerSdk\Operation\ImageOperation;
 use ClosePartnerSdk\Operation\WebWidgetMessageOperation;
 use ClosePartnerSdk\Operation\TicketOperation;
+use ClosePartnerSdk\Operation\UserOperation;
 use ClosePartnerSdk\Operation\TextMessageOperation;
 use ClosePartnerSdk\Exception\Auth\InvalidCredentialsException;
 use ClosePartnerSdk\HttpClient\HttpClientBuilder;
@@ -153,6 +154,18 @@ class CloseSdk
             $this->authoriseRequest();
         }
         return new FlowPropertyOperation($this);
+    }
+
+    /**
+     * @throws InvalidCredentialsException
+     * @throws Exception\ApiErrorException
+     */
+    public function user(): UserOperation
+    {
+        if ($this->token === null) {
+            $this->authoriseRequest();
+        }
+        return new UserOperation($this);
     }
 
     /**

@@ -7,7 +7,6 @@ use ClosePartnerSdk\Dto\ChatId;
 use ClosePartnerSdk\Dto\EventId;
 use ClosePartnerSdk\Dto\Chat;
 use ClosePartnerSdk\Dto\User;
-use ClosePartnerSdk\Dto\UserId;
 
 final class ChatOperation extends CloseOperation
 {
@@ -34,21 +33,7 @@ final class ChatOperation extends CloseOperation
             new ChatId($obj->chat_id)
         ))->withAdminUserId($obj->admin_user_id ?? null);
         foreach ($obj->users as $user) {
-            $userInChat = new User(new UserId($user->user_id));
-            if (!empty($user->phone_number)) {
-                $userInChat->withPhoneNumber($user->phone_number);
-            }
-            if (!empty($user->nickname)) {
-                $userInChat->withNickname($user->nickname);
-            }
-            if (!empty($user->email_addresses)) {
-                $userInChat->withEmailAddresses((array)$user->email_addresses);
-            }
-            foreach ($user->chat_ids as $chat_id) {
-                $userInChat->withChatId(new Chatid($chat_id));
-            }
-
-            $chat = $chat->withUser($userInChat);
+            $chat = $chat->withUser(User::buildFromResponseObject($user));
         }
 
         return $chat;
