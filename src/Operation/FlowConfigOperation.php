@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace ClosePartnerSdk\Operation;
 
+use ClosePartnerSdk\Dto\ChatId;
 use ClosePartnerSdk\Dto\EventId;
 use ClosePartnerSdk\Dto\ItemFlowProperty;
 use ClosePartnerSdk\Dto\Mapper\FlowPropertiesMapper;
@@ -59,7 +60,7 @@ final class FlowConfigOperation extends CloseOperation
      * @return array
      * @throws \Http\Client\Exception
      */
-    public function getChatConfig(EventId $eventId): array
+    public function getChatConfig(EventId $eventId, ChatId $chatId): array
     {
         $response = $this->sdk
             ->getHttpClient()
