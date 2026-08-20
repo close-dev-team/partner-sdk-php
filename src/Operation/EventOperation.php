@@ -31,7 +31,7 @@ final class EventOperation extends CloseOperation
         $events = [];
 
         foreach ($obj->events as $eventObj) {
-            $event = Event::buildFromRepsonseObject($eventObj);
+            $event = Event::buildFromResponseObject($eventObj);
             $events[] = $event;
         }
 
@@ -54,7 +54,7 @@ final class EventOperation extends CloseOperation
             );
 
         $obj = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
-        return Event::buildFromRepsonseObject($obj);
+        return Event::buildFromResponseObject($obj);
     }
 
     /**
@@ -78,7 +78,7 @@ final class EventOperation extends CloseOperation
             );
 
         $obj = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
-        return Event::buildFromRepsonseObject($obj);
+        return Event::buildFromResponseObject($obj);
     }
 
     /**
@@ -97,7 +97,7 @@ final class EventOperation extends CloseOperation
             );
 
         $obj = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
-        return Event::buildFromRepsonseObject($obj);
+        return Event::buildFromResponseObject($obj);
     }
 
     /**
@@ -123,7 +123,7 @@ final class EventOperation extends CloseOperation
             );
 
         $obj = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
-        return Event::buildFromRepsonseObject($obj);
+        return Event::buildFromResponseObject($obj);
     }
 
     /**
@@ -139,7 +139,10 @@ final class EventOperation extends CloseOperation
             ->post(
                 $this->buildUriWithLatestVersion('/events/' . $eventId . '/carousels'),
                 [],
-                json_encode(['name' => $name])
+                RequestBodyMediator::convertStreamFromArray(
+                    $this->sdk,
+                    ['name' => $name]
+                )
             );
         $obj = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
         return Carousel::buildFromResponseObject($obj);

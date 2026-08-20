@@ -56,7 +56,7 @@ class Event
         $this->locale = $locale;
     }
 
-    public static function buildFromRepsonseObject(\StdClass $obj): self
+    public static function buildFromResponseObject(\StdClass $obj): self
     {
         return new self(
             new EventId($obj->event_id),
@@ -75,6 +75,14 @@ class Event
             $obj->time_zone,
             $obj->locale
         );
+    }
+
+    /**
+     * @deprecated Misspelt. Use buildFromResponseObject() instead.
+     */
+    public static function buildFromRepsonseObject(\StdClass $obj): self
+    {
+        return self::buildFromResponseObject($obj);
     }
 
     public function getEventId(): EventId
