@@ -7,10 +7,19 @@ on:
 jobs:
   run-automated-tests:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php_version: [ "8.2", "8.3", "8.4" ]
     steps:
       - name: Go to branch
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install dependencies
         uses: php-actions/composer@v6
+        with:
+          php_version: ${{ matrix.php_version }}
       - name: Run tests
         uses: php-actions/phpunit@v4
+        with:
+          php_version: ${{ matrix.php_version }}
+          configuration: phpunit.xml.dist
