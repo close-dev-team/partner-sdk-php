@@ -29,10 +29,10 @@ final class ChatOperation extends CloseOperation
 
         $obj = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
 
-        $chat = new Chat(
+        $chat = (new Chat(
             new EventId($obj->event_id),
             new ChatId($obj->chat_id)
-        );
+        ))->withAdminUserId($obj->admin_user_id ?? null);
         foreach ($obj->users as $user) {
             $userInChat = new User(new UserId($user->user_id));
             if (!empty($user->phone_number)) {
@@ -40,6 +40,9 @@ final class ChatOperation extends CloseOperation
             }
             if (!empty($user->nickname)) {
                 $userInChat->withNickname($user->nickname);
+            }
+            if (!empty($user->email_addresses)) {
+                $userInChat->withEmailAddresses((array)$user->email_addresses);
             }
             foreach ($user->chat_ids as $chat_id) {
                 $userInChat->withChatId(new Chatid($chat_id));

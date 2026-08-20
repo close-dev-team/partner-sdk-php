@@ -9,6 +9,7 @@ class TicketGroup
 {
     private string $phoneNumber;
     private array $tickets;
+    private ?string $orderId = null;
 
     public function __construct(string $phoneNumber, Ticket ...$tickets)
     {
@@ -29,5 +30,18 @@ class TicketGroup
     public function addTicket(Ticket $ticket): void
     {
         $this->tickets[] = $ticket;
+    }
+
+    public function withOrderId(string $orderId): self
+    {
+        $newInstance = clone $this;
+        $newInstance->orderId = $orderId;
+
+        return $newInstance;
+    }
+
+    public function getOrderId(): ?string
+    {
+        return $this->orderId;
     }
 }
