@@ -20,6 +20,7 @@ class Event
     private string $currency;
     private string $timeZone;
     private string $locale;
+    private array $adminUserIds;
 
     public function __construct(
         EventId $eventId,
@@ -36,7 +37,8 @@ class Event
         string  $chatMessageTextColor,
         string  $currency,
         string  $timeZone,
-        string  $locale
+        string  $locale,
+        array   $adminUserIds = []
     )
     {
         $this->eventId = $eventId;
@@ -54,6 +56,7 @@ class Event
         $this->currency = $currency;
         $this->timeZone = $timeZone;
         $this->locale = $locale;
+        $this->adminUserIds = $adminUserIds;
     }
 
     public static function buildFromRepsonseObject(\StdClass $obj): self
@@ -73,7 +76,8 @@ class Event
             $obj->chat_message_text_color,
             $obj->currency,
             $obj->time_zone,
-            $obj->locale
+            $obj->locale,
+            $obj->admin_user_ids ?? []
         );
     }
 
@@ -150,5 +154,13 @@ class Event
     public function getLocale(): string
     {
         return $this->locale;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getAdminUserIds(): array
+    {
+        return $this->adminUserIds;
     }
 }

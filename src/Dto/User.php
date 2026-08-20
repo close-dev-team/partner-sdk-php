@@ -9,6 +9,7 @@ class User
     private ?string $phoneNumber;
     private ?string $nickname;
     private array $chatIds;
+    private array $emailAddresses;
 
     public function __construct(UserId $userId)
     {
@@ -16,6 +17,7 @@ class User
         $this->phoneNumber = null;
         $this->nickname= null;
         $this->chatIds = [];
+        $this->emailAddresses = [];
     }
 
     public function withPhoneNumber(string $phoneNumber): self
@@ -54,5 +56,22 @@ class User
     public function getChatIds(): array
     {
         return $this->chatIds;
+    }
+
+    /**
+     * @param string[] $emailAddresses
+     */
+    public function withEmailAddresses(array $emailAddresses): self
+    {
+        $this->emailAddresses = $emailAddresses;
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getEmailAddresses(): array
+    {
+        return $this->emailAddresses;
     }
 }

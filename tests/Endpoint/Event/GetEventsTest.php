@@ -67,6 +67,24 @@ class GetEventsTest extends EndpointTestCase
         self::assertEquals('EUR', $event->getCurrency());
         self::assertEquals('Europe/Amsterdam', $event->getTimeZone());
         self::assertEquals('nl_NL', $event->getLocale());
+        self::assertEquals(['CLUS1111111111', 'CLUS2222222222'], $event->getAdminUserIds());
+    }
+
+    /** @test */
+    public function fall_back_to_no_admins_when_the_api_omits_them()
+    {
+        $this->givenAnAuthorisedClient();
+
+        $payload = EventResponseFactory::create();
+        unset($payload['admin_user_ids']);
+
+        $this->mockClient
+            ->on(
+                new RequestMatcher('/events'),
+                fn() => $this->mockResponse(['events' => [$payload]])
+            );
+
+        self::assertSame([], $this->givenSdk()->event()->getEvents()[0]->getAdminUserIds());
     }
 
     /** @test */

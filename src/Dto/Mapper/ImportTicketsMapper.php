@@ -23,12 +23,18 @@ final class ImportTicketsMapper
 
     private static function forTicketGroup(TicketGroup $ticketGroup): array
     {
-        return [
+        $properties = [
             'contact_phone_number' => $ticketGroup->getPhoneNumber(),
             'tickets' => array_map(static function(Ticket $ticket) {
                 return self::forTicket($ticket);
             }, $ticketGroup->getTickets())
         ];
+
+        if ($ticketGroup->getOrderId() !== null) {
+            $properties['order_id'] = $ticketGroup->getOrderId();
+        }
+
+        return $properties;
     }
 
     private static function forTicket(Ticket $ticket): array

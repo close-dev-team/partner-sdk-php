@@ -8,6 +8,7 @@ class Chat
     private EventId $eventId;
     private ChatId $chatId;
     private array $users;
+    private ?string $adminUserId;
 
     public function __construct(
         EventId $eventId,
@@ -17,6 +18,7 @@ class Chat
         $this->eventId = $eventId;
         $this->chatId = $chatId;
         $this->users = [];
+        $this->adminUserId = null;
     }
 
     public function withUser(User $user): self
@@ -33,6 +35,17 @@ class Chat
     public function getChatId(): ChatId
     {
         return $this->chatId;
+    }
+
+    public function withAdminUserId(?string $adminUserId): self
+    {
+        $this->adminUserId = $adminUserId;
+        return $this;
+    }
+
+    public function getAdminUserId(): ?string
+    {
+        return $this->adminUserId;
     }
 
     public function getUsers(): array
