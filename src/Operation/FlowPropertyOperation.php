@@ -79,17 +79,26 @@ final class FlowPropertyOperation extends CloseOperation
      * @param EventId $eventId
      * @param UserId $userId
      * @param ChatId $chatId
-     * @return void
+     * @return ItemFlowProperty[]
      * @throws \Http\Client\Exception
+     * @throws \JsonException
      */
-    public function getProperties(EventId $eventId, ChatId $chatId, UserId $userId): void
+    public function getProperties(EventId $eventId, ChatId $chatId, UserId $userId): array
     {
-        $this->sdk
+        $response = $this->sdk
             ->getHttpClient()
             ->get(
                 $this->buildUriWithLatestVersion('/events/'.$eventId.'/chats/'.$chatId.'/users/'.$userId.'/properties'),
                 []
             );
+
+        $obj = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
+        $items = [];
+        foreach ($obj->items ?? [] as $item) {
+            $items[] = new ItemFlowProperty($item->key, $item->value);
+        }
+
+        return $items;
     }
 
     /**

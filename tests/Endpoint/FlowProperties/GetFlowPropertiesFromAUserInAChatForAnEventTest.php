@@ -35,13 +35,24 @@ class GetFlowPropertiesFromAUserInAChatForAnEventTest extends EndpointTestCase
                 new RequestMatcher('/events/'.$eventId.'/chats/'.$chatId.'/users/'.$userId.'/properties'),
                 function (RequestInterface $request) {
                 self::assertEmpty($request->getBody()->getContents());
-                return $this->mockResponse([]);
+                return $this->mockResponse([
+                    'items' => [
+                        ['key' => 'nickname', 'value' => 'John'],
+                        ['key' => 'seat', 'value' => '32C'],
+                    ],
+                ]);
             });
 
-        $this->givenSdk()->flowProperty()->getProperties(
+        $properties = $this->givenSdk()->flowProperty()->getProperties(
             $eventId,
             $chatId,
             $userId
         );
+
+        self::assertCount(2, $properties);
+        self::assertEquals('nickname', $properties[0]->getKey());
+        self::assertEquals('John', $properties[0]->getValue());
+        self::assertEquals('seat', $properties[1]->getKey());
+        self::assertEquals('32C', $properties[1]->getValue());
     }
 }
