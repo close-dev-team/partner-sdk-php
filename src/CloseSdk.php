@@ -13,6 +13,7 @@ use ClosePartnerSdk\Operation\FlowConfigOperation;
 use ClosePartnerSdk\Operation\FlowPropertyOperation;
 use ClosePartnerSdk\Operation\ImageMessageOperation;
 use ClosePartnerSdk\Operation\ImageOperation;
+use ClosePartnerSdk\Operation\PublisherOperation;
 use ClosePartnerSdk\Operation\WebWidgetMessageOperation;
 use ClosePartnerSdk\Operation\TicketOperation;
 use ClosePartnerSdk\Operation\UserOperation;
@@ -166,6 +167,18 @@ class CloseSdk
             $this->authoriseRequest();
         }
         return new UserOperation($this);
+    }
+
+    /**
+     * @throws InvalidCredentialsException
+     * @throws Exception\ApiErrorException
+     */
+    public function publisher(): PublisherOperation
+    {
+        if ($this->token === null) {
+            $this->authoriseRequest();
+        }
+        return new PublisherOperation($this);
     }
 
     /**
