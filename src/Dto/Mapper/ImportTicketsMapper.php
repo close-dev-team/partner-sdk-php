@@ -35,7 +35,7 @@ final class ImportTicketsMapper
     {
         $properties = [
             'scan_code' => $ticket->getScanCode(),
-            'number_of_items' => $ticket->getNumberOfItems(),
+            'number_of_tickets' => $ticket->getNumberOfItems(),
             'product_title' => $ticket->getProductTitle()
         ];
         $productDescription = $ticket->getProductDescription();
