@@ -5,6 +5,7 @@ namespace ClosePartnerSdk;
 
 use ClosePartnerSdk\Dto\AuthCredentials;
 use ClosePartnerSdk\Dto\Token;
+use ClosePartnerSdk\Operation\AccountOperation;
 use ClosePartnerSdk\Operation\Authorise;
 use ClosePartnerSdk\Operation\CardMessageOperation;
 use ClosePartnerSdk\Operation\ChatOperation;
@@ -205,6 +206,18 @@ class CloseSdk
             $this->authoriseRequest();
         }
         return new PublisherOperation($this);
+    }
+
+    /**
+     * @throws InvalidCredentialsException
+     * @throws Exception\ApiErrorException
+     */
+    public function account(): AccountOperation
+    {
+        if ($this->token === null) {
+            $this->authoriseRequest();
+        }
+        return new AccountOperation($this);
     }
 
     /**
