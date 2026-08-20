@@ -83,19 +83,6 @@ final class ImportTicketsMapper
         return $properties;
     }
 
-    private static function forProduct(Product $product): array
-    {
-        $properties = [];
-        $properties['product_title'] = $product->getTitle();
-        if ($product->getDescription() !== null) {
-            $properties['product_description'] = $product->getDescription();
-        }
-        if ($product->getId() !== null) {
-            $properties['product_id'] = $product->getId();
-        }
-        return $properties;
-    }
-
     private static function forSeatInfo(SeatInfo $seatInfo): array
     {
         $properties = [];
