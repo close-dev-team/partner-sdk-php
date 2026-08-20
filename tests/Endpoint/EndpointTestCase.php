@@ -6,6 +6,7 @@ namespace ClosePartnerSdk\Tests\Endpoint;
 use ClosePartnerSdk\HttpClient\HttpClientBuilder;
 use ClosePartnerSdk\CloseSdk;
 use ClosePartnerSdk\Options;
+use Http\Message\RequestMatcher\RequestMatcher;
 use Http\Mock\Client;
 use JsonException;
 use PHPUnit\Framework\TestCase;
@@ -38,6 +39,22 @@ abstract class EndpointTestCase extends TestCase
             ->willReturn($stream);
 
         return $responseObject;
+    }
+
+    /**
+     * Answer the token request the SDK makes before every other call.
+     */
+    protected function givenAnAuthorisedClient(string $token = 'ey8393930dkdkdk'): void
+    {
+        $this->mockClient
+            ->on(
+                new RequestMatcher('oauth/token'),
+                fn() => $this->mockResponse([
+                    "token_type" => "Bearer",
+                    "expires_in" => 1113,
+                    "access_token" => $token,
+                ])
+            );
     }
 
     protected function givenSdk(): CloseSdk
