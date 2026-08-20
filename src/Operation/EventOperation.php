@@ -156,7 +156,7 @@ final class EventOperation extends CloseOperation
         $response = $this->sdk
             ->getHttpClient()
             ->get(
-                $this->buildUriWithLatestVersion('/events/' . $eventId . '/carousels?name=' . $name),
+                $this->buildUriWithLatestVersion('/events/' . $eventId . '/carousels?name=' . urlencode($name)),
                 [],
             );
 

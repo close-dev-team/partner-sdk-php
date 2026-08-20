@@ -62,7 +62,7 @@ class ImportTicketsMapperTest extends TestCase
                 ->format(DateTime::W3C),
             $ticketFromRequest['event_start_date_time']
         );
-        self::assertEquals(1, $ticketFromRequest['number_of_items']);
+        self::assertEquals(1, $ticketFromRequest['number_of_tickets']);
     }
 
     /** @test * */
