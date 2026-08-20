@@ -11,6 +11,9 @@ use ClosePartnerSdk\Operation\ChatOperation;
 use ClosePartnerSdk\Operation\EventOperation;
 use ClosePartnerSdk\Operation\FlowConfigOperation;
 use ClosePartnerSdk\Operation\FlowPropertyOperation;
+use ClosePartnerSdk\Operation\ImageMessageOperation;
+use ClosePartnerSdk\Operation\ImageOperation;
+use ClosePartnerSdk\Operation\WebWidgetMessageOperation;
 use ClosePartnerSdk\Operation\TicketOperation;
 use ClosePartnerSdk\Operation\TextMessageOperation;
 use ClosePartnerSdk\Exception\Auth\InvalidCredentialsException;
@@ -102,6 +105,42 @@ class CloseSdk
             $this->authoriseRequest();
         }
         return new CardMessageOperation($this);
+    }
+
+    /**
+     * @throws InvalidCredentialsException
+     * @throws Exception\ApiErrorException
+     */
+    public function imageMessage(): ImageMessageOperation
+    {
+        if ($this->token === null) {
+            $this->authoriseRequest();
+        }
+        return new ImageMessageOperation($this);
+    }
+
+    /**
+     * @throws InvalidCredentialsException
+     * @throws Exception\ApiErrorException
+     */
+    public function webWidgetMessage(): WebWidgetMessageOperation
+    {
+        if ($this->token === null) {
+            $this->authoriseRequest();
+        }
+        return new WebWidgetMessageOperation($this);
+    }
+
+    /**
+     * @throws InvalidCredentialsException
+     * @throws Exception\ApiErrorException
+     */
+    public function image(): ImageOperation
+    {
+        if ($this->token === null) {
+            $this->authoriseRequest();
+        }
+        return new ImageOperation($this);
     }
 
     /**
