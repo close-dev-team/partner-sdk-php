@@ -10,6 +10,7 @@ class User
     private ?string $nickname;
     private array $chatIds;
     private array $emailAddresses;
+    private ?string $registrationId;
 
     public function __construct(UserId $userId)
     {
@@ -18,6 +19,7 @@ class User
         $this->nickname= null;
         $this->chatIds = [];
         $this->emailAddresses = [];
+        $this->registrationId = null;
     }
 
     public function withPhoneNumber(string $phoneNumber): self
@@ -73,5 +75,43 @@ class User
     public function getEmailAddresses(): array
     {
         return $this->emailAddresses;
+    }
+
+    public function withRegistrationId(string $registrationId): self
+    {
+        $this->registrationId = $registrationId;
+        return $this;
+    }
+
+    public function getRegistrationId(): ?string
+    {
+        return $this->registrationId;
+    }
+
+    /**
+     * The user endpoints each return a different subset of these fields, so
+     * every one beyond user_id is treated as optional.
+     */
+    public static function buildFromResponseObject(\StdClass $obj): self
+    {
+        $user = new self(new UserId($obj->user_id));
+
+        if (!empty($obj->phone_number)) {
+            $user->withPhoneNumber($obj->phone_number);
+        }
+        if (!empty($obj->nickname)) {
+            $user->withNickname($obj->nickname);
+        }
+        if (!empty($obj->email_addresses)) {
+            $user->withEmailAddresses((array)$obj->email_addresses);
+        }
+        if (!empty($obj->registration_id)) {
+            $user->withRegistrationId($obj->registration_id);
+        }
+        foreach ($obj->chat_ids ?? [] as $chatId) {
+            $user->withChatId(new ChatId($chatId));
+        }
+
+        return $user;
     }
 }
