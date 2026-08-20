@@ -5,10 +5,18 @@ namespace ClosePartnerSdk\Dto\Mapper;
 
 final class SendMessageMapper
 {
-    public static function withText(string $text): array
+    /**
+     * @param bool|null $sendPush left out of the request when null, so the
+     *                            API keeps applying its own default
+     */
+    public static function withText(string $text, ?bool $sendPush = null): array
     {
-        return [
-            'text' => $text,
-        ];
+        $properties = ['text' => $text];
+
+        if ($sendPush !== null) {
+            $properties['send_push'] = $sendPush;
+        }
+
+        return $properties;
     }
 }
