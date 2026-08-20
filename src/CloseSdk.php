@@ -16,6 +16,7 @@ use ClosePartnerSdk\Operation\ImageOperation;
 use ClosePartnerSdk\Operation\ProductOperation;
 use ClosePartnerSdk\Operation\PublisherOperation;
 use ClosePartnerSdk\Operation\WebWidgetMessageOperation;
+use ClosePartnerSdk\Operation\TargetAudienceOperation;
 use ClosePartnerSdk\Operation\TicketOperation;
 use ClosePartnerSdk\Operation\UserOperation;
 use ClosePartnerSdk\Operation\TextMessageOperation;
@@ -180,6 +181,18 @@ class CloseSdk
             $this->authoriseRequest();
         }
         return new ProductOperation($this);
+    }
+
+    /**
+     * @throws InvalidCredentialsException
+     * @throws Exception\ApiErrorException
+     */
+    public function targetAudience(): TargetAudienceOperation
+    {
+        if ($this->token === null) {
+            $this->authoriseRequest();
+        }
+        return new TargetAudienceOperation($this);
     }
 
     /**
