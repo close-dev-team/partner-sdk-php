@@ -17,7 +17,7 @@ abstract class CloseOperation
 
     protected function buildUriWithLatestVersion(string $endpoint): string
     {
-        // drop trailing slash
+        // drop the leading slash, the version prefix supplies its own
         if (str_starts_with($endpoint, '/')) {
             $endpoint = substr($endpoint, 1);
         }

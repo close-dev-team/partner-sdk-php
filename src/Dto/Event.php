@@ -59,7 +59,7 @@ class Event
         $this->adminUserIds = $adminUserIds;
     }
 
-    public static function buildFromRepsonseObject(\StdClass $obj): self
+    public static function buildFromResponseObject(\StdClass $obj): self
     {
         return new self(
             new EventId($obj->event_id),
@@ -79,6 +79,14 @@ class Event
             $obj->locale,
             $obj->admin_user_ids ?? []
         );
+    }
+
+    /**
+     * @deprecated Misspelt. Use buildFromResponseObject() instead.
+     */
+    public static function buildFromRepsonseObject(\StdClass $obj): self
+    {
+        return self::buildFromResponseObject($obj);
     }
 
     public function getEventId(): EventId
