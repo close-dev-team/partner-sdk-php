@@ -13,8 +13,8 @@ class Event
     private string $name;
     private string $venue;
     private string $chatNickname;
-    private string $photoImageUrl;
-    private string $backgroundImageUrl;
+    private ?string $photoImageUrl;
+    private ?string $backgroundImageUrl;
     private string $chatMessageBackgroundColor;
     private string $chatMessageTextColor;
     private string $currency;
@@ -31,8 +31,8 @@ class Event
         string  $name,
         string  $venue,
         string  $chatNickname,
-        string  $photoImageUrl,
-        string  $backgroundImageUrl,
+        ?string $photoImageUrl,
+        ?string $backgroundImageUrl,
         string  $chatMessageBackgroundColor,
         string  $chatMessageTextColor,
         string  $currency,
@@ -70,8 +70,8 @@ class Event
             $obj->name,
             $obj->venue,
             $obj->chat_nickname,
-            $obj->photo_image_url,
-            $obj->background_image_url,
+            $obj->photo_image_url ?? null,
+            $obj->background_image_url ?? null,
             $obj->chat_message_background_color,
             $obj->chat_message_text_color,
             $obj->currency,
@@ -129,12 +129,18 @@ class Event
         return $this->chatNickname;
     }
 
-    public function getPhotoImageUrl(): string
+    /**
+     * @return string|null null when the event has no photo
+     */
+    public function getPhotoImageUrl(): ?string
     {
         return $this->photoImageUrl;
     }
 
-    public function getBackgroundImageUrl(): string
+    /**
+     * @return string|null null when the event has no background image
+     */
+    public function getBackgroundImageUrl(): ?string
     {
         return $this->backgroundImageUrl;
     }
