@@ -1,0 +1,332 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types=1);
+
+/**
+ * A thin command line front end to the SDK, for trying calls by hand.
+ *
+ * Credentials come from the environment, never from arguments, so they stay
+ * out of shell history and the process list:
+ *
+ *   export CLOSE_CLIENT_ID=...
+ *   export CLOSE_CLIENT_SECRET=...
+ *   export CLOSE_BASE_URI=https://partner.closeapi.nl   # optional
+ *
+ *   bin/close events:list
+ *   bin/close events:get CLEV123... | jq .name
+ */
+
+foreach ([__DIR__ . '/../vendor/autoload.php', __DIR__ . '/../../../autoload.php'] as $autoload) {
+    if (file_exists($autoload)) {
+        require $autoload;
+        break;
+    }
+}
+
+use ClosePartnerSdk\CloseSdk;
+use ClosePartnerSdk\Dto\ChatId;
+use ClosePartnerSdk\Dto\EventId;
+use ClosePartnerSdk\Dto\EventTime;
+use ClosePartnerSdk\Dto\ImageId;
+use ClosePartnerSdk\Dto\ImageMessage;
+use ClosePartnerSdk\Dto\ItemFlowProperty;
+use ClosePartnerSdk\Dto\PublisherId;
+use ClosePartnerSdk\Dto\PushInfo;
+use ClosePartnerSdk\Dto\TargetAudience;
+use ClosePartnerSdk\Dto\UserId;
+use ClosePartnerSdk\Dto\WebWidgetMessage;
+use ClosePartnerSdk\Options;
+
+/**
+ * Turn any DTO into printable data by walking its getters.
+ */
+function toData($value)
+{
+    if (is_array($value)) {
+        return array_map('toData', $value);
+    }
+    if (!is_object($value)) {
+        return $value;
+    }
+    if (method_exists($value, '__toString')) {
+        return (string)$value;
+    }
+
+    $data = [];
+    foreach (get_class_methods($value) as $method) {
+        if (preg_match('/^(get|is|has)([A-Z].*)$/', $method, $m) !== 1) {
+            continue;
+        }
+        try {
+            $reflection = new ReflectionMethod($value, $method);
+        } catch (ReflectionException $e) {
+            continue;
+        }
+        if ($reflection->getNumberOfRequiredParameters() > 0 || !$reflection->isPublic()) {
+            continue;
+        }
+        $key = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $m[2]));
+        $data[$key] = toData($value->$method());
+    }
+
+    return $data === [] ? (string)get_class($value) : $data;
+}
+
+function out($value): void
+{
+    if ($value === null) {
+        fwrite(STDERR, "ok\n");
+        return;
+    }
+    echo json_encode(toData($value), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), "\n";
+}
+
+function sdk(): CloseSdk
+{
+    $id = getenv('CLOSE_CLIENT_ID');
+    $secret = getenv('CLOSE_CLIENT_SECRET');
+
+    if ($id === false || $secret === false || $id === '' || $secret === '') {
+        fwrite(STDERR, "Set CLOSE_CLIENT_ID and CLOSE_CLIENT_SECRET in the environment.\n");
+        exit(2);
+    }
+
+    $options = ['client_id' => $id, 'client_secret' => $secret];
+    $baseUri = getenv('CLOSE_BASE_URI');
+    if (is_string($baseUri) && $baseUri !== '') {
+        $options['base_uri'] = $baseUri;
+    }
+
+    return new CloseSdk(new Options($options));
+}
+
+/** key=value pairs into ItemFlowProperty objects */
+function properties(array $pairs): array
+{
+    $items = [];
+    foreach ($pairs as $pair) {
+        if (!str_contains($pair, '=')) {
+            fwrite(STDERR, "Properties look like key=value, got: $pair\n");
+            exit(2);
+        }
+        [$key, $value] = explode('=', $pair, 2);
+        $items[] = new ItemFlowProperty($key, $value);
+    }
+
+    return $items;
+}
+
+function flag(array $args, string $name): ?bool
+{
+    foreach ($args as $arg) {
+        if ($arg === "--$name") {
+            return true;
+        }
+        if ($arg === "--no-$name") {
+            return false;
+        }
+    }
+
+    return null;
+}
+
+/** name => [arguments, description, handler] */
+$commands = [
+    'me' => ['', 'Which partner the credentials belong to',
+        fn($a) => out(sdk()->account()->me())],
+
+    'events:list' => ['', 'Every event you can reach',
+        fn($a) => out(sdk()->event()->getEvents())],
+    'events:get' => ['<eventId>', 'One event',
+        fn($a) => out(sdk()->event()->getEvent(new EventId($a[0])))],
+    'events:copy' => ['<eventId>', 'Duplicate an event',
+        fn($a) => out(sdk()->event()->copyEvent(new EventId($a[0])))],
+    'events:clone' => ['<eventId> <startDateTime>', 'Clone a master event at a start time',
+        fn($a) => out(sdk()->event()->cloneEvent(new EventId($a[0]), new EventTime(new DateTimeImmutable($a[1]))))],
+
+    'admins:add' => ['<eventId> <userId>', 'Make a user an admin',
+        fn($a) => out(sdk()->event()->addAdmin(new EventId($a[0]), new UserId($a[1])))],
+    'admins:remove' => ['<eventId> <userId>', 'Drop a user as admin',
+        fn($a) => out(sdk()->event()->removeAdmin(new EventId($a[0]), new UserId($a[1])))],
+    'admins:by-phone' => ['<eventId> <phoneNumber>', 'Grant admin by phone number',
+        fn($a) => out(sdk()->event()->addAdminByPhoneNumber(new EventId($a[0]), $a[1]))],
+
+    'users:list' => ['<eventId>', 'Every user that joined, all pages',
+        fn($a) => out(sdk()->user()->getUsersForEvent(new EventId($a[0])))],
+    'users:page' => ['<eventId> [page]', 'One page of users',
+        fn($a) => out(sdk()->user()->getUsersForEventPage(new EventId($a[0]), (int)($a[1] ?? 1)))],
+    'users:get' => ['<eventId> <userId>', 'One user by id',
+        fn($a) => out(sdk()->user()->lookupUserById(new EventId($a[0]), new UserId($a[1])))],
+    'users:by-phone' => ['<eventId> <phoneNumber>', 'One user by phone number',
+        fn($a) => out(sdk()->user()->lookupUserByPhoneNumber(new EventId($a[0]), $a[1]))],
+    'users:in-chat' => ['<eventId> <chatId> <userId>', 'Check a user belongs to a chat',
+        fn($a) => out(sdk()->user()->verifyUserInChat(new EventId($a[0]), new ChatId($a[1]), new UserId($a[2])))],
+
+    'chats:get' => ['<eventId> <chatId>', 'A chat and its users',
+        fn($a) => out(sdk()->chat()->lookupChat(new EventId($a[0]), new ChatId($a[1])))],
+    'chats:surveys' => ['<eventId> <chatId>', 'Survey results for a chat',
+        fn($a) => out(sdk()->chat()->getSurveyResults(new EventId($a[0]), new ChatId($a[1])))],
+    'chats:add-event' => ['<chatId> <eventId>', 'Give a chat access to an event',
+        fn($a) => out(sdk()->chat()->addEventToChat(new ChatId($a[0]), new EventId($a[1])))],
+    'chats:remove-event' => ['<chatId> <eventId>', 'Remove an event from a chat',
+        fn($a) => out(sdk()->chat()->deleteEventFromChat(new ChatId($a[0]), new EventId($a[1])))],
+
+    'text:send' => ['<eventId> <text> [--chat=ID] [--user=ID] [--push|--no-push]', 'Send a text message',
+        function ($a) {
+            $chat = option($a, 'chat');
+            $user = option($a, 'user');
+            $push = flag($a, 'push');
+            $sdk = sdk()->textMessage();
+            $eventId = new EventId($a[0]);
+            if ($chat !== null && $user !== null) {
+                return out($sdk->sendToUserInChat($eventId, new ChatId($chat), new UserId($user), $a[1], $push));
+            }
+            if ($chat !== null) {
+                return out($sdk->sendToAllUsersForChat($eventId, new ChatId($chat), $a[1], $push));
+            }
+            if ($user !== null) {
+                return out($sdk->sendToUserInAllChats($eventId, new UserId($user), $a[1], $push));
+            }
+            return out($sdk->sendToAllChatsForEvent($eventId, $a[1], $push));
+        }],
+
+    'image:upload' => ['<file> <mimeType>', 'Upload an image, prints the image id',
+        fn($a) => out(sdk()->image()->upload($a[0], $a[1]))],
+    'image:send' => ['<eventId> <imageId> [--chat=ID] [--user=ID] [--push|--no-push]', 'Send an image message',
+        function ($a) {
+            $message = new ImageMessage(new ImageId($a[1]));
+            $push = flag($a, 'push');
+            if ($push !== null) {
+                $message = $message->withSendPush($push);
+            }
+            $chat = option($a, 'chat');
+            $user = option($a, 'user');
+            $op = sdk()->imageMessage();
+            $eventId = new EventId($a[0]);
+            if ($chat !== null && $user !== null) {
+                return out($op->sendToUserInChat($eventId, new ChatId($chat), new UserId($user), $message));
+            }
+            if ($chat !== null) {
+                return out($op->sendToAllUsersForChat($eventId, new ChatId($chat), $message));
+            }
+            if ($user !== null) {
+                return out($op->sendToUserInAllChats($eventId, new UserId($user), $message));
+            }
+            return out($op->sendToAllChatsForEvent($eventId, $message));
+        }],
+    'widget:send' => ['<eventId> <width> <height> <url> [--chat=ID] [--user=ID]', 'Send a web widget message',
+        function ($a) {
+            $message = WebWidgetMessage::withUrl($a[1], $a[2], $a[3]);
+            $chat = option($a, 'chat');
+            $user = option($a, 'user');
+            $op = sdk()->webWidgetMessage();
+            $eventId = new EventId($a[0]);
+            if ($chat !== null && $user !== null) {
+                return out($op->sendToUserInChat($eventId, new ChatId($chat), new UserId($user), $message));
+            }
+            if ($chat !== null) {
+                return out($op->sendToAllUsersForChat($eventId, new ChatId($chat), $message));
+            }
+            if ($user !== null) {
+                return out($op->sendToUserInAllChats($eventId, new UserId($user), $message));
+            }
+            return out($op->sendToAllChatsForEvent($eventId, $message));
+        }],
+
+    'carousel:create' => ['<eventId> <name>', 'Create a carousel',
+        fn($a) => out(sdk()->event()->createCarousel(new EventId($a[0]), $a[1]))],
+    'carousel:lookup' => ['<eventId> <name>', 'Look a carousel up by name',
+        fn($a) => out(sdk()->event()->lookupCarousel(new EventId($a[0]), $a[1]))],
+
+    'config:get' => ['<eventId>', 'Event configuration',
+        fn($a) => out(sdk()->flowConfig()->getConfig(new EventId($a[0])))],
+    'config:set' => ['<eventId> key=value...', 'Set event configuration',
+        fn($a) => out(sdk()->flowConfig()->setConfig(new EventId($a[0]), properties(array_slice($a, 1))))],
+    'config:get-chat' => ['<eventId> <chatId>', 'Chat configuration',
+        fn($a) => out(sdk()->flowConfig()->getChatConfig(new EventId($a[0]), new ChatId($a[1])))],
+    'config:set-chat' => ['<eventId> <chatId> key=value...', 'Set chat configuration',
+        fn($a) => out(sdk()->flowConfig()->setChatConfig(new EventId($a[0]), new ChatId($a[1]), properties(array_slice($a, 2))))],
+
+    'properties:get' => ['<eventId> <chatId> <userId>', 'Flow properties for a user in a chat',
+        fn($a) => out(sdk()->flowProperty()->getProperties(new EventId($a[0]), new ChatId($a[1]), new UserId($a[2])))],
+    'properties:set' => ['<eventId> <chatId> <userId> key=value...', 'Set flow properties for a user in a chat',
+        fn($a) => out(sdk()->flowProperty()->setForOneUserInOneChat(new EventId($a[0]), new ChatId($a[1]), new UserId($a[2]), properties(array_slice($a, 3))))],
+    'properties:render' => ['<eventId> <chatId> <userId> <text>', 'Preview a templated message',
+        fn($a) => out(sdk()->flowProperty()->render(new EventId($a[0]), new ChatId($a[1]), new UserId($a[2]), $a[3]))],
+
+    'audience:create' => ['<eventId> <name> <condition>', 'Create a target audience',
+        fn($a) => out(sdk()->targetAudience()->create(new EventId($a[0]), new TargetAudience($a[1], $a[2])))],
+    'audience:update' => ['<eventId> <currentName> <newName> <condition>', 'Update a target audience',
+        fn($a) => out(sdk()->targetAudience()->update(new EventId($a[0]), $a[1], new TargetAudience($a[2], $a[3])))],
+
+    'publisher:properties' => ['<publisherId> <userId>', 'Publisher properties for a user',
+        fn($a) => out(sdk()->publisher()->getProperties(new PublisherId($a[0]), new UserId($a[1])))],
+    'publisher:set-properties' => ['<publisherId> <userId> key=value...', 'Set publisher properties',
+        fn($a) => out(sdk()->publisher()->setProperties(new PublisherId($a[0]), new UserId($a[1]), properties(array_slice($a, 2))))],
+    'publisher:push-google' => ['<publisherId> <googleServiceEncoded>', 'Store Google push credentials',
+        fn($a) => out(sdk()->publisher()->setPushInfo(new PublisherId($a[0]), PushInfo::forGoogle($a[1])))],
+    'publisher:push-apple' => ['<publisherId> <keyId> <teamId> <keyEncoded>', 'Store Apple push credentials',
+        fn($a) => out(sdk()->publisher()->setPushInfo(new PublisherId($a[0]), PushInfo::forApple($a[1], $a[2], $a[3])))],
+    'publisher:push-delete' => ['<publisherId>', 'Remove push credentials for a publisher',
+        fn($a) => out(sdk()->publisher()->deletePushInfo(new PublisherId($a[0])))],
+];
+
+function option(array $args, string $name): ?string
+{
+    foreach ($args as $arg) {
+        if (str_starts_with($arg, "--$name=")) {
+            return substr($arg, strlen($name) + 3);
+        }
+    }
+
+    return null;
+}
+
+function usage(array $commands): void
+{
+    fwrite(STDERR, "Close Partner SDK - command line front end\n\n");
+    fwrite(STDERR, "Usage: bin/close <command> [arguments]\n\n");
+    fwrite(STDERR, "Credentials come from CLOSE_CLIENT_ID and CLOSE_CLIENT_SECRET.\n");
+    fwrite(STDERR, "Point at another environment with CLOSE_BASE_URI.\n\n");
+
+    $group = null;
+    foreach ($commands as $name => [$args, $description, $_]) {
+        $current = explode(':', $name)[0];
+        if ($current !== $group) {
+            fwrite(STDERR, "\n");
+            $group = $current;
+        }
+        fwrite(STDERR, sprintf("  %-28s %-52s %s\n", $name, $args, $description));
+    }
+    fwrite(STDERR, "\n");
+}
+
+$argv = $_SERVER['argv'];
+array_shift($argv);
+$command = array_shift($argv);
+
+if ($command === null || $command === 'help' || $command === '--help' || $command === '-h') {
+    usage($commands);
+    exit($command === null ? 1 : 0);
+}
+
+if (!isset($commands[$command])) {
+    fwrite(STDERR, "Unknown command: $command\n\nRun bin/close help for the list.\n");
+    exit(1);
+}
+
+[$expected, $description, $handler] = $commands[$command];
+$required = preg_match_all('/<[^>]+>/', $expected);
+$positional = array_values(array_filter($argv, static fn($a) => !str_starts_with($a, '--')));
+
+if (count($positional) < $required) {
+    fwrite(STDERR, "$command expects: $expected\n");
+    exit(2);
+}
+
+try {
+    $handler($argv);
+} catch (Throwable $e) {
+    fwrite(STDERR, get_class($e) . ': ' . $e->getMessage() . "\n");
+    exit(1);
+}

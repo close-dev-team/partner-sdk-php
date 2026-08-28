@@ -282,6 +282,35 @@ try {
 }
 ```
 
+## Command line tool
+
+`bin/close` is a thin front end over the SDK for trying calls by hand against a real environment. It is a development tool that lives in this repository; it is not registered as a Composer binary, so installing the SDK does not put it on anyone's PATH.
+
+Credentials are read from the environment rather than from arguments, so they stay out of shell history and the process list:
+
+```bash
+export CLOSE_CLIENT_ID=your-client-id
+export CLOSE_CLIENT_SECRET=your-client-secret
+export CLOSE_BASE_URI=https://partner.closeapi.nl   # optional, for pointing at another environment
+
+bin/close help                  # every command
+bin/close me                    # check the credentials work
+bin/close events:list
+bin/close events:get CLEV23LACYIRZSA11NI8FMY3S1YWZ0
+bin/close chats:surveys CLEV... CLEC...
+bin/close text:send CLEV... "Hello everyone" --chat=CLEC... --no-push
+bin/close config:set CLEV... welcome_message="Hi there" language=nl
+```
+
+Output is JSON, so it pipes into `jq`:
+
+```bash
+bin/close events:list | jq -r '.[].name'
+```
+
+Commands that write are real calls against whichever environment `CLOSE_BASE_URI` points at. There is no dry-run and no confirmation step.
+
+
 ## Getting Help
 
 Feel free to let us know if you have encountered any questions or problems using our SDK. We will try to make sure that we will get back to you as soon as possible.
