@@ -7,6 +7,7 @@ use ClosePartnerSdk\Dto\AuthCredentials;
 use ClosePartnerSdk\Dto\Token;
 use ClosePartnerSdk\Operation\AccountOperation;
 use ClosePartnerSdk\Operation\Authorise;
+use ClosePartnerSdk\Operation\BlockOperation;
 use ClosePartnerSdk\Operation\CardMessageOperation;
 use ClosePartnerSdk\Operation\ChatOperation;
 use ClosePartnerSdk\Operation\EventOperation;
@@ -218,6 +219,18 @@ class CloseSdk
             $this->authoriseRequest();
         }
         return new AccountOperation($this);
+    }
+
+    /**
+     * @throws InvalidCredentialsException
+     * @throws Exception\ApiErrorException
+     */
+    public function block(): BlockOperation
+    {
+        if ($this->token === null) {
+            $this->authoriseRequest();
+        }
+        return new BlockOperation($this);
     }
 
     /**

@@ -300,6 +300,8 @@ bin/close events:get CLEV23LACYIRZSA11NI8FMY3S1YWZ0
 bin/close chats:surveys CLEV... CLEC...
 bin/close text:send CLEV... "Hello everyone" --chat=CLEC... --no-push
 bin/close config:set CLEV... welcome_message="Hi there" language=nl
+bin/close blocks:groups CLEV...
+bin/close blocks:update CLEV... CLBP... nl-NL:text=Welkom en-GB:text=Welcome
 ```
 
 Output is JSON, so it pipes into `jq`:

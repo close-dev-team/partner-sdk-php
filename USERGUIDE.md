@@ -242,6 +242,23 @@ The same four scopes, taking a `WebWidgetMessage`. Build one with `WebWidgetMess
 | `deletePushInfo(publisherId)` | Remove them. |
 | `getProperties(publisherId, userId)` / `setProperties(publisherId, userId, items)` | Properties held against a publisher rather than an event. |
 
+### Block program — `$sdk->block()`
+| Operation | Use-case |
+| --- | --- |
+| `getGroupsForEvent(eventId)` | The event's groups in builder order, each with its blocks. Every block reports `canBeUpdated()` and `getEditableFields()`. |
+| `updateBlockContent(eventId, blockId, blockContent)` | Change the texts, urls and images of one block. |
+
+Only blocks reporting `canBeUpdated()` may be updated, and only with the fields they list. **Every language of the event has to be present** — the API refuses a partial translation and writes nothing. Image fields take the public id of an already uploaded image, which `$sdk->image()->upload()` returns.
+
+```php
+$content = BlockContent::forLanguage('nl-NL', ['text' => 'Welkom in Weert'])
+    ->withLanguage('en-GB', ['text' => 'Welcome to Weert']);
+
+$sdk->block()->updateBlockContent($eventId, $blockId, $content);
+```
+
+Fields that are not named keep their current value. Messages users already received are updated afterwards, in the background, so a successful call does not mean every device has caught up.
+
 ### Account — `$sdk->account()`
 | Operation | Use-case |
 | --- | --- |

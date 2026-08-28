@@ -24,6 +24,8 @@ foreach ([__DIR__ . '/../vendor/autoload.php', __DIR__ . '/../../../autoload.php
 }
 
 use ClosePartnerSdk\CloseSdk;
+use ClosePartnerSdk\Dto\BlockContent;
+use ClosePartnerSdk\Dto\BlockId;
 use ClosePartnerSdk\Dto\ChatId;
 use ClosePartnerSdk\Dto\EventId;
 use ClosePartnerSdk\Dto\EventTime;
@@ -52,9 +54,15 @@ function toData($value)
         return (string)$value;
     }
 
+    // Derived views of data that is printed anyway, skipped to keep output readable.
+    static $derived = ['getUpdatableBlocks', 'getLanguageTags'];
+
     $data = [];
     foreach (get_class_methods($value) as $method) {
-        if (preg_match('/^(get|is|has)([A-Z].*)$/', $method, $m) !== 1) {
+        if (preg_match('/^(get|is|has|can)([A-Z].*)$/', $method, $m) !== 1) {
+            continue;
+        }
+        if (in_array($method, $derived, true)) {
             continue;
         }
         try {
@@ -65,7 +73,10 @@ function toData($value)
         if ($reflection->getNumberOfRequiredParameters() > 0 || !$reflection->isPublic()) {
             continue;
         }
-        $key = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $m[2]));
+        // "can" is kept because canBeUpdated() is can_be_updated in the API,
+        // while isAdded() is simply added there.
+        $prefix = $m[1] === 'can' ? 'can_' : '';
+        $key = $prefix . strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $m[2]));
         $data[$key] = toData($value->$method());
     }
 
@@ -98,6 +109,28 @@ function sdk(): CloseSdk
     }
 
     return new CloseSdk(new Options($options));
+}
+
+/** language:field=value pairs into a BlockContent */
+function blockContent(array $pairs): BlockContent
+{
+    $byLanguage = [];
+    foreach ($pairs as $pair) {
+        if (!preg_match('/^([^:=]+):([^=]+)=(.*)$/s', $pair, $m)) {
+            fwrite(STDERR, "Block values look like language:field=value, got: $pair\n");
+            exit(2);
+        }
+        $byLanguage[$m[1]][$m[2]] = $m[3] === 'null' ? null : $m[3];
+    }
+
+    $content = null;
+    foreach ($byLanguage as $languageTag => $fields) {
+        $content = $content === null
+            ? BlockContent::forLanguage($languageTag, $fields)
+            : $content->withLanguage($languageTag, $fields);
+    }
+
+    return $content;
 }
 
 /** key=value pairs into ItemFlowProperty objects */
@@ -232,6 +265,11 @@ $commands = [
             }
             return out($op->sendToAllChatsForEvent($eventId, $message));
         }],
+
+    'blocks:groups' => ['<eventId>', 'Block program groups and their blocks',
+        fn($a) => out(sdk()->block()->getGroupsForEvent(new EventId($a[0])))],
+    'blocks:update' => ['<eventId> <blockId> lang:field=value...', 'Update one block, every event language required',
+        fn($a) => out(sdk()->block()->updateBlockContent(new EventId($a[0]), new BlockId($a[1]), blockContent(array_slice($a, 2))))],
 
     'carousel:create' => ['<eventId> <name>', 'Create a carousel',
         fn($a) => out(sdk()->event()->createCarousel(new EventId($a[0]), $a[1]))],
