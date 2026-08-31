@@ -297,6 +297,8 @@ $commands = [
     'audience:update' => ['<eventId> <currentName> <newName> <condition>', 'Update a target audience',
         fn($a) => out(sdk()->targetAudience()->update(new EventId($a[0]), $a[1], new TargetAudience($a[2], $a[3])))],
 
+    'publisher:list' => ['', 'Every publisher this partner can reach',
+        fn($a) => out(sdk()->publisher()->getPublishers())],
     'publisher:properties' => ['<publisherId> <userId>', 'Publisher properties for a user',
         fn($a) => out(sdk()->publisher()->getProperties(new PublisherId($a[0]), new UserId($a[1])))],
     'publisher:set-properties' => ['<publisherId> <userId> key=value...', 'Set publisher properties',

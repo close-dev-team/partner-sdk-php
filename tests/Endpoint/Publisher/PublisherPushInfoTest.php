@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace ClosePartnerSdk\Tests\Endpoint\Publisher;
 
+use ClosePartnerSdk\Dto\Publisher;
 use ClosePartnerSdk\Dto\PublisherId;
 use ClosePartnerSdk\Dto\PushInfo;
 use ClosePartnerSdk\Tests\Endpoint\EndpointTestCase;
@@ -135,5 +136,45 @@ class PublisherPushInfoTest extends EndpointTestCase
 
         self::assertNull($google->getAppleKeyId());
         self::assertArrayNotHasKey('apple_key_id', $google->toArray());
+    }
+
+    /** @test */
+    public function list_every_accessible_publisher()
+    {
+        $this->mockClient
+            ->on(
+                new RequestMatcher('/publishers'),
+                function (RequestInterface $request) {
+                    self::assertEquals('GET', $request->getMethod());
+                    self::assertEquals('/api/v1/publishers', $request->getUri()->getPath());
+
+                    return $this->mockResponse([
+                        'publishers' => [
+                            ['publisher_id' => 'CLPU1111111111', 'name' => 'Close'],
+                            ['publisher_id' => 'CLPU2222222222', 'name' => 'CM.com'],
+                        ],
+                    ]);
+                }
+            );
+
+        $publishers = $this->givenSdk()->publisher()->getPublishers();
+
+        self::assertCount(2, $publishers);
+        self::assertContainsOnlyInstancesOf(Publisher::class, $publishers);
+        self::assertEquals('CLPU1111111111', (string)$publishers[0]->getPublisherId());
+        self::assertEquals('Close', $publishers[0]->getName());
+        self::assertEquals('CM.com', $publishers[1]->getName());
+    }
+
+    /** @test */
+    public function a_partner_with_no_publishers_gets_an_empty_list()
+    {
+        $this->mockClient
+            ->on(
+                new RequestMatcher('/publishers'),
+                fn() => $this->mockResponse(['publishers' => []])
+            );
+
+        self::assertSame([], $this->givenSdk()->publisher()->getPublishers());
     }
 }

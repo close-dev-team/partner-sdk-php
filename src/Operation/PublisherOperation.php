@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace ClosePartnerSdk\Operation;
 
 use ClosePartnerSdk\Dto\ItemFlowProperty;
+use ClosePartnerSdk\Dto\Publisher;
 use ClosePartnerSdk\Dto\Mapper\FlowPropertiesMapper;
 use ClosePartnerSdk\Dto\PublisherId;
 use ClosePartnerSdk\Dto\PushInfo;
@@ -88,5 +89,32 @@ final class PublisherOperation extends CloseOperation
                     FlowPropertiesMapper::withProperties($itemFlowProperties)
                 )
             );
+    }
+
+    /**
+     * Every publisher this partner may reach. Drawn from the same
+     * relationship that gates every other publisher scoped route, so a
+     * PublisherId from this list is always valid to use elsewhere in the API.
+     *
+     * @return Publisher[]
+     * @throws \Http\Client\Exception
+     * @throws \JsonException
+     */
+    public function getPublishers(): array
+    {
+        $response = $this->sdk
+            ->getHttpClient()
+            ->get(
+                $this->buildUriWithLatestVersion('/publishers'),
+                []
+            );
+
+        $obj = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
+        $publishers = [];
+        foreach ($obj->publishers ?? [] as $publisher) {
+            $publishers[] = Publisher::buildFromResponseObject($publisher);
+        }
+
+        return $publishers;
     }
 }
