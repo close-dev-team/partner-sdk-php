@@ -238,6 +238,7 @@ The same four scopes, taking a `WebWidgetMessage`. Build one with `WebWidgetMess
 ### Publishers — `$sdk->publisher()`
 | Operation | Use-case |
 | --- | --- |
+| `getPublishers()` | Every publisher this partner may reach: name and public id only. |
 | `setPushInfo(publisherId, pushInfo)` | Store Android and Apple push credentials. |
 | `deletePushInfo(publisherId)` | Remove them. |
 | `getProperties(publisherId, userId)` / `setProperties(publisherId, userId, items)` | Properties held against a publisher rather than an event. |
