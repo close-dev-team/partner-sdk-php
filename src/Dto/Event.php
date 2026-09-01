@@ -21,6 +21,7 @@ class Event
     private string $timeZone;
     private string $locale;
     private array $adminUserIds;
+    private ?PublisherId $publisherId;
 
     public function __construct(
         EventId $eventId,
@@ -38,7 +39,8 @@ class Event
         string  $currency,
         string  $timeZone,
         string  $locale,
-        array   $adminUserIds = []
+        array   $adminUserIds = [],
+        ?PublisherId $publisherId = null
     )
     {
         $this->eventId = $eventId;
@@ -57,6 +59,7 @@ class Event
         $this->timeZone = $timeZone;
         $this->locale = $locale;
         $this->adminUserIds = $adminUserIds;
+        $this->publisherId = $publisherId;
     }
 
     public static function buildFromResponseObject(\StdClass $obj): self
@@ -77,7 +80,8 @@ class Event
             $obj->currency,
             $obj->time_zone,
             $obj->locale,
-            $obj->admin_user_ids ?? []
+            $obj->admin_user_ids ?? [],
+            isset($obj->publisher_id) ? new PublisherId($obj->publisher_id) : null
         );
     }
 
@@ -176,5 +180,17 @@ class Event
     public function getAdminUserIds(): array
     {
         return $this->adminUserIds;
+    }
+
+    /**
+     * @return PublisherId|null null, never a blank id, when the event has no
+     *                          resolvable publisher (getPublisherName() then
+     *                          reads "Unknown publisher"). Line this up against
+     *                          PublisherOperation::getPublishers() by id rather
+     *                          than by display name.
+     */
+    public function getPublisherId(): ?PublisherId
+    {
+        return $this->publisherId;
     }
 }

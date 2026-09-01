@@ -30,6 +30,7 @@ final class EventResponseFactory
             'time_zone' => 'Europe/Amsterdam',
             'locale' => 'nl_NL',
             'admin_user_ids' => ['CLUS1111111111', 'CLUS2222222222'],
+            'publisher_id' => 'CLPU1234567890',
         ], $overrides);
     }
 }

@@ -68,6 +68,40 @@ class GetEventsTest extends EndpointTestCase
         self::assertEquals('Europe/Amsterdam', $event->getTimeZone());
         self::assertEquals('nl_NL', $event->getLocale());
         self::assertEquals(['CLUS1111111111', 'CLUS2222222222'], $event->getAdminUserIds());
+        self::assertEquals('CLPU1234567890', (string)$event->getPublisherId());
+    }
+
+    /** @test */
+    public function an_event_with_no_resolvable_publisher_has_a_null_publisher_id()
+    {
+        $this->givenAnAuthorisedClient();
+
+        $this->mockClient
+            ->on(
+                new RequestMatcher('/events'),
+                fn() => $this->mockResponse(['events' => [
+                    EventResponseFactory::create(['publisher_id' => null]),
+                ]])
+            );
+
+        self::assertNull($this->givenSdk()->event()->getEvents()[0]->getPublisherId());
+    }
+
+    /** @test */
+    public function the_publisher_id_is_null_when_the_api_omits_it()
+    {
+        $this->givenAnAuthorisedClient();
+
+        $payload = EventResponseFactory::create();
+        unset($payload['publisher_id']);
+
+        $this->mockClient
+            ->on(
+                new RequestMatcher('/events'),
+                fn() => $this->mockResponse(['events' => [$payload]])
+            );
+
+        self::assertNull($this->givenSdk()->event()->getEvents()[0]->getPublisherId());
     }
 
     /** @test */
