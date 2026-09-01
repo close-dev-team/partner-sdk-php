@@ -164,6 +164,8 @@ Every operation below is reachable from the SDK client. The endpoints marked wit
 | `removeAdmin(eventId, userId)` | Drop a user as admin. Answers `false` if they were not one. |
 | `addAdminByPhoneNumber(eventId, phoneNumber)` | Grant admin by phone number, for when you do not know whether they have an account yet. |
 
+Every `Event` also carries `getPublisherId(): ?PublisherId` — `null`, never a blank id, when the event has no resolvable publisher. Line it up against `$sdk->publisher()->getPublishers()` by id rather than by display name.
+
 ### Users — `$sdk->user()`
 | Operation | Use-case |
 | --- | --- |
